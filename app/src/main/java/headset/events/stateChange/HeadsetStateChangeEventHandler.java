@@ -1,5 +1,6 @@
 package headset.events.stateChange;
 
+import android.util.Log;
 import java.util.ArrayList;
 import headset.event.IEventHandler;
 
@@ -22,6 +23,7 @@ public class HeadsetStateChangeEventHandler implements
 
   public void fireEvent(HeadsetStateChangeEvent event) {
     for (IHeadsetStateChangeEventListener listener : listeners) {
+      Log.i("State Change Event",event.getState().name());
       listener.onHeadsetStateChange(event);
     }
   }

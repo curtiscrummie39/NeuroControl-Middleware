@@ -17,21 +17,21 @@ public class MindWaveMobile2 {
   private TgStreamReader tgStreamReader;
   private final CoreTgStreamHandler coreTgStreamHandler;
 
+  //this constructor is for Testing
   public MindWaveMobile2() {
-    this.coreTgStreamHandler = new CoreTgStreamHandler();
+    this.coreTgStreamHandler = new CoreTgStreamHandler(tgStreamReader);
   }
 
   public MindWaveMobile2(BluetoothManager bluetoothManager, String deviceName) {
     BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
     this.bluetoothDevice = bluetoothAdapter.getRemoteDevice(deviceName);
-    this.coreTgStreamHandler = new CoreTgStreamHandler();
+    this.coreTgStreamHandler = new CoreTgStreamHandler(tgStreamReader);
   }
 
   public void connect() {
     if (Objects.isNull(this.tgStreamReader)) {
       this.tgStreamReader = new TgStreamReader(this.bluetoothDevice, this.coreTgStreamHandler);
-      //TODO check this line
-      tgStreamReader.connectAndStart();
+      tgStreamReader.connect();
     }
   }
 

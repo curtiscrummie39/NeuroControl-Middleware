@@ -34,20 +34,20 @@ public class MindWaveMobile2NeedRefactor {
         case MindDataType.CODE_ATTENTION:
           short[] attValue = { (short) i1 };
 
-          nskAlgoSdk.NskAlgoDataStream(NskAlgoDataType.NSK_ALGO_DATA_TYPE_ATT.value, attValue, 1);
+//          nskAlgoSdk.NskAlgoDataStream(NskAlgoDataType.NSK_ALGO_DATA_TYPE_ATT.value, attValue, 1);
           break;
         case MindDataType.CODE_MEDITATION:
           short[] medValue = { (short) i1 };
-          nskAlgoSdk.NskAlgoDataStream(NskAlgoDataType.NSK_ALGO_DATA_TYPE_MED.value, medValue, 1);
+//          nskAlgoSdk.NskAlgoDataStream(NskAlgoDataType.NSK_ALGO_DATA_TYPE_MED.value, medValue, 1);
           break;
         case MindDataType.CODE_POOR_SIGNAL:
           short[] psValue = { (short) i1 };
-          nskAlgoSdk.NskAlgoDataStream(NskAlgoDataType.NSK_ALGO_DATA_TYPE_PQ.value, psValue, 1);
+//          nskAlgoSdk.NskAlgoDataStream(NskAlgoDataType.NSK_ALGO_DATA_TYPE_PQ.value, psValue, 1);
           break;
         case MindDataType.CODE_RAW:
           raw_data[raw_data_index++] = (short) i1;
           if (raw_data_index == 512) {
-            nskAlgoSdk.NskAlgoDataStream(NskAlgoDataType.NSK_ALGO_DATA_TYPE_EEG.value, raw_data, raw_data_index);
+//            nskAlgoSdk.NskAlgoDataStream(NskAlgoDataType.NSK_ALGO_DATA_TYPE_EEG.value, raw_data, raw_data_index);
             raw_data_index = 0;
           }
           break;
@@ -94,7 +94,7 @@ public class MindWaveMobile2NeedRefactor {
     if (Objects.isNull(this.tgStreamReader)) {
       this.tgStreamReader = new TgStreamReader(this.bluetoothDevice,tgStreamHandler);
       //TODO check this line
-      tgStreamReader.connectAndStart();
+      tgStreamReader.connect();
     }
   }
 

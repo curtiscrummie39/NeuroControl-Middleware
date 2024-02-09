@@ -1,5 +1,6 @@
 package headsetTest;
 
+import android.util.Log;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.Test;
@@ -53,6 +54,7 @@ public class MindWaveMobile2Test {
   @Test
   //"EventTest 1: Test to verify if the event listener is added to the blinkTest event handler.")
   public void test1() {
+    Log.e("Test1","HI");
     BlinkEventMockListener blinkEventMockListener = new BlinkEventMockListener();
     this.mindWaveMobile2.addEventListener(blinkEventMockListener);
     assertThat(this.mindWaveMobile2.containsListener(blinkEventMockListener)).as(

@@ -5,6 +5,7 @@ import com.neurosky.connection.TgStreamHandler;
 import com.neurosky.connection.DataType.MindDataType;
 import com.neurosky.connection.ConnectionStates;
 
+import com.neurosky.connection.TgStreamReader;
 import headset.events.stateChange.HeadsetStateTypes;
 import headset.events.stateChange.HeadsetStateChangeEvent;
 import headset.events.stateChange.HeadsetStateChangeEventHandler;
@@ -16,8 +17,17 @@ import headset.events.stateChange.IHeadsetStateChangeEventListener;
 
 public class CoreTgStreamHandler implements TgStreamHandler {
 
-  private final HeadsetStateChangeEventHandler headsetStateEventHandler = new HeadsetStateChangeEventHandler();
-  private final CoreNskAlgoSdk coreNskAlgoSdk = new CoreNskAlgoSdk();
+  private final HeadsetStateChangeEventHandler headsetStateEventHandler;
+  private final CoreNskAlgoSdk coreNskAlgoSdk;
+
+  private final TgStreamReader tgStreamReader;
+
+
+  public CoreTgStreamHandler(TgStreamReader tgStreamReader){
+    this.coreNskAlgoSdk= new CoreNskAlgoSdk();
+    this.headsetStateEventHandler=new HeadsetStateChangeEventHandler();
+    this.tgStreamReader=tgStreamReader;
+  }
 
   @Override
   public void onDataReceived(int dataType, int data, Object obj) {
@@ -48,9 +58,10 @@ public class CoreTgStreamHandler implements TgStreamHandler {
   @Override
   public void onStatesChanged(int connectionStates) {
     switch (connectionStates) {
-      case ConnectionStates.STATE_CONNECTED ->
-          //TODO we should access the tgStreamReader and call start here but the q is what instance of tgStreamReader is called
+      case ConnectionStates.STATE_CONNECTED ->{
+          this.tgStreamReader.start();
           headsetStateEventHandler.fireEvent(headsetStateEventInit(HeadsetStateTypes.CONNECTED));
+      }
       case ConnectionStates.STATE_WORKING ->
           headsetStateEventHandler.fireEvent(headsetStateEventInit(HeadsetStateTypes.WORKING));
       case ConnectionStates.STATE_STOPPED ->
@@ -78,7 +89,6 @@ public class CoreTgStreamHandler implements TgStreamHandler {
     headsetStateEventHandler.removeListener(listener);
   }
 
-  //FIXME: This method is not used in the code, it's just for testing purposes
   public void fireHeadsetStateChangeEvent(HeadsetStateChangeEvent event) {
     headsetStateEventHandler.fireEvent(event);
   }

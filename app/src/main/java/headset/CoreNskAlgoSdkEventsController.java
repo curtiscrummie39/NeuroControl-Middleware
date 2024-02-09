@@ -1,5 +1,6 @@
 package headset;
 
+import android.util.Log;
 import java.util.EventListener;
 
 import headset.events.attention.AttentionData;
@@ -56,6 +57,7 @@ public class CoreNskAlgoSdkEventsController {
   }
 
   public void fireEvent(HeadsetDataTypes type, Object data) {
+    Log.i("Headset Data Update Event",String.format("Event Type: %s | Event Data: %d",type,data.toString()));
     switch (type) {
       case BLINK ->
           this.blinkEventHandler.fireEvent(new BlinkEvent(this, new BlinkData((Integer) data)));
