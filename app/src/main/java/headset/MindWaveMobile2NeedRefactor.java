@@ -5,6 +5,9 @@ import headset.events.stateChange.IHeadsetStateChangeEventListener;
 import java.util.EventListener;
 import java.util.Objects;
 
+import com.neurosky.AlgoSdk.NskAlgoSdk;
+import com.neurosky.AlgoSdk.NskAlgoType;
+
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
@@ -77,6 +80,45 @@ public class MindWaveMobile2NeedRefactor {
       this.tgStreamReader = null;
     }
   }
+
+  public void setUpAlgo(){
+    NskAlgoSdk nskAlgoSdk = new NskAlgoSdk();
+    nskAlgoSdk.setOnBPAlgoIndexListener(new NskAlgoSdk.OnBPAlgoIndexListener() {
+      @Override
+      public void onBPAlgoIndex(float delta, float theta, float alpha, float beta, float gamma) {
+        Log.w("Algo","BandPower");
+      }
+    });
+
+    nskAlgoSdk.setOnEyeBlinkDetectionListener(new NskAlgoSdk.OnEyeBlinkDetectionListener() {
+      @Override
+      public void onEyeBlinkDetect(int eyeBlinkStrengthValue) {
+        Log.w("Algo","Blink");
+      }
+    });
+
+    nskAlgoSdk.setOnMedAlgoIndexListener(new NskAlgoSdk.OnMedAlgoIndexListener() {
+      @Override
+      public void onMedAlgoIndex(int meditationValue) {
+        Log.w("Algo","Meditation");
+      }
+    });
+
+    nskAlgoSdk.setOnSignalQualityListener(new NskAlgoSdk.OnSignalQualityListener() {
+      @Override
+      public void onSignalQuality(int signalQualityLevel) {
+        Log.w("Algo","Signal Quality");
+      }
+    });
+
+    int algoTypes = NskAlgoType.NSK_ALGO_TYPE_ATT.value +
+        NskAlgoType.NSK_ALGO_TYPE_MED.value +
+        NskAlgoType.NSK_ALGO_TYPE_BP.value +
+        NskAlgoType.NSK_ALGO_TYPE_BLINK.value;
+    nskAlgoSdk.NskAlgoInit(algoTypes, "");
+    nskAlgoSdk.NskAlgoStart(false);
+  }
+
 
   public void changeBluetoothDevice(BluetoothManager bluetoothManager, String deviceName) {
     if (Objects.nonNull(this.tgStreamReader)) {

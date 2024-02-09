@@ -21,7 +21,7 @@ public class MindWaveMobile2 {
     this.coreTgStreamHandler = new CoreTgStreamHandler();
   }
 
-  MindWaveMobile2(BluetoothManager bluetoothManager, String deviceName) {
+  public MindWaveMobile2(BluetoothManager bluetoothManager, String deviceName) {
     BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
     this.bluetoothDevice = bluetoothAdapter.getRemoteDevice(deviceName);
     this.coreTgStreamHandler = new CoreTgStreamHandler();
