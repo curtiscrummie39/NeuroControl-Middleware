@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import com.neurosky.AlgoSdk.NskAlgoSdk;
 import com.neurosky.AlgoSdk.NskAlgoType;
+import com.neurosky.AlgoSdk.NskAlgoDataType;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -22,13 +23,36 @@ public class MindWaveMobile2NeedRefactor {
   private BluetoothDevice bluetoothDevice;
   private TgStreamReader tgStreamReader;
 
+  private NskAlgoSdk nskAlgoSdk;
+  private short raw_data[]=new short[512];
+  private int raw_data_index=0;
+
   private TgStreamHandler tgStreamHandler=new TgStreamHandler() {
     @Override
     public void onDataReceived(int i, int i1, Object o) {
-      switch (i){
-        case MindDataType.CODE_ATTENTION -> Log.w("data recieved","Attention");
-        case MindDataType.CODE_MEDITATION -> Log.w("data recieved","Meditation");
-        case MindDataType.CODE_RAW -> Log.w("data recieved","Raw");
+      switch (i) {
+        case MindDataType.CODE_ATTENTION:
+          short[] attValue = { (short) i1 };
+
+          nskAlgoSdk.NskAlgoDataStream(NskAlgoDataType.NSK_ALGO_DATA_TYPE_ATT.value, attValue, 1);
+          break;
+        case MindDataType.CODE_MEDITATION:
+          short[] medValue = { (short) i1 };
+          nskAlgoSdk.NskAlgoDataStream(NskAlgoDataType.NSK_ALGO_DATA_TYPE_MED.value, medValue, 1);
+          break;
+        case MindDataType.CODE_POOR_SIGNAL:
+          short[] psValue = { (short) i1 };
+          nskAlgoSdk.NskAlgoDataStream(NskAlgoDataType.NSK_ALGO_DATA_TYPE_PQ.value, psValue, 1);
+          break;
+        case MindDataType.CODE_RAW:
+          raw_data[raw_data_index++] = (short) i1;
+          if (raw_data_index == 512) {
+            nskAlgoSdk.NskAlgoDataStream(NskAlgoDataType.NSK_ALGO_DATA_TYPE_EEG.value, raw_data, raw_data_index);
+            raw_data_index = 0;
+          }
+          break;
+        default:
+          break;
       }
     }
 
@@ -66,6 +90,7 @@ public class MindWaveMobile2NeedRefactor {
   }
 
   public void connect() {
+    setUpAlgo();
     if (Objects.isNull(this.tgStreamReader)) {
       this.tgStreamReader = new TgStreamReader(this.bluetoothDevice,tgStreamHandler);
       //TODO check this line
@@ -81,7 +106,7 @@ public class MindWaveMobile2NeedRefactor {
     }
   }
 
-  public void setUpAlgo(){
+  private void setUpAlgo(){
     NskAlgoSdk nskAlgoSdk = new NskAlgoSdk();
     nskAlgoSdk.setOnBPAlgoIndexListener(new NskAlgoSdk.OnBPAlgoIndexListener() {
       @Override
