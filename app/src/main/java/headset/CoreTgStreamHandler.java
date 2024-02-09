@@ -49,6 +49,7 @@ public class CoreTgStreamHandler implements TgStreamHandler {
   public void onStatesChanged(int connectionStates) {
     switch (connectionStates) {
       case ConnectionStates.STATE_CONNECTED ->
+          //TODO we should access the tgStreamReader and call start here but the q is what instance of tgStreamReader is called
           headsetStateEventHandler.fireEvent(headsetStateEventInit(HeadsetStateTypes.CONNECTED));
       case ConnectionStates.STATE_WORKING ->
           headsetStateEventHandler.fireEvent(headsetStateEventInit(HeadsetStateTypes.WORKING));

@@ -30,6 +30,7 @@ public class MindWaveMobile2 {
   public void connect() {
     if (Objects.isNull(this.tgStreamReader)) {
       this.tgStreamReader = new TgStreamReader(this.bluetoothDevice, this.coreTgStreamHandler);
+      //TODO check this line
       tgStreamReader.connectAndStart();
     }
   }
