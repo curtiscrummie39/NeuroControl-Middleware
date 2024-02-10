@@ -73,6 +73,9 @@ public class CoreNskAlgoSdk extends NskAlgoSdk {
         this.eventsHandler.fireEvent(HeadsetDataTypes.RAW, rawData);
         rawDataIdx = 0;
       }
+//      } else if (dataType == NskAlgoDataType.NSK_ALGO_DATA_TYPE_BULK_EEG) {
+//        this.eventsHandler.fireEvent(HeadsetDataTypes.RAW, rawData);
+//      }
     } else {
       short[] dataArr = {(short) data};
       NskAlgoDataStream(dataType.value, dataArr, dataLength);

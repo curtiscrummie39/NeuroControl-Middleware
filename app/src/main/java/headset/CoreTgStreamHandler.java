@@ -46,6 +46,9 @@ public class CoreTgStreamHandler implements TgStreamHandler {
       }
       case MindDataType.CODE_RAW ->
           coreNskAlgoSdk.UpdateAlgoData(NskAlgoDataType.NSK_ALGO_DATA_TYPE_EEG, data, 1);
+
+      case MindDataType.CODE_EEGPOWER ->
+          coreNskAlgoSdk.UpdateAlgoData(NskAlgoDataType.NSK_ALGO_DATA_TYPE_BULK_EEG, data, 1);
     }
   }
 
@@ -70,8 +73,8 @@ public class CoreTgStreamHandler implements TgStreamHandler {
           headsetStateEventHandler.fireEvent(headsetStateEventInit(HeadsetStateTypes.WORKING));
       case ConnectionStates.STATE_STOPPED ->
           headsetStateEventHandler.fireEvent(headsetStateEventInit(HeadsetStateTypes.STOPPED));
-      case ConnectionStates.STATE_DISCONNECTED ->
-          headsetStateEventHandler.fireEvent(headsetStateEventInit(HeadsetStateTypes.DISCONNECTED));
+      case ConnectionStates.STATE_DISCONNECTED -> headsetStateEventHandler.fireEvent(
+          headsetStateEventInit(HeadsetStateTypes.DISCONNECTED));
       case ConnectionStates.STATE_GET_DATA_TIME_OUT -> headsetStateEventHandler.fireEvent(
           headsetStateEventInit(HeadsetStateTypes.GET_DATA_TIME_OUT));
       case ConnectionStates.STATE_FAILED -> headsetStateEventHandler.fireEvent(

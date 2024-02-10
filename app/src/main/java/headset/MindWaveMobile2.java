@@ -24,6 +24,7 @@ public class MindWaveMobile2 {
   public void connect() {
     if (Objects.isNull(this.tgStreamReader)) {
       this.tgStreamReader = new TgStreamReader(this.bluetoothDevice, this.coreTgStreamHandler);
+      //This line update the coreTgStreamHandler var to point to new instance of CoreTgStreamHandler that has tgStreamReader initialized instance
       this.coreTgStreamHandler = new CoreTgStreamHandler(this.tgStreamReader);
       tgStreamReader.connect();
     }
