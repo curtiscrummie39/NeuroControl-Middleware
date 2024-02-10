@@ -1,39 +1,32 @@
 package headset;
 
 import android.util.Log;
-import java.util.EventListener;
-
+import headset.events.HeadsetDataTypes;
 import headset.events.attention.AttentionData;
 import headset.events.attention.AttentionDataUpdateEvent;
 import headset.events.attention.AttentionDataUpdateEventHandler;
 import headset.events.attention.IAttentionDataUpdateEventListener;
-
-import headset.events.blink.BlinkData;
-import headset.events.blink.BlinkEvent;
-import headset.events.blink.BlinkEventHandler;
-import headset.events.blink.IBlinkEventListener;
-
 import headset.events.bandPower.BandPowerData;
 import headset.events.bandPower.BandPowerDataUpdateEvent;
 import headset.events.bandPower.BandPowerDataUpdateEventHandler;
 import headset.events.bandPower.IBandPowerDataUpdateEventListener;
-
+import headset.events.blink.BlinkData;
+import headset.events.blink.BlinkEvent;
+import headset.events.blink.BlinkEventHandler;
+import headset.events.blink.IBlinkEventListener;
+import headset.events.meditation.IMeditationDataUpdateEventListener;
 import headset.events.meditation.MeditationData;
 import headset.events.meditation.MeditationDataUpdateEvent;
 import headset.events.meditation.MeditationDataUpdateEventHandler;
-import headset.events.meditation.IMeditationDataUpdateEventListener;
-
+import headset.events.raw.IRawDataUpdateEventListener;
 import headset.events.raw.RawData;
 import headset.events.raw.RawDataUpdateEvent;
 import headset.events.raw.RawDataUpdateEventHandler;
-import headset.events.raw.IRawDataUpdateEventListener;
-
+import headset.events.signalQuality.ISignalQualityUpdateEventListener;
 import headset.events.signalQuality.SignalQualityData;
 import headset.events.signalQuality.SignalQualityUpdateEvent;
 import headset.events.signalQuality.SignalQualityUpdateEventHandler;
-import headset.events.signalQuality.ISignalQualityUpdateEventListener;
-
-import headset.events.HeadsetDataTypes;
+import java.util.EventListener;
 
 public class CoreNskAlgoSdkEventsController {
 
@@ -57,7 +50,7 @@ public class CoreNskAlgoSdkEventsController {
   }
 
   public void fireEvent(HeadsetDataTypes type, Object data) {
-    Log.i("Headset Data Update Event",String.format("Event Type: %s | Event Data: %d",type,data.toString()));
+    Log.w("Headset Data Update Event", "Event Type: " + type + " Data: " + data.toString());
     switch (type) {
       case BLINK ->
           this.blinkEventHandler.fireEvent(new BlinkEvent(this, new BlinkData((Integer) data)));
@@ -89,16 +82,19 @@ public class CoreNskAlgoSdkEventsController {
     if (listener instanceof IBlinkEventListener) {
       this.blinkEventHandler.addListener((IBlinkEventListener) listener);
     } else if (listener instanceof IAttentionDataUpdateEventListener) {
-      this.attentionDataUpdateEventHandler.addListener((IAttentionDataUpdateEventListener) listener);
+      this.attentionDataUpdateEventHandler.addListener(
+          (IAttentionDataUpdateEventListener) listener);
     } else if (listener instanceof IMeditationDataUpdateEventListener) {
       this.meditationDataUpdateEventHandler.addListener(
           (IMeditationDataUpdateEventListener) listener);
     } else if (listener instanceof IRawDataUpdateEventListener) {
       this.rawDataUpdateEventHandler.addListener((IRawDataUpdateEventListener) listener);
     } else if (listener instanceof ISignalQualityUpdateEventListener) {
-      this.signalQualityUpdateEventHandler.addListener((ISignalQualityUpdateEventListener) listener);
+      this.signalQualityUpdateEventHandler.addListener(
+          (ISignalQualityUpdateEventListener) listener);
     } else if (listener instanceof IBandPowerDataUpdateEventListener) {
-      this.bandPowerDataUpdateEventHandler.addListener((IBandPowerDataUpdateEventListener) listener);
+      this.bandPowerDataUpdateEventHandler.addListener(
+          (IBandPowerDataUpdateEventListener) listener);
     } else {
       throw new IllegalArgumentException("Unknown listener type: " + listener.getClass().getName());
     }
@@ -136,7 +132,8 @@ public class CoreNskAlgoSdkEventsController {
       return this.meditationDataUpdateEventHandler.containsListener(
           (IMeditationDataUpdateEventListener) listener);
     } else if (listener instanceof IRawDataUpdateEventListener) {
-      return this.rawDataUpdateEventHandler.containsListener((IRawDataUpdateEventListener) listener);
+      return this.rawDataUpdateEventHandler.containsListener(
+          (IRawDataUpdateEventListener) listener);
     } else if (listener instanceof ISignalQualityUpdateEventListener) {
       return this.signalQualityUpdateEventHandler.containsListener(
           (ISignalQualityUpdateEventListener) listener);

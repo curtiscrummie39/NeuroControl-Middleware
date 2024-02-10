@@ -1,14 +1,13 @@
 package headset;
 
 import com.neurosky.AlgoSdk.NskAlgoDataType;
-import com.neurosky.connection.TgStreamHandler;
-import com.neurosky.connection.DataType.MindDataType;
 import com.neurosky.connection.ConnectionStates;
-
+import com.neurosky.connection.DataType.MindDataType;
+import com.neurosky.connection.TgStreamHandler;
 import com.neurosky.connection.TgStreamReader;
-import headset.events.stateChange.HeadsetStateTypes;
 import headset.events.stateChange.HeadsetStateChangeEvent;
 import headset.events.stateChange.HeadsetStateChangeEventHandler;
+import headset.events.stateChange.HeadsetStateTypes;
 import headset.events.stateChange.IHeadsetStateChangeEventListener;
 
 
@@ -20,13 +19,18 @@ public class CoreTgStreamHandler implements TgStreamHandler {
   private final HeadsetStateChangeEventHandler headsetStateEventHandler;
   private final CoreNskAlgoSdk coreNskAlgoSdk;
 
-  private final TgStreamReader tgStreamReader;
+  private TgStreamReader tgStreamReader;
 
 
-  public CoreTgStreamHandler(TgStreamReader tgStreamReader){
-    this.coreNskAlgoSdk= new CoreNskAlgoSdk();
-    this.headsetStateEventHandler=new HeadsetStateChangeEventHandler();
-    this.tgStreamReader=tgStreamReader;
+  public CoreTgStreamHandler() {
+    this.coreNskAlgoSdk = new CoreNskAlgoSdk();
+    this.headsetStateEventHandler = new HeadsetStateChangeEventHandler();
+  }
+
+  public CoreTgStreamHandler(TgStreamReader tgStreamReader) {
+    this.coreNskAlgoSdk = new CoreNskAlgoSdk();
+    this.headsetStateEventHandler = new HeadsetStateChangeEventHandler();
+    this.tgStreamReader = tgStreamReader;
   }
 
   @Override
@@ -58,9 +62,9 @@ public class CoreTgStreamHandler implements TgStreamHandler {
   @Override
   public void onStatesChanged(int connectionStates) {
     switch (connectionStates) {
-      case ConnectionStates.STATE_CONNECTED ->{
-          this.tgStreamReader.start();
-          headsetStateEventHandler.fireEvent(headsetStateEventInit(HeadsetStateTypes.CONNECTED));
+      case ConnectionStates.STATE_CONNECTED -> {
+        this.tgStreamReader.start();
+        headsetStateEventHandler.fireEvent(headsetStateEventInit(HeadsetStateTypes.CONNECTED));
       }
       case ConnectionStates.STATE_WORKING ->
           headsetStateEventHandler.fireEvent(headsetStateEventInit(HeadsetStateTypes.WORKING));
@@ -93,7 +97,8 @@ public class CoreTgStreamHandler implements TgStreamHandler {
     headsetStateEventHandler.fireEvent(event);
   }
 
-  public boolean containsHeadsetStateChangeEventListener(IHeadsetStateChangeEventListener listener) {
+  public boolean containsHeadsetStateChangeEventListener(
+      IHeadsetStateChangeEventListener listener) {
     return headsetStateEventHandler.containsListener(listener);
   }
 

@@ -1,9 +1,8 @@
 package headset;
 
-import com.neurosky.AlgoSdk.NskAlgoSdk;
 import com.neurosky.AlgoSdk.NskAlgoDataType;
+import com.neurosky.AlgoSdk.NskAlgoSdk;
 import com.neurosky.AlgoSdk.NskAlgoType;
-
 import headset.events.HeadsetDataTypes;
 
 public class CoreNskAlgoSdk extends NskAlgoSdk {
@@ -17,22 +16,41 @@ public class CoreNskAlgoSdk extends NskAlgoSdk {
     super();
     startAlgo();
 
-    this.setOnAttAlgoIndexListener(
-        att -> this.eventsHandler.fireEvent(HeadsetDataTypes.ATTENTION, att));
+    this.setOnAttAlgoIndexListener(new OnAttAlgoIndexListener() {
+      @Override
+      public void onAttAlgoIndex(int attention) {
+        eventsHandler.fireEvent(HeadsetDataTypes.ATTENTION, attention);
+      }
+    });
 
-    this.setOnMedAlgoIndexListener(
-        med -> this.eventsHandler.fireEvent(HeadsetDataTypes.MEDITATION, med));
+    this.setOnMedAlgoIndexListener(new OnMedAlgoIndexListener() {
+      @Override
+      public void onMedAlgoIndex(int meditation) {
+        eventsHandler.fireEvent(HeadsetDataTypes.MEDITATION, meditation);
+      }
+    });
 
-    this.setOnEyeBlinkDetectionListener(
-        strength -> this.eventsHandler.fireEvent(HeadsetDataTypes.BLINK, strength));
+    this.setOnEyeBlinkDetectionListener(new OnEyeBlinkDetectionListener() {
+      @Override
+      public void onEyeBlinkDetect(int strength) {
+        eventsHandler.fireEvent(HeadsetDataTypes.BLINK, strength);
+      }
+    });
 
-    this.setOnSignalQualityListener(
-        signalQualityLevel -> this.eventsHandler.fireEvent(
-            HeadsetDataTypes.SIGNAL_QUALITY, signalQualityLevel));
+    this.setOnSignalQualityListener(new OnSignalQualityListener() {
+      @Override
+      public void onSignalQuality(int signalQuality) {
+        eventsHandler.fireEvent(HeadsetDataTypes.SIGNAL_QUALITY, signalQuality);
+      }
+    });
 
-    this.setOnBPAlgoIndexListener(
-        (delta, theta, alpha, beta, gamma) -> this.eventsHandler.fireEvent(
-            HeadsetDataTypes.BAND_POWER, new float[]{delta, theta, alpha, beta, gamma}));
+    this.setOnBPAlgoIndexListener(new OnBPAlgoIndexListener() {
+      @Override
+      public void onBPAlgoIndex(float delta, float theta, float alpha, float beta, float gamma) {
+        eventsHandler.fireEvent(HeadsetDataTypes.BAND_POWER,
+            new float[]{delta, theta, alpha, beta, gamma});
+      }
+    });
   }
 
   public void startAlgo() {

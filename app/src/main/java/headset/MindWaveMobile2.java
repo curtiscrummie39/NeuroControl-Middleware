@@ -1,36 +1,30 @@
 package headset;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
+import com.neurosky.connection.TgStreamReader;
 import headset.events.stateChange.IHeadsetStateChangeEventListener;
 import java.util.EventListener;
 import java.util.Objects;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothManager;
-
-import com.neurosky.connection.TgStreamReader;
-
 
 public class MindWaveMobile2 {
 
+  private CoreTgStreamHandler coreTgStreamHandler;
   private BluetoothDevice bluetoothDevice;
   private TgStreamReader tgStreamReader;
-  private final CoreTgStreamHandler coreTgStreamHandler;
-
-  //this constructor is for Testing
-  public MindWaveMobile2() {
-    this.coreTgStreamHandler = new CoreTgStreamHandler(tgStreamReader);
-  }
 
   public MindWaveMobile2(BluetoothManager bluetoothManager, String deviceName) {
     BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
     this.bluetoothDevice = bluetoothAdapter.getRemoteDevice(deviceName);
-    this.coreTgStreamHandler = new CoreTgStreamHandler(tgStreamReader);
+    this.coreTgStreamHandler = new CoreTgStreamHandler();
   }
 
   public void connect() {
     if (Objects.isNull(this.tgStreamReader)) {
       this.tgStreamReader = new TgStreamReader(this.bluetoothDevice, this.coreTgStreamHandler);
+      this.coreTgStreamHandler = new CoreTgStreamHandler(this.tgStreamReader);
       tgStreamReader.connect();
     }
   }
