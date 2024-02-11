@@ -1,6 +1,7 @@
 package headsetTest.eventsTest;
 
-import headset.events.meditation.IMeditationDataUpdateEventListener;
+import headset.events.stream.meditation.IMeditationDataUpdateEventListener;
+import headset.events.stream.meditation.MeditationDataUpdateEvent;
 
 public class MeditationEventMockListener implements IMeditationDataUpdateEventListener {
 
@@ -8,7 +9,7 @@ public class MeditationEventMockListener implements IMeditationDataUpdateEventLi
   private int lastMeditationValue = 0;
 
   @Override
-  public void onMeditationDataUpdate(headset.events.meditation.MeditationDataUpdateEvent event) {
+  public void onMeditationDataUpdate(MeditationDataUpdateEvent event) {
     this.meditationCount++;
     this.lastMeditationValue = event.getMeditationData().meditation();
   }

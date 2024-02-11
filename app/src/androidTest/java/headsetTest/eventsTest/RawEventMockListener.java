@@ -1,6 +1,7 @@
 package headsetTest.eventsTest;
 
-import headset.events.raw.IRawDataUpdateEventListener;
+import headset.events.stream.raw.IRawDataUpdateEventListener;
+import headset.events.stream.raw.RawDataUpdateEvent;
 
 public class RawEventMockListener implements IRawDataUpdateEventListener {
 
@@ -8,7 +9,7 @@ public class RawEventMockListener implements IRawDataUpdateEventListener {
   private short[] lastRawValue = new short[512];
 
   @Override
-  public void onRawDataUpdate(headset.events.raw.RawDataUpdateEvent event) {
+  public void onRawDataUpdate(RawDataUpdateEvent event) {
     this.rawCount++;
     this.lastRawValue = event.getRawData().rawData();
   }

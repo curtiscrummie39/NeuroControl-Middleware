@@ -4,7 +4,8 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import com.neurosky.connection.TgStreamReader;
-import headset.events.stateChange.IHeadsetStateChangeEventListener;
+import headset.coreTgStream.CoreTgStreamHandler;
+import headset.events.stream.stateChange.IHeadsetStateChangeEventListener;
 import java.util.EventListener;
 import java.util.Objects;
 
@@ -15,16 +16,29 @@ public class MindWaveMobile2 {
   private BluetoothDevice bluetoothDevice;
   private TgStreamReader tgStreamReader;
 
+  //FIXME: This constructor is not used anywhere in the code just for testing purpose
+  public MindWaveMobile2() {
+    this.coreTgStreamHandler = new CoreTgStreamHandler();
+  }
+
   public MindWaveMobile2(BluetoothManager bluetoothManager, String deviceName) {
     BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
     this.bluetoothDevice = bluetoothAdapter.getRemoteDevice(deviceName);
     this.coreTgStreamHandler = new CoreTgStreamHandler();
   }
 
+  public void restart() {
+    if (Objects.nonNull(this.tgStreamReader) && this.tgStreamReader.isBTConnected()) {
+      this.tgStreamReader.stop();
+      this.tgStreamReader.close();
+      this.tgStreamReader = null;
+      this.connect();
+    }
+  }
+
   public void connect() {
     if (Objects.isNull(this.tgStreamReader)) {
       this.tgStreamReader = new TgStreamReader(this.bluetoothDevice, this.coreTgStreamHandler);
-      //This line update the coreTgStreamHandler var to point to new instance of CoreTgStreamHandler that has tgStreamReader initialized instance
       this.coreTgStreamHandler = new CoreTgStreamHandler(this.tgStreamReader);
       tgStreamReader.connect();
     }

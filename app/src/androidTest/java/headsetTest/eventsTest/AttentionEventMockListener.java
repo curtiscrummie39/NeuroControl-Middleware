@@ -1,7 +1,7 @@
 package headsetTest.eventsTest;
 
-import headset.events.attention.AttentionDataUpdateEvent;
-import headset.events.attention.IAttentionDataUpdateEventListener;
+import headset.events.stream.attention.AttentionDataUpdateEvent;
+import headset.events.stream.attention.IAttentionDataUpdateEventListener;
 
 public class AttentionEventMockListener implements IAttentionDataUpdateEventListener {
 

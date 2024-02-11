@@ -1,7 +1,7 @@
 package headsetTest.eventsTest;
 
-import headset.events.blink.BlinkEvent;
-import headset.events.blink.IBlinkEventListener;
+import headset.events.nskAlgo.AlgoBlink.BlinkEvent;
+import headset.events.nskAlgo.AlgoBlink.IBlinkEventListener;
 
 public class BlinkEventMockListener implements IBlinkEventListener {
 

@@ -1,6 +1,7 @@
 package headsetTest.eventsTest;
 
-import headset.events.signalQuality.ISignalQualityUpdateEventListener;
+import headset.events.nskAlgo.AlgoSignalQuality.ISignalQualityUpdateEventListener;
+import headset.events.nskAlgo.AlgoSignalQuality.SignalQualityUpdateEvent;
 
 public class SignalQualityEventMockListener implements ISignalQualityUpdateEventListener {
 
@@ -8,7 +9,7 @@ public class SignalQualityEventMockListener implements ISignalQualityUpdateEvent
   private int lastSignalQuality = 0;
 
   @Override
-  public void onSignalQualityUpdate(headset.events.signalQuality.SignalQualityUpdateEvent event) {
+  public void onSignalQualityUpdate(SignalQualityUpdateEvent event) {
     this.signalQualityCount++;
     this.lastSignalQuality = event.getSignalQualityData().qualityLevel();
   }

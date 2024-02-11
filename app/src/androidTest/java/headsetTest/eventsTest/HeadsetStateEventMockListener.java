@@ -1,15 +1,16 @@
 package headsetTest.eventsTest;
 
-import headset.events.stateChange.IHeadsetStateChangeEventListener;
-import headset.events.stateChange.HeadsetStateTypes;
+import headset.events.stream.stateChange.HeadsetStateChangeEvent;
+import headset.events.stream.stateChange.HeadsetStateTypes;
+import headset.events.stream.stateChange.IHeadsetStateChangeEventListener;
 
 public class HeadsetStateEventMockListener implements IHeadsetStateChangeEventListener {
 
-  private int stateChangeCount=0;
+  private int stateChangeCount = 0;
   private HeadsetStateTypes lastState = HeadsetStateTypes.TEST;
 
   @Override
-  public void onHeadsetStateChange(headset.events.stateChange.HeadsetStateChangeEvent event) {
+  public void onHeadsetStateChange(HeadsetStateChangeEvent event) {
     this.stateChangeCount++;
     this.lastState = event.getState();
   }

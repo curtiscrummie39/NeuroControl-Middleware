@@ -1,14 +1,15 @@
 package headsetTest.eventsTest;
 
-import headset.events.bandPower.IBandPowerDataUpdateEventListener;
+import headset.events.nskAlgo.AlgoBandPower.BandPowerDataUpdateEvent;
+import headset.events.nskAlgo.AlgoBandPower.IBandPowerDataUpdateEventListener;
 
-public class BandPowerEventMockListener implements IBandPowerDataUpdateEventListener{
+public class BandPowerEventMockListener implements IBandPowerDataUpdateEventListener {
 
+  private final float[] lastBandPowerValues = new float[5];
   private int bandPowerCount = 0;
-  private float[] lastBandPowerValues = new float[5];
 
   @Override
-  public void onBandPowerDataUpdate(headset.events.bandPower.BandPowerDataUpdateEvent event) {
+  public void onBandPowerDataUpdate(BandPowerDataUpdateEvent event) {
     this.bandPowerCount++;
     this.lastBandPowerValues[0] = event.getBandPowerData().delta();
     this.lastBandPowerValues[1] = event.getBandPowerData().theta();
