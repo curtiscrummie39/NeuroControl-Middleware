@@ -1,5 +1,6 @@
 package headset.coreTgStream;
 
+import android.util.Log;
 import headset.events.AttentionData;
 import headset.events.MeditationData;
 import headset.events.stream.StreamEventTypes;
@@ -38,6 +39,7 @@ public class CoreStreamEventsController {
   }
 
   public void fireEvent(StreamEventTypes type, Object data) {
+    Log.w("CoreStreamEventsController", "fireEvent: " + type + " " + data.getClass().getName());
     switch (type) {
       case EEG -> {
         int[] dataArr = (int[]) data;

@@ -1,5 +1,6 @@
 package headset.coreNskAlgo;
 
+import android.util.Log;
 import headset.events.AttentionData;
 import headset.events.MeditationData;
 import headset.events.nskAlgo.AlgoEventTypes;
@@ -46,6 +47,7 @@ public class CoreNskAlgoSdkEventsController {
   }
 
   public void fireEvent(AlgoEventTypes type, Object data) {
+    Log.w("CoreNskAlgoSdkEventsController", "fireEvent: " + type + " " + data.getClass().getName());
     switch (type) {
       case STATE -> {
         int state = ((int[]) data)[0];
