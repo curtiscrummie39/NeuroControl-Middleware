@@ -4,11 +4,12 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import com.neurosky.connection.TgStreamReader;
+import java.util.EventListener;
 import java.util.Objects;
 
 public class CoreTgStreamController {
 
-  private CoreTgStreamHandler coreTgStreamHandler;
+  private final CoreTgStreamHandler coreTgStreamHandler;
   private BluetoothDevice bluetoothDevice;
   private TgStreamReader tgStreamReader;
 
@@ -21,7 +22,7 @@ public class CoreTgStreamController {
   public void connect() {
     if (Objects.isNull(this.tgStreamReader)) {
       this.tgStreamReader = new TgStreamReader(this.bluetoothDevice, this.coreTgStreamHandler);
-      this.coreTgStreamHandler = new CoreTgStreamHandler(this.tgStreamReader);
+      this.coreTgStreamHandler.setTgStreamReader(this.tgStreamReader);
       tgStreamReader.connect();
     }
   }
@@ -50,5 +51,13 @@ public class CoreTgStreamController {
       this.bluetoothDevice = bluetoothAdapter.getRemoteDevice(deviceName);
       this.connect();
     }
+  }
+
+  public void addEventListener(EventListener listener) {
+    this.coreTgStreamHandler.addEventListener(listener);
+  }
+
+  public void removeEventListener(EventListener listener) {
+    this.coreTgStreamHandler.removeEventListener(listener);
   }
 }

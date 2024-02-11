@@ -1,9 +1,9 @@
 package headset.events.nskAlgo.algoStateChange;
 
 
-import java.util.EventListener;
+import headset.events.nskAlgo.IAlgoEventListener;
 
-public interface IAlgoStateChangeEventListener extends EventListener {
+public interface IAlgoStateChangeEventListener extends IAlgoEventListener {
 
   void onAlgoStateChange(AlgoStateChangeEvent event);
 }

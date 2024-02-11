@@ -1,9 +1,9 @@
 package headset.events.nskAlgo.algoBlink;
 
 
-import java.util.EventListener;
+import headset.events.nskAlgo.IAlgoEventListener;
 
-public interface IAlgoBlinkEventListener extends EventListener {
+public interface IAlgoBlinkEventListener extends IAlgoEventListener {
 
   void onBlink(AlgoBlinkEvent event);
 }

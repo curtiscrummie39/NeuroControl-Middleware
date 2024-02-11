@@ -11,8 +11,12 @@ import headset.coreNskAlgo.CoreNskAlgoSdkEventsController;
 import headset.events.headsetStateChange.HeadsetStateChangeEvent;
 import headset.events.headsetStateChange.HeadsetStateChangeEventHandler;
 import headset.events.headsetStateChange.HeadsetStateTypes;
+import headset.events.headsetStateChange.IHeadsetStateChangeEventListener;
+import headset.events.nskAlgo.IAlgoEventListener;
+import headset.events.stream.IStreamEventListener;
 import headset.events.stream.StreamEventTypes;
 import headset.events.stream.streamRaw.StreamRawData;
+import java.util.EventListener;
 import java.util.Objects;
 
 
@@ -140,15 +144,47 @@ public class CoreTgStreamHandler implements TgStreamHandler {
     }
   }
 
-  public CoreStreamEventsController getStreamEventsHandler() {
+  public void setTgStreamReader(TgStreamReader tgStreamReader) {
+    this.tgStreamReader = tgStreamReader;
+  }
+
+  public void addEventListener(EventListener listener) {
+    if (listener instanceof IHeadsetStateChangeEventListener) {
+      this.getHeadsetStateEventHandler().addListener((IHeadsetStateChangeEventListener) listener);
+    } else if (listener instanceof IStreamEventListener) {
+      this.getStreamEventsHandler().addEventListener(listener);
+    } else if (listener instanceof IAlgoEventListener) {
+      this.getNskAlgoSdkEventsHandler().addEventListener(listener);
+    } else {
+      throw new IllegalArgumentException("Invalid listener type");
+    }
+
+  }
+
+  public void removeEventListener(EventListener listener) {
+    if (listener instanceof IHeadsetStateChangeEventListener) {
+      this.getHeadsetStateEventHandler()
+          .removeListener((IHeadsetStateChangeEventListener) listener);
+    } else if (listener instanceof IStreamEventListener) {
+      this.getStreamEventsHandler().removeEventListener(listener);
+    } else if (listener instanceof IAlgoEventListener) {
+      this.getNskAlgoSdkEventsHandler().removeEventListener(listener);
+    } else {
+      throw new IllegalArgumentException("Invalid listener type");
+    }
+  }
+
+  private CoreStreamEventsController getStreamEventsHandler() {
     return this.eventsHandler;
   }
 
-  public CoreNskAlgoSdkEventsController getNskAlgoSdkEventsHandler() {
+  private CoreNskAlgoSdkEventsController getNskAlgoSdkEventsHandler() {
     return this.coreNskAlgoSdk.getEventsHandler();
   }
 
-  public HeadsetStateChangeEventHandler getHeadsetStateEventHandler() {
+  private HeadsetStateChangeEventHandler getHeadsetStateEventHandler() {
     return this.headsetStateEventHandler;
   }
+
+
 }

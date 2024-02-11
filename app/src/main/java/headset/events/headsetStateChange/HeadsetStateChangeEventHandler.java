@@ -1,7 +1,7 @@
 package headset.events.headsetStateChange;
 
 import android.util.Log;
-import headset.event.IEventHandler;
+import headset.events.IEventHandler;
 import java.util.ArrayList;
 
 public class HeadsetStateChangeEventHandler implements

@@ -13,9 +13,7 @@ public class AlgoStateChangeEvent extends EventObject {
     for (AlgoStateChangeResons type : AlgoStateChangeResons.values()) {
       INTEGER_ALGO_STATE_CHANGE_RESONS_MAP.put(type.ordinal(), type);
     }
-  }
-
-  static {
+    
     for (AlgoStateTypes type : AlgoStateTypes.values()) {
       INTEGER_ALGO_STATE_TYPES_MAP.put(type.ordinal(), type);
     }

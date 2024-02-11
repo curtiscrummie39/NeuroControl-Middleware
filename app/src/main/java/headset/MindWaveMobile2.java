@@ -2,56 +2,37 @@ package headset;
 
 import android.bluetooth.BluetoothManager;
 import headset.coreTgStream.CoreTgStreamController;
+import java.util.EventListener;
 
 
 public class MindWaveMobile2 {
 
-  private final CoreTgStreamController coreTgStreamReader;
+  private final CoreTgStreamController coreTgStreamController;
 
 
   public MindWaveMobile2(BluetoothManager bluetoothManager, String deviceName) {
-    this.coreTgStreamReader = new CoreTgStreamController(bluetoothManager, deviceName);
+    this.coreTgStreamController = new CoreTgStreamController(bluetoothManager, deviceName);
   }
 
   public void connect() {
-    this.coreTgStreamReader.connect();
+    this.coreTgStreamController.connect();
   }
 
   public void disconnect() {
-    this.coreTgStreamReader.disconnect();
+    this.coreTgStreamController.disconnect();
   }
 
   public void changeBluetoothDevice(BluetoothManager bluetoothManager, String deviceName) {
-    this.coreTgStreamReader.changeBluetoothDevice(bluetoothManager, deviceName);
+    this.coreTgStreamController.changeBluetoothDevice(bluetoothManager, deviceName);
   }
 
-//
-//
-//  public void addEventListener(EventListener listener) {
-//    if (listener instanceof IHeadsetStateChangeEventListener) {
-//      this.coreTgStreamHandler.addHeadsetStateChangeEventListener(
-//          (IHeadsetStateChangeEventListener) listener);
-//    } else {
-//      this.coreTgStreamHandler.getCoreNskAlgoSdk().getEventsHandler().addEventListener(listener);
-//    }
-//  }
-//
-//  public void removeEventListener(EventListener listener) {
-//    if (listener instanceof IHeadsetStateChangeEventListener) {
-//      this.coreTgStreamHandler.removeHeadsetStateChangeEventListener(
-//          (IHeadsetStateChangeEventListener) listener);
-//    } else {
-//      this.coreTgStreamHandler.getCoreNskAlgoSdk().getEventsHandler().removeEventListener(listener);
-//    }
-//  }
-//
-//  public boolean containsListener(EventListener listener) {
-//    if (listener instanceof IHeadsetStateChangeEventListener) {
-//      return this.coreTgStreamHandler.containsHeadsetStateChangeEventListener(
-//          (IHeadsetStateChangeEventListener) listener);
-//    } else {
-//      return this.coreTgStreamHandler.getCoreNskAlgoSdk().getEventsHandler()
-//          .containsListener(listener);
-//    }
-//  }
+
+  public void addEventListener(EventListener listener) {
+    this.coreTgStreamController.addEventListener(listener);
+  }
+
+  public void removeEventListener(EventListener listener) {
+    this.coreTgStreamController.removeEventListener(listener);
+  }
+
 }

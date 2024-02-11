@@ -1,8 +1,8 @@
 package headset.events.nskAlgo.algoMeditation;
 
-import java.util.EventListener;
+import headset.events.nskAlgo.IAlgoEventListener;
 
-public interface IAlgoMeditationEventListener extends EventListener {
+public interface IAlgoMeditationEventListener extends IAlgoEventListener {
 
   void onMeditationUpdate(AlgoMeditationEvent event);
 }

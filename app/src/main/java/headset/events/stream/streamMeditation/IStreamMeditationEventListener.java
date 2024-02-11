@@ -1,8 +1,8 @@
 package headset.events.stream.streamMeditation;
 
-import java.util.EventListener;
+import headset.events.stream.IStreamEventListener;
 
-public interface IStreamMeditationEventListener extends EventListener {
+public interface IStreamMeditationEventListener extends IStreamEventListener {
 
   void onMeditationUpdate(StreamMeditationEvent event);
 }

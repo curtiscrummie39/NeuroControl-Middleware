@@ -1,8 +1,8 @@
 package headset.events.nskAlgo.algoSignalQuality;
 
-import java.util.EventListener;
+import headset.events.nskAlgo.IAlgoEventListener;
 
-public interface IAlgoSignalQualityEventListener extends EventListener {
+public interface IAlgoSignalQualityEventListener extends IAlgoEventListener {
 
   void onSignalQualityUpdate(AlgoSignalQualityEvent event);
 }

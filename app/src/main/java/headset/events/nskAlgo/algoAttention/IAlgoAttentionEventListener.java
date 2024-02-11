@@ -1,8 +1,8 @@
 package headset.events.nskAlgo.algoAttention;
 
-import java.util.EventListener;
+import headset.events.nskAlgo.IAlgoEventListener;
 
-public interface IAlgoAttentionEventListener extends EventListener {
+public interface IAlgoAttentionEventListener extends IAlgoEventListener {
 
   void onAttentionUpdate(AlgoAttentionEvent event);
 }

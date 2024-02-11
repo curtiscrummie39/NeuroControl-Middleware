@@ -1,8 +1,8 @@
 package headset.events.stream.streamEEG;
 
-import java.util.EventListener;
+import headset.events.stream.IStreamEventListener;
 
-public interface IStreamEEGDataEventListener extends EventListener {
+public interface IStreamEEGDataEventListener extends IStreamEventListener {
 
   void onEEGDataUpdate(StreamEEGDataEvent event);
 }

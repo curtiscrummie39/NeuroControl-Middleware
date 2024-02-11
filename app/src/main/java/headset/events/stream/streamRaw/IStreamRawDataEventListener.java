@@ -1,8 +1,8 @@
 package headset.events.stream.streamRaw;
 
-import java.util.EventListener;
+import headset.events.stream.IStreamEventListener;
 
-public interface IStreamRawDataEventListener extends EventListener {
+public interface IStreamRawDataEventListener extends IStreamEventListener {
 
   void onRawDataUpdate(StreamRawDataEvent event);
 }
