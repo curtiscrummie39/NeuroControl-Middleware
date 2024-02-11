@@ -60,4 +60,8 @@ public class CoreTgStreamController {
   public void removeEventListener(EventListener listener) {
     this.coreTgStreamHandler.removeEventListener(listener);
   }
+
+  public boolean containsListener(EventListener listener) {
+    return this.coreTgStreamHandler.containsListener(listener);
+  }
 }

@@ -35,4 +35,9 @@ public class MindWaveMobile2 {
     this.coreTgStreamController.removeEventListener(listener);
   }
 
+  //FIXME: This method is for testing purposes only
+  public boolean containsListener(EventListener listener) {
+    return this.coreTgStreamController.containsListener(listener);
+  }
+
 }

@@ -174,6 +174,19 @@ public class CoreTgStreamHandler implements TgStreamHandler {
     }
   }
 
+  public boolean containsListener(EventListener listener) {
+    if (listener instanceof IHeadsetStateChangeEventListener) {
+      return this.getHeadsetStateEventHandler()
+          .containsListener((IHeadsetStateChangeEventListener) listener);
+    } else if (listener instanceof IStreamEventListener) {
+      return this.getStreamEventsHandler().containsListener(listener);
+    } else if (listener instanceof IAlgoEventListener) {
+      return this.getNskAlgoSdkEventsHandler().containsListener(listener);
+    } else {
+      throw new IllegalArgumentException("Invalid listener type");
+    }
+  }
+
   private CoreStreamEventsController getStreamEventsHandler() {
     return this.eventsHandler;
   }
