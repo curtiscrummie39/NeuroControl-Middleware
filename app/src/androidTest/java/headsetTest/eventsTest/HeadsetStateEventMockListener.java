@@ -1,8 +1,8 @@
 package headsetTest.eventsTest;
 
-import headset.events.stream.stateChange.HeadsetStateChangeEvent;
-import headset.events.stream.stateChange.HeadsetStateTypes;
-import headset.events.stream.stateChange.IHeadsetStateChangeEventListener;
+import headset.events.headsetStateChange.HeadsetStateChangeEvent;
+import headset.events.headsetStateChange.HeadsetStateTypes;
+import headset.events.headsetStateChange.IHeadsetStateChangeEventListener;
 
 public class HeadsetStateEventMockListener implements IHeadsetStateChangeEventListener {
 

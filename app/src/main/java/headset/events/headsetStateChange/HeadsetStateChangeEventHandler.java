@@ -1,4 +1,4 @@
-package headset.events.stream.stateChange;
+package headset.events.headsetStateChange;
 
 import android.util.Log;
 import headset.event.IEventHandler;

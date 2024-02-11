@@ -1,4 +1,4 @@
-package headset.events.stream.stateChange;
+package headset.events.headsetStateChange;
 
 
 import java.util.EventListener;
