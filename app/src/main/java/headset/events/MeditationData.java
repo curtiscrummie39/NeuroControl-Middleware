@@ -1,4 +1,4 @@
-package headset.events.nskAlgo.AlgoMeditation;
+package headset.events;
 
 public record MeditationData(int meditation) {
 

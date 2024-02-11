@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import android.util.Log;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import headset.MindWaveMobile2;
-import headset.events.HeadsetDataTypes;
+import headset.events.nskAlgo.AlgoEventTypes;
 import headset.events.stream.stateChange.HeadsetStateChangeEvent;
 import headset.events.stream.stateChange.HeadsetStateTypes;
 import headsetTest.eventsTest.AttentionEventMockListener;
@@ -58,14 +58,14 @@ public class MindWaveMobile2Test {
     this.mindWaveMobile2.addEventListener(blinkEventMockListener1);
 
     this.mindWaveMobile2.getCoreTgStreamHandler().getCoreNskAlgoSdk().getEventsHandler()
-        .fireEvent(HeadsetDataTypes.BLINK, 20);
+        .fireEvent(AlgoEventTypes.BLINK, 20);
     assertThat(blinkEventMockListener1.getBlinkCount()).as(
         "Blink event listener should have blink count equal to 1").isEqualTo(1);
     assertThat(blinkEventMockListener1.getLastBlinkStrength()).as(
         "Blink event listener should have last blink strength equal to 20").isEqualTo(20);
 
     this.mindWaveMobile2.getCoreTgStreamHandler().getCoreNskAlgoSdk().getEventsHandler()
-        .fireEvent(HeadsetDataTypes.BLINK, 30);
+        .fireEvent(AlgoEventTypes.BLINK, 30);
     assertThat(blinkEventMockListener1.getBlinkCount()).as(
         "Blink event listener should have the blink count equal to 2").isEqualTo(2);
     assertThat(blinkEventMockListener1.getLastBlinkStrength()).as(
@@ -75,14 +75,14 @@ public class MindWaveMobile2Test {
     this.mindWaveMobile2.addEventListener(blinkEventMockListener2);
 
     this.mindWaveMobile2.getCoreTgStreamHandler().getCoreNskAlgoSdk().getEventsHandler()
-        .fireEvent(HeadsetDataTypes.BLINK, 20);
+        .fireEvent(AlgoEventTypes.BLINK, 20);
     assertThat(blinkEventMockListener2.getBlinkCount()).as(
         "Blink event listener should have blink count equal to 1").isEqualTo(1);
     assertThat(blinkEventMockListener2.getLastBlinkStrength()).as(
         "Blink event listener should have last blink strength equal to 20").isEqualTo(20);
 
     this.mindWaveMobile2.getCoreTgStreamHandler().getCoreNskAlgoSdk().getEventsHandler()
-        .fireEvent(HeadsetDataTypes.BLINK, 30);
+        .fireEvent(AlgoEventTypes.BLINK, 30);
     assertThat(blinkEventMockListener2.getBlinkCount()).as(
         "Blink event listener should have the blink count equal to 2").isEqualTo(2);
     assertThat(blinkEventMockListener2.getLastBlinkStrength()).as(
@@ -117,14 +117,14 @@ public class MindWaveMobile2Test {
     this.mindWaveMobile2.addEventListener(attentionEventMockListener);
 
     this.mindWaveMobile2.getCoreTgStreamHandler().getCoreNskAlgoSdk().getEventsHandler()
-        .fireEvent(HeadsetDataTypes.ATTENTION, 20);
+        .fireEvent(AlgoEventTypes.ATTENTION, 20);
     assertThat(attentionEventMockListener.getAttentionCount()).as(
         "Attention event listener should have attention count equal to 1").isEqualTo(1);
     assertThat(attentionEventMockListener.getLastAttentionValue()).as(
         "Attention event listener should have last attention value equal to 20").isEqualTo(20);
 
     this.mindWaveMobile2.getCoreTgStreamHandler().getCoreNskAlgoSdk().getEventsHandler()
-        .fireEvent(HeadsetDataTypes.ATTENTION, 30);
+        .fireEvent(AlgoEventTypes.ATTENTION, 30);
     assertThat(attentionEventMockListener.getAttentionCount()).as(
         "Attention event listener should have the attention count equal to 2").isEqualTo(2);
     assertThat(attentionEventMockListener.getLastAttentionValue()).as(
@@ -158,14 +158,14 @@ public class MindWaveMobile2Test {
     this.mindWaveMobile2.addEventListener(meditationEventMockListener);
 
     this.mindWaveMobile2.getCoreTgStreamHandler().getCoreNskAlgoSdk().getEventsHandler()
-        .fireEvent(HeadsetDataTypes.MEDITATION, 20);
+        .fireEvent(AlgoEventTypes.MEDITATION, 20);
     assertThat(meditationEventMockListener.getMeditationCount()).as(
         "Meditation event listener should have meditation count equal to 1").isEqualTo(1);
     assertThat(meditationEventMockListener.getLastMeditationValue()).as(
         "Meditation event listener should have last meditation value equal to 20").isEqualTo(20);
 
     this.mindWaveMobile2.getCoreTgStreamHandler().getCoreNskAlgoSdk().getEventsHandler()
-        .fireEvent(HeadsetDataTypes.MEDITATION, 30);
+        .fireEvent(AlgoEventTypes.MEDITATION, 30);
     assertThat(meditationEventMockListener.getMeditationCount()).as(
         "Meditation event listener should have the meditation count equal to 2").isEqualTo(2);
     assertThat(meditationEventMockListener.getLastMeditationValue()).as(
@@ -199,14 +199,14 @@ public class MindWaveMobile2Test {
     this.mindWaveMobile2.addEventListener(rawEventMockListener);
 
     this.mindWaveMobile2.getCoreTgStreamHandler().getCoreNskAlgoSdk().getEventsHandler()
-        .fireEvent(HeadsetDataTypes.RAW, new short[]{20});
+        .fireEvent(AlgoEventTypes.RAW, new short[]{20});
     assertThat(rawEventMockListener.getRawCount()).as(
         "Raw event listener should have raw count equal to 1").isEqualTo(1);
     assertThat(rawEventMockListener.getLastRawValue()).as(
         "Raw event listener should have last raw value equal to 20").isEqualTo(new short[]{20});
 
     this.mindWaveMobile2.getCoreTgStreamHandler().getCoreNskAlgoSdk().getEventsHandler()
-        .fireEvent(HeadsetDataTypes.RAW, new short[]{30});
+        .fireEvent(AlgoEventTypes.RAW, new short[]{30});
     assertThat(rawEventMockListener.getRawCount()).as(
         "Raw event listener should have the raw count equal to 2").isEqualTo(2);
     assertThat(rawEventMockListener.getLastRawValue()).as(
@@ -241,7 +241,7 @@ public class MindWaveMobile2Test {
     this.mindWaveMobile2.addEventListener(signalEventMockListener);
 
     this.mindWaveMobile2.getCoreTgStreamHandler().getCoreNskAlgoSdk().getEventsHandler()
-        .fireEvent(HeadsetDataTypes.SIGNAL_QUALITY, 20);
+        .fireEvent(AlgoEventTypes.SIGNAL_QUALITY, 20);
     assertThat(signalEventMockListener.getSignalQualityCount()).as(
         "SignalQuality event listener should have signal quality count equal to 1").isEqualTo(1);
     assertThat(signalEventMockListener.getLastSignalQuality()).as(
@@ -249,7 +249,7 @@ public class MindWaveMobile2Test {
         .isEqualTo(20);
 
     this.mindWaveMobile2.getCoreTgStreamHandler().getCoreNskAlgoSdk().getEventsHandler()
-        .fireEvent(HeadsetDataTypes.SIGNAL_QUALITY, 30);
+        .fireEvent(AlgoEventTypes.SIGNAL_QUALITY, 30);
     assertThat(signalEventMockListener.getSignalQualityCount()).as(
             "SignalQuality event listener should have the signal quality count equal to 2")
         .isEqualTo(2);
@@ -285,7 +285,7 @@ public class MindWaveMobile2Test {
     this.mindWaveMobile2.addEventListener(bandPowerEventMockListener);
 
     this.mindWaveMobile2.getCoreTgStreamHandler().getCoreNskAlgoSdk().getEventsHandler()
-        .fireEvent(HeadsetDataTypes.BAND_POWER, new float[]{20, 30, 40, 50, 60});
+        .fireEvent(AlgoEventTypes.BAND_POWER, new float[]{20, 30, 40, 50, 60});
     assertThat(bandPowerEventMockListener.getBandPowerCount()).as(
         "BandPower event listener should have band power count equal to 1").isEqualTo(1);
     assertThat(bandPowerEventMockListener.getLastBandPowerValue()).as(
@@ -293,7 +293,7 @@ public class MindWaveMobile2Test {
         .isEqualTo(new float[]{20, 30, 40, 50, 60});
 
     this.mindWaveMobile2.getCoreTgStreamHandler().getCoreNskAlgoSdk().getEventsHandler()
-        .fireEvent(HeadsetDataTypes.BAND_POWER, new float[]{30, 40, 50, 60, 70});
+        .fireEvent(AlgoEventTypes.BAND_POWER, new float[]{30, 40, 50, 60, 70});
     assertThat(bandPowerEventMockListener.getBandPowerCount()).as(
         "BandPower event listener should have the band power count equal to 2").isEqualTo(2);
     assertThat(bandPowerEventMockListener.getLastBandPowerValue()).as(
@@ -329,7 +329,7 @@ public class MindWaveMobile2Test {
     assertThatExceptionOfType(IllegalArgumentException.class).describedAs(
         "Firing Unknown listener type should throw IllegalArgumentException").isThrownBy(() -> {
       this.mindWaveMobile2.getCoreTgStreamHandler().getCoreNskAlgoSdk().getEventsHandler()
-          .fireEvent(HeadsetDataTypes.UNKNOWN, new Object());
+          .fireEvent(AlgoEventTypes.UNKNOWN, new Object());
     }).withMessage("Unknown event type: UNKNOWN");
   }
 

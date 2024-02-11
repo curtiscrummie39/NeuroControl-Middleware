@@ -1,4 +1,4 @@
-package headset.events.nskAlgo.AlgoStateChange;
+package headset.events.nskAlgo.algoStateChange;
 
 import headset.events.IEventHandler;
 import java.util.ArrayList;

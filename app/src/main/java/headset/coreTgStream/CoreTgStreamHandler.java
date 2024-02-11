@@ -20,7 +20,8 @@ public class CoreTgStreamHandler implements TgStreamHandler {
 
   private final HeadsetStateChangeEventHandler headsetStateEventHandler;
   private final CoreNskAlgoSdk coreNskAlgoSdk;
-
+  private final short[] raw_data = new short[512];
+  private final int raw_data_index = 0;
   private TgStreamReader tgStreamReader;
 
 
@@ -47,8 +48,12 @@ public class CoreTgStreamHandler implements TgStreamHandler {
             new HeadsetStateChangeEvent(this, HeadsetStateTypes.POOR_SIGNAL));
         coreNskAlgoSdk.UpdateAlgoData(NskAlgoDataType.NSK_ALGO_DATA_TYPE_PQ, data, 1);
       }
-      case MindDataType.CODE_RAW ->
-          coreNskAlgoSdk.UpdateAlgoData(NskAlgoDataType.NSK_ALGO_DATA_TYPE_EEG, data, 1);
+      case MindDataType.CODE_RAW -> {
+        raw_data[raw_data_index] = (short) data;
+        if (raw_data_index >= 512) {
+          coreNskAlgoSdk.UpdateAlgoData(NskAlgoDataType.NSK_ALGO_DATA_TYPE_EEG, raw_data, 512);
+        }
+      }
 
       case MindDataType.CODE_EEGPOWER ->
           coreNskAlgoSdk.UpdateAlgoData(NskAlgoDataType.NSK_ALGO_DATA_TYPE_BULK_EEG, data, 1);

@@ -1,15 +1,15 @@
 package headsetTest.eventsTest;
 
-import headset.events.nskAlgo.AlgoBlink.BlinkEvent;
-import headset.events.nskAlgo.AlgoBlink.IBlinkEventListener;
+import headset.events.nskAlgo.algoBlink.AlgoBlinkEvent;
+import headset.events.nskAlgo.algoBlink.IAlgoBlinkEventListener;
 
-public class BlinkEventMockListener implements IBlinkEventListener {
+public class BlinkEventMockListener implements IAlgoBlinkEventListener {
 
   private int blinkCount = 0;
   private int lastBlinkStrength = 0;
 
   @Override
-  public void onBlink(BlinkEvent event) {
+  public void onBlink(AlgoBlinkEvent event) {
     this.blinkCount++;
     this.lastBlinkStrength = event.getBlinkData().strength();
   }

@@ -3,50 +3,54 @@ package headset.coreNskAlgo;
 import com.neurosky.AlgoSdk.NskAlgoDataType;
 import com.neurosky.AlgoSdk.NskAlgoSdk;
 import com.neurosky.AlgoSdk.NskAlgoType;
-import headset.events.HeadsetDataTypes;
+import headset.events.nskAlgo.AlgoEventTypes;
 
 public class CoreNskAlgoSdk extends NskAlgoSdk {
 
   private final CoreNskAlgoSdkEventsController eventsHandler = new CoreNskAlgoSdkEventsController();
 
-  private final short[] rawData = new short[512];
-  private int rawDataIdx = 0;
-
   public CoreNskAlgoSdk() {
     super();
+
+    this.setOnStateChangeListener(new OnStateChangeListener() {
+      @Override
+      public void onStateChange(int state, int reason) {
+        eventsHandler.fireEvent(AlgoEventTypes.STATE, new int[]{state, reason});
+      }
+    });
 
     this.setOnAttAlgoIndexListener(new OnAttAlgoIndexListener() {
       @Override
       public void onAttAlgoIndex(int attention) {
-        eventsHandler.fireEvent(HeadsetDataTypes.ATTENTION, attention);
+        eventsHandler.fireEvent(AlgoEventTypes.ATTENTION, attention);
       }
     });
 
     this.setOnMedAlgoIndexListener(new OnMedAlgoIndexListener() {
       @Override
       public void onMedAlgoIndex(int meditation) {
-        eventsHandler.fireEvent(HeadsetDataTypes.MEDITATION, meditation);
+        eventsHandler.fireEvent(AlgoEventTypes.MEDITATION, meditation);
       }
     });
 
     this.setOnEyeBlinkDetectionListener(new OnEyeBlinkDetectionListener() {
       @Override
       public void onEyeBlinkDetect(int strength) {
-        eventsHandler.fireEvent(HeadsetDataTypes.BLINK, strength);
+        eventsHandler.fireEvent(AlgoEventTypes.BLINK, strength);
       }
     });
 
     this.setOnSignalQualityListener(new OnSignalQualityListener() {
       @Override
       public void onSignalQuality(int signalQuality) {
-        eventsHandler.fireEvent(HeadsetDataTypes.SIGNAL_QUALITY, signalQuality);
+        eventsHandler.fireEvent(AlgoEventTypes.SIGNAL_QUALITY, signalQuality);
       }
     });
 
     this.setOnBPAlgoIndexListener(new OnBPAlgoIndexListener() {
       @Override
       public void onBPAlgoIndex(float delta, float theta, float alpha, float beta, float gamma) {
-        eventsHandler.fireEvent(HeadsetDataTypes.BAND_POWER,
+        eventsHandler.fireEvent(AlgoEventTypes.BAND_POWER,
             new float[]{delta, theta, alpha, beta, gamma});
       }
     });
@@ -66,20 +70,10 @@ public class CoreNskAlgoSdk extends NskAlgoSdk {
     NskAlgoUninit();
   }
 
-  public void UpdateAlgoData(NskAlgoDataType dataType, int data, int dataLength) {
-    if (dataType == NskAlgoDataType.NSK_ALGO_DATA_TYPE_EEG) {
-      rawData[rawDataIdx++] = (short) data;
-      if (rawDataIdx == 512) {
-        this.eventsHandler.fireEvent(HeadsetDataTypes.RAW, rawData);
-        rawDataIdx = 0;
-      }
-//      } else if (dataType == NskAlgoDataType.NSK_ALGO_DATA_TYPE_BULK_EEG) {
-//        this.eventsHandler.fireEvent(HeadsetDataTypes.RAW, rawData);
-//      }
-    } else {
-      short[] dataArr = {(short) data};
-      NskAlgoDataStream(dataType.value, dataArr, dataLength);
-    }
+  public void UpdateAlgoData(NskAlgoDataType dataType, Object data, int dataLength) {
+    short[] dataArr = data instanceof Integer ? new short[]{(short) data} : (short[]) data;
+    
+    NskAlgoDataStream(dataType.value, dataArr, dataLength);
   }
 
   public CoreNskAlgoSdkEventsController getEventsHandler() {

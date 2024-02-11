@@ -1,4 +1,4 @@
-package headset.events.nskAlgo.AlgoStateChange;
+package headset.events.nskAlgo.algoStateChange;
 
 public enum AlgoStateChangeResons {
   CONFIG_CHANGED,
