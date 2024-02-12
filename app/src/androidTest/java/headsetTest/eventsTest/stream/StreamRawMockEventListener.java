@@ -1,9 +1,9 @@
-package headsetTest.eventsTest;
+package headsetTest.eventsTest.stream;
 
 import headset.events.stream.streamRaw.IStreamRawDataEventListener;
 import headset.events.stream.streamRaw.StreamRawDataEvent;
 
-public class RawEventMockListener implements IStreamRawDataEventListener {
+public class StreamRawMockEventListener implements IStreamRawDataEventListener {
 
   private int rawCount = 0;
   private short[] lastRawValue = new short[512];

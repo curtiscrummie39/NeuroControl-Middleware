@@ -1,9 +1,9 @@
 package headset.events.nskAlgo.algoAttention;
 
 import headset.events.AttentionData;
-import java.util.EventObject;
+import headset.events.nskAlgo.NskAlgoEvent;
 
-public class AlgoAttentionEvent extends EventObject {
+public class AlgoAttentionEvent extends NskAlgoEvent {
 
   private final AttentionData attentionData;
 

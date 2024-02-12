@@ -1,4 +1,4 @@
-package headsetTest.eventsTest;
+package headsetTest.eventsTest.headsetStateChange;
 
 import headset.events.headsetStateChange.HeadsetStateChangeEvent;
 import headset.events.headsetStateChange.HeadsetStateTypes;

@@ -1,9 +1,9 @@
-package headsetTest.eventsTest;
+package headsetTest.eventsTest.stream;
 
 import headset.events.stream.streamAttention.IStreamAttentionEventListener;
 import headset.events.stream.streamAttention.StreamAttentionEvent;
 
-public class AttentionEventMockListener implements IStreamAttentionEventListener {
+public class StreamAttentionMockEventListener implements IStreamAttentionEventListener {
 
   private int attentionCount = 0;
   private int lastAttentionValue = 0;

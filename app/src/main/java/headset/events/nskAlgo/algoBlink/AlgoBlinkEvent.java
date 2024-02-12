@@ -1,8 +1,8 @@
 package headset.events.nskAlgo.algoBlink;
 
-import java.util.EventObject;
+import headset.events.nskAlgo.NskAlgoEvent;
 
-public class AlgoBlinkEvent extends EventObject {
+public class AlgoBlinkEvent extends NskAlgoEvent {
 
   private final AlgoBlinkData blinkData;
 

@@ -3,7 +3,7 @@ package headsetTest.eventsTest.nskAlgo;
 import headset.events.nskAlgo.algoSignalQuality.AlgoSignalQualityEvent;
 import headset.events.nskAlgo.algoSignalQuality.IAlgoSignalQualityEventListener;
 
-public class SignalQualityEventMockListener implements IAlgoSignalQualityEventListener {
+public class AlgoSignalQualityMockEventListener implements IAlgoSignalQualityEventListener {
 
   private int signalQualityCount = 0;
   private int lastSignalQuality = 0;

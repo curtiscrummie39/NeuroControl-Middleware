@@ -11,7 +11,7 @@ public class StreamEEGDataEvent extends EventObject {
     this.eegData = data;
   }
 
-  public StreamEEGData getRawData() {
+  public StreamEEGData getEEGData() {
     return this.eegData;
   }
 

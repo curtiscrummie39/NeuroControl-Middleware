@@ -1,6 +1,7 @@
 package headset.events.nskAlgo.algoStateChange;
 
 public enum AlgoStateChangeReasons {
+  TEST,
   CONFIG_CHANGED,
   USER_PROFILE_CHANGED,
   CB_CHANGED,

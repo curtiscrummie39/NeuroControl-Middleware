@@ -1,8 +1,8 @@
 package headset.events.nskAlgo.algoBandPower;
 
-import java.util.EventObject;
+import headset.events.nskAlgo.NskAlgoEvent;
 
-public class AlgoBandPowerEvent extends EventObject {
+public class AlgoBandPowerEvent extends NskAlgoEvent {
 
   private final AlgoBandPowerData bandPowerData;
 

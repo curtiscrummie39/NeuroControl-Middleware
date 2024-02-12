@@ -3,7 +3,7 @@ package headsetTest.eventsTest.nskAlgo;
 import headset.events.nskAlgo.algoBlink.AlgoBlinkEvent;
 import headset.events.nskAlgo.algoBlink.IAlgoBlinkEventListener;
 
-public class BlinkEventMockListener implements IAlgoBlinkEventListener {
+public class AlgoBlinkMockEventListener implements IAlgoBlinkEventListener {
 
   private int blinkCount = 0;
   private int lastBlinkStrength = 0;
