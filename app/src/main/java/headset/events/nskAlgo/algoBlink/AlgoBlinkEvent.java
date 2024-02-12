@@ -16,7 +16,7 @@ public class AlgoBlinkEvent extends NskAlgoEvent {
   }
 
   public String toString() {
-    return "AlgoBlinkEvent { BlinkData: " + blinkData + "}";
+    return super.toString() + "AlgoBlinkEvent { BlinkData: " + blinkData + "}";
   }
 
 }

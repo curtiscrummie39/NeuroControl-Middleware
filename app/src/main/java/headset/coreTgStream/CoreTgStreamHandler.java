@@ -8,20 +8,24 @@ import com.neurosky.connection.TgStreamHandler;
 import com.neurosky.connection.TgStreamReader;
 import headset.coreNskAlgo.CoreNskAlgoSdk;
 import headset.coreNskAlgo.CoreNskAlgoSdkEventsController;
+import headset.events.AttentionData;
+import headset.events.MeditationData;
 import headset.events.headsetStateChange.HeadsetStateChangeEvent;
 import headset.events.headsetStateChange.HeadsetStateChangeEventHandler;
 import headset.events.headsetStateChange.HeadsetStateTypes;
 import headset.events.headsetStateChange.IHeadsetStateChangeEventListener;
 import headset.events.nskAlgo.IAlgoEventListener;
+import headset.events.nskAlgo.NskAlgoEvent;
 import headset.events.stream.IStreamEventListener;
-import headset.events.stream.StreamEventTypes;
+import headset.events.stream.StreamEvent;
+import headset.events.stream.streamAttention.StreamAttentionEvent;
+import headset.events.stream.streamEEG.StreamEEGData;
+import headset.events.stream.streamEEG.StreamEEGDataEvent;
+import headset.events.stream.streamMeditation.StreamMeditationEvent;
 import headset.events.stream.streamRaw.StreamRawData;
+import headset.events.stream.streamRaw.StreamRawDataEvent;
 import java.util.EventListener;
 import java.util.Objects;
-
-
-/*FIXME: Currently we don't have an event to handle the different states of NskAlgoSDK,
-   so we are using the same event as the headset state change event.*/
 
 public class CoreTgStreamHandler implements TgStreamHandler {
 
@@ -50,12 +54,12 @@ public class CoreTgStreamHandler implements TgStreamHandler {
   public void onDataReceived(int dataType, int data, Object obj) {
     switch (dataType) {
       case MindDataType.CODE_ATTENTION -> {
-        eventsHandler.fireEvent(StreamEventTypes.ATTENTION, data);
+        eventsHandler.fireEvent(new StreamAttentionEvent(this, new AttentionData(data)));
         coreNskAlgoSdk.UpdateAlgoData(NskAlgoDataType.NSK_ALGO_DATA_TYPE_ATT, data, 1);
       }
 
       case MindDataType.CODE_MEDITATION -> {
-        eventsHandler.fireEvent(StreamEventTypes.MEDITATION, data);
+        eventsHandler.fireEvent(new StreamMeditationEvent(this, new MeditationData(data)));
         coreNskAlgoSdk.UpdateAlgoData(NskAlgoDataType.NSK_ALGO_DATA_TYPE_MED, data, 1);
       }
 
@@ -68,16 +72,18 @@ public class CoreTgStreamHandler implements TgStreamHandler {
       case MindDataType.CODE_RAW -> {
         raw_data[raw_data_index] = (short) data;
         if (raw_data_index >= 512) {
-          eventsHandler.fireEvent(StreamEventTypes.RAW_DATA, new StreamRawData(raw_data));
+          eventsHandler.fireEvent(new StreamRawDataEvent(this, new StreamRawData(raw_data)));
           coreNskAlgoSdk.UpdateAlgoData(NskAlgoDataType.NSK_ALGO_DATA_TYPE_EEG, raw_data, 512);
           raw_data_index = 0;
         }
       }
 
       case MindDataType.CODE_EEGPOWER -> {
-        int delta = ((int[]) obj)[0];
-        Log.w("CoreTgStreamHandler", "EEG delta: " + delta);
-        eventsHandler.fireEvent(StreamEventTypes.EEG, obj);
+        int[] dataArr = ((int[]) obj);
+        Log.w("CoreTgStreamHandler", "EEG delta: " + dataArr[0]);
+        eventsHandler.fireEvent(new StreamEEGDataEvent(this,
+            new StreamEEGData(dataArr[0], dataArr[1], dataArr[2], dataArr[3], dataArr[4],
+                dataArr[5], dataArr[6], dataArr[7])));
       }
     }
   }
@@ -195,8 +201,10 @@ public class CoreTgStreamHandler implements TgStreamHandler {
   public void fireEvent(Object event) {
     if (event instanceof HeadsetStateChangeEvent) {
       this.getHeadsetStateEventHandler().fireEvent((HeadsetStateChangeEvent) event);
-    } else if (event instanceof StreamRawData) {
-      this.getStreamEventsHandler().fireEvent(StreamEventTypes.RAW_DATA, event);
+    } else if (event instanceof StreamEvent) {
+      this.getStreamEventsHandler().fireEvent((StreamEvent) event);
+    } else if (event instanceof NskAlgoEvent) {
+      this.getNskAlgoSdkEventsHandler().fireEvent((NskAlgoEvent) event);
     } else {
       throw new IllegalArgumentException("Invalid event type");
     }

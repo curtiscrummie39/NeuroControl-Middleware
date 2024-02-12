@@ -1,9 +1,9 @@
 package headset.events.stream.streamAttention;
 
 import headset.events.AttentionData;
-import java.util.EventObject;
+import headset.events.stream.StreamEvent;
 
-public class StreamAttentionEvent extends EventObject {
+public class StreamAttentionEvent extends StreamEvent {
 
   private final AttentionData attentionData;
 
@@ -17,6 +17,6 @@ public class StreamAttentionEvent extends EventObject {
   }
 
   public String toString() {
-    return "StreamAttentionEvent { attentionData=" + this.attentionData + "}";
+    return super.toString() + "StreamAttentionEvent { attentionData=" + this.attentionData + "}";
   }
 }

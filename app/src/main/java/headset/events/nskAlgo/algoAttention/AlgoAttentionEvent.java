@@ -17,6 +17,6 @@ public class AlgoAttentionEvent extends NskAlgoEvent {
   }
 
   public String toString() {
-    return "AlgoAttentionEvent { AttentionData: " + attentionData + "}";
+    return super.toString() + "AlgoAttentionEvent { AttentionData: " + attentionData + "}";
   }
 }

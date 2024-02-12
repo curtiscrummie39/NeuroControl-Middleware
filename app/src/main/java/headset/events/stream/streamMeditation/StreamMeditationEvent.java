@@ -1,9 +1,9 @@
 package headset.events.stream.streamMeditation;
 
 import headset.events.MeditationData;
-import java.util.EventObject;
+import headset.events.stream.StreamEvent;
 
-public class StreamMeditationEvent extends EventObject {
+public class StreamMeditationEvent extends StreamEvent {
 
   private final MeditationData meditationData;
 
@@ -17,6 +17,6 @@ public class StreamMeditationEvent extends EventObject {
   }
 
   public String toString() {
-    return "StreamMeditationEvent { meditationData=" + this.meditationData + "}";
+    return super.toString() + "StreamMeditationEvent { meditationData=" + this.meditationData + "}";
   }
 }

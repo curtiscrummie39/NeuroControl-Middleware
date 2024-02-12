@@ -1,10 +1,10 @@
 package headset.events.nskAlgo.algoStateChange;
 
-import java.util.EventObject;
+import headset.events.nskAlgo.NskAlgoEvent;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AlgoStateChangeEvent extends EventObject {
+public class AlgoStateChangeEvent extends NskAlgoEvent {
 
   private static final Map<Integer, AlgoStateTypes> INTEGER_ALGO_STATE_TYPES_MAP = new HashMap<Integer, AlgoStateTypes>();
   private static final Map<Integer, AlgoStateChangeReasons> INTEGER_ALGO_STATE_CHANGE_REASONS_MAP = new HashMap<Integer, AlgoStateChangeReasons>();
@@ -35,8 +35,9 @@ public class AlgoStateChangeEvent extends EventObject {
   public AlgoStateChangeReasons getReason() {
     return reason;
   }
-  
+
   public String toString() {
-    return "AlgoStateChangeEvent { State: " + state + ", Reason: " + reason + "}";
+    return super.toString() + "AlgoStateChangeEvent { State: " + state + ", Reason: " + reason
+        + "}";
   }
 }

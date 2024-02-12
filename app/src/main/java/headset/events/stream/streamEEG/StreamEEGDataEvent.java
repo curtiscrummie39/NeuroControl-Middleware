@@ -1,8 +1,8 @@
 package headset.events.stream.streamEEG;
 
-import java.util.EventObject;
+import headset.events.stream.StreamEvent;
 
-public class StreamEEGDataEvent extends EventObject {
+public class StreamEEGDataEvent extends StreamEvent {
 
   private final StreamEEGData eegData;
 
@@ -16,6 +16,6 @@ public class StreamEEGDataEvent extends EventObject {
   }
 
   public String toString() {
-    return "StreamEEGDataEvent { eegData=" + this.eegData + "}";
+    return super.toString() + "StreamEEGDataEvent { eegData=" + this.eegData + "}";
   }
 }

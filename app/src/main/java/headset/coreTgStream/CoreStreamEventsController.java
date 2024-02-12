@@ -1,21 +1,17 @@
 package headset.coreTgStream;
 
 import android.util.Log;
-import headset.events.AttentionData;
-import headset.events.MeditationData;
-import headset.events.stream.StreamEventTypes;
+import headset.events.stream.StreamEvent;
 import headset.events.stream.streamAttention.IStreamAttentionEventListener;
 import headset.events.stream.streamAttention.StreamAttentionEvent;
 import headset.events.stream.streamAttention.StreamAttentionEventHandler;
 import headset.events.stream.streamEEG.IStreamEEGDataEventListener;
-import headset.events.stream.streamEEG.StreamEEGData;
 import headset.events.stream.streamEEG.StreamEEGDataEvent;
 import headset.events.stream.streamEEG.StreamEEGDataEventHandler;
 import headset.events.stream.streamMeditation.IStreamMeditationEventListener;
 import headset.events.stream.streamMeditation.StreamMeditationEvent;
 import headset.events.stream.streamMeditation.StreamMeditationEventHandler;
 import headset.events.stream.streamRaw.IStreamRawDataEventListener;
-import headset.events.stream.streamRaw.StreamRawData;
 import headset.events.stream.streamRaw.StreamRawDataEvent;
 import headset.events.stream.streamRaw.StreamRawDataEventHandler;
 import java.util.EventListener;
@@ -38,27 +34,22 @@ public class CoreStreamEventsController {
     this.streamEEGDataEventHandler = new StreamEEGDataEventHandler();
   }
 
-  public void fireEvent(StreamEventTypes type, Object data) {
-    Log.w("CoreStreamEventsController", "fireEvent: " + type + " " + data.getClass().getName());
-    switch (type) {
-      case EEG -> {
-        int[] dataArr = (int[]) data;
-        this.streamEEGDataEventHandler.fireEvent(
-            new StreamEEGDataEvent(this,
-                new StreamEEGData(dataArr[0], dataArr[1], dataArr[2], dataArr[3], dataArr[4],
-                    dataArr[5], dataArr[6], dataArr[7])));
-      }
+  public void fireEvent(StreamEvent event) {
+    Log.w("CoreStreamEventsController", "fireEvent: " + event.toString());
+    if (event instanceof StreamAttentionEvent) {
+      this.streamAttentionEventHandler.fireEvent((StreamAttentionEvent) event);
 
-      case RAW_DATA -> this.streamRawDataEventHandler.fireEvent(
-          new StreamRawDataEvent(this, new StreamRawData((short[]) data)));
+    } else if (event instanceof StreamMeditationEvent) {
+      this.streamMeditationEventHandler.fireEvent((StreamMeditationEvent) event);
 
-      case ATTENTION -> this.streamAttentionEventHandler.fireEvent(
-          new StreamAttentionEvent(this, new AttentionData((int) data)));
+    } else if (event instanceof StreamEEGDataEvent) {
+      this.streamEEGDataEventHandler.fireEvent((StreamEEGDataEvent) event);
 
-      case MEDITATION -> this.streamMeditationEventHandler.fireEvent(
-          new StreamMeditationEvent(this, new MeditationData((int) data)));
+    } else if (event instanceof StreamRawDataEvent) {
+      this.streamRawDataEventHandler.fireEvent((StreamRawDataEvent) event);
 
-      default -> throw new IllegalArgumentException("Unknown event type: " + type);
+    } else {
+      throw new IllegalArgumentException("Unknown event type: " + event.getClass().getName());
     }
   }
 

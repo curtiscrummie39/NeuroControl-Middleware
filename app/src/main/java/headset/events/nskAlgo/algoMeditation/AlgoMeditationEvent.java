@@ -1,9 +1,9 @@
 package headset.events.nskAlgo.algoMeditation;
 
 import headset.events.MeditationData;
-import java.util.EventObject;
+import headset.events.nskAlgo.NskAlgoEvent;
 
-public class AlgoMeditationEvent extends EventObject {
+public class AlgoMeditationEvent extends NskAlgoEvent {
 
   private final MeditationData meditationData;
 
@@ -17,6 +17,6 @@ public class AlgoMeditationEvent extends EventObject {
   }
 
   public String toString() {
-    return "AlgoMeditationEvent { MeditationData: " + meditationData + "}";
+    return super.toString() + "AlgoMeditationEvent { MeditationData: " + meditationData + "}";
   }
 }

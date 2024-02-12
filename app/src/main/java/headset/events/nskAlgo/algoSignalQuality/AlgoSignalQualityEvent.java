@@ -1,9 +1,9 @@
 package headset.events.nskAlgo.algoSignalQuality;
 
 
-import java.util.EventObject;
+import headset.events.nskAlgo.NskAlgoEvent;
 
-public class AlgoSignalQualityEvent extends EventObject {
+public class AlgoSignalQualityEvent extends NskAlgoEvent {
 
   private final AlgoSignalQualityData signalQuality;
 
@@ -17,6 +17,6 @@ public class AlgoSignalQualityEvent extends EventObject {
   }
 
   public String toString() {
-    return "AlgoSignalQualityEvent { SignalQuality: " + signalQuality + "}";
+    return super.toString() + "AlgoSignalQualityEvent { SignalQuality: " + signalQuality + "}";
   }
 }

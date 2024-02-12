@@ -1,24 +1,19 @@
 package headset.coreNskAlgo;
 
 import android.util.Log;
-import headset.events.AttentionData;
-import headset.events.MeditationData;
-import headset.events.nskAlgo.AlgoEventTypes;
+import headset.events.nskAlgo.NskAlgoEvent;
 import headset.events.nskAlgo.algoAttention.AlgoAttentionEvent;
 import headset.events.nskAlgo.algoAttention.AlgoAttentionEventHandler;
 import headset.events.nskAlgo.algoAttention.IAlgoAttentionEventListener;
-import headset.events.nskAlgo.algoBandPower.AlgoBandPowerData;
 import headset.events.nskAlgo.algoBandPower.AlgoBandPowerEvent;
 import headset.events.nskAlgo.algoBandPower.AlgoBandPowerEventHandler;
 import headset.events.nskAlgo.algoBandPower.IAlgoBandPowerEventListener;
-import headset.events.nskAlgo.algoBlink.AlgoBlinkData;
 import headset.events.nskAlgo.algoBlink.AlgoBlinkEvent;
 import headset.events.nskAlgo.algoBlink.AlgoBlinkEventHandler;
 import headset.events.nskAlgo.algoBlink.IAlgoBlinkEventListener;
 import headset.events.nskAlgo.algoMeditation.AlgoMeditationEvent;
 import headset.events.nskAlgo.algoMeditation.AlgoMeditationEventHandler;
 import headset.events.nskAlgo.algoMeditation.IAlgoMeditationEventListener;
-import headset.events.nskAlgo.algoSignalQuality.AlgoSignalQualityData;
 import headset.events.nskAlgo.algoSignalQuality.AlgoSignalQualityEvent;
 import headset.events.nskAlgo.algoSignalQuality.AlgoSignalQualityEventHandler;
 import headset.events.nskAlgo.algoSignalQuality.IAlgoSignalQualityEventListener;
@@ -46,36 +41,28 @@ public class CoreNskAlgoSdkEventsController {
     this.algoSignalQualityEventHandler = new AlgoSignalQualityEventHandler();
   }
 
-  public void fireEvent(AlgoEventTypes type, Object data) {
-    Log.w("CoreNskAlgoSdkEventsController", "fireEvent: " + type + " " + data.getClass().getName());
-    switch (type) {
-      case STATE -> {
-        int state = ((int[]) data)[0];
-        int reason = ((int[]) data)[1];
-        this.algoStateChangeEventHandler.fireEvent(
-            new AlgoStateChangeEvent(this, state, reason));
-      }
+  public void fireEvent(NskAlgoEvent event) {
+    Log.w("CoreNskAlgoSdkEventsController", "fireEvent: " + event.toString());
+    if (event instanceof AlgoBlinkEvent) {
+      this.algoBlinkEventHandler.fireEvent((AlgoBlinkEvent) event);
 
-      case BLINK -> this.algoBlinkEventHandler.fireEvent(
-          new AlgoBlinkEvent(this, new AlgoBlinkData((Integer) data)));
+    } else if (event instanceof AlgoBandPowerEvent) {
+      this.algoBandPowerEventHandler.fireEvent((AlgoBandPowerEvent) event);
 
-      case ATTENTION -> this.algoAttentionEventHandler.fireEvent(
-          new AlgoAttentionEvent(this, new AttentionData((Integer) data)));
+    } else if (event instanceof AlgoMeditationEvent) {
+      this.algoMeditationEventHandler.fireEvent((AlgoMeditationEvent) event);
 
-      case MEDITATION -> this.algoMeditationEventHandler.fireEvent(
-          new AlgoMeditationEvent(this, new MeditationData((Integer) data)));
+    } else if (event instanceof AlgoAttentionEvent) {
+      this.algoAttentionEventHandler.fireEvent((AlgoAttentionEvent) event);
 
-      case SIGNAL_QUALITY -> this.algoSignalQualityEventHandler.fireEvent(
-          new AlgoSignalQualityEvent(this, new AlgoSignalQualityData((Integer) data)));
+    } else if (event instanceof AlgoStateChangeEvent) {
+      this.algoStateChangeEventHandler.fireEvent((AlgoStateChangeEvent) event);
 
-      case BAND_POWER -> {
-        float[] dataArr = (float[]) data;
-        this.algoBandPowerEventHandler.fireEvent(
-            new AlgoBandPowerEvent(this, new AlgoBandPowerData(dataArr[0], dataArr[1], dataArr[2],
-                dataArr[3], dataArr[4])));
-      }
+    } else if (event instanceof AlgoSignalQualityEvent) {
+      this.algoSignalQualityEventHandler.fireEvent((AlgoSignalQualityEvent) event);
 
-      default -> throw new IllegalArgumentException("Unknown event type: " + type);
+    } else {
+      throw new IllegalArgumentException("Unknown event type: " + event.getClass().getName());
     }
   }
 

@@ -16,6 +16,6 @@ public class AlgoBandPowerEvent extends NskAlgoEvent {
   }
 
   public String toString() {
-    return "AlgoBandPowerEvent { BandPowerData: " + bandPowerData + "}";
+    return super.toString() + "AlgoBandPowerEvent { BandPowerData: " + bandPowerData + "}";
   }
 }

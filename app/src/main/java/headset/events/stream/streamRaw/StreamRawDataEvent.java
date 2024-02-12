@@ -1,8 +1,8 @@
 package headset.events.stream.streamRaw;
 
-import java.util.EventObject;
+import headset.events.stream.StreamEvent;
 
-public class StreamRawDataEvent extends EventObject {
+public class StreamRawDataEvent extends StreamEvent {
 
   private final StreamRawData rawData;
 
@@ -16,6 +16,6 @@ public class StreamRawDataEvent extends EventObject {
   }
 
   public String toString() {
-    return "StreamRawDataEvent { rawData=" + this.rawData + "}";
+    return super.toString() + "StreamRawDataEvent { rawData=" + this.rawData + "}";
   }
 }
