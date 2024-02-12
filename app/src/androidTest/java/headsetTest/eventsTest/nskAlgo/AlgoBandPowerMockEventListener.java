@@ -1,4 +1,4 @@
-package headsetTest.eventsTest;
+package headsetTest.eventsTest.nskAlgo;
 
 import headset.events.nskAlgo.algoBandPower.AlgoBandPowerEvent;
 import headset.events.nskAlgo.algoBandPower.IAlgoBandPowerEventListener;

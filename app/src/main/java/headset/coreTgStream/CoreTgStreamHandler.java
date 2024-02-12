@@ -174,6 +174,7 @@ public class CoreTgStreamHandler implements TgStreamHandler {
     }
   }
 
+  //FIXME: This method is for testing purposes only
   public boolean containsListener(EventListener listener) {
     if (listener instanceof IHeadsetStateChangeEventListener) {
       return this.getHeadsetStateEventHandler()
@@ -184,6 +185,17 @@ public class CoreTgStreamHandler implements TgStreamHandler {
       return this.getNskAlgoSdkEventsHandler().containsListener(listener);
     } else {
       throw new IllegalArgumentException("Invalid listener type");
+    }
+  }
+
+  //FIXME: This method is for testing purposes only
+  public void fireEvent(Object event) {
+    if (event instanceof HeadsetStateChangeEvent) {
+      this.getHeadsetStateEventHandler().fireEvent((HeadsetStateChangeEvent) event);
+    } else if (event instanceof StreamRawData) {
+      this.getStreamEventsHandler().fireEvent(StreamEventTypes.RAW_DATA, event);
+    } else {
+      throw new IllegalArgumentException("Invalid event type");
     }
   }
 

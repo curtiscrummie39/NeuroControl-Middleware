@@ -13,6 +13,11 @@ public class CoreTgStreamController {
   private BluetoothDevice bluetoothDevice;
   private TgStreamReader tgStreamReader;
 
+  //FIXME: This constructor is for testing purposes only
+  public CoreTgStreamController() {
+    this.coreTgStreamHandler = new CoreTgStreamHandler();
+  }
+
   public CoreTgStreamController(BluetoothManager bluetoothManager, String deviceName) {
     BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
     this.bluetoothDevice = bluetoothAdapter.getRemoteDevice(deviceName);
@@ -61,7 +66,13 @@ public class CoreTgStreamController {
     this.coreTgStreamHandler.removeEventListener(listener);
   }
 
+  //FIXME: This method is for testing purposes only
   public boolean containsListener(EventListener listener) {
     return this.coreTgStreamHandler.containsListener(listener);
+  }
+
+  //FIXME: This method is for testing purposes only
+  public void fireEvent(Object event) {
+    this.coreTgStreamHandler.fireEvent(event);
   }
 }

@@ -35,8 +35,7 @@ public class AlgoStateChangeEvent extends EventObject {
   public AlgoStateChangeReasons getReason() {
     return reason;
   }
-
-
+  
   public String toString() {
     return "AlgoStateChangeEvent { State: " + state + ", Reason: " + reason + "}";
   }

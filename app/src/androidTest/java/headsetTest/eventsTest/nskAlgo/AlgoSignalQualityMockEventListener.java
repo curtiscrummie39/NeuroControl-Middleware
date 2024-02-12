@@ -1,4 +1,4 @@
-package headsetTest.eventsTest;
+package headsetTest.eventsTest.nskAlgo;
 
 import headset.events.nskAlgo.algoSignalQuality.AlgoSignalQualityEvent;
 import headset.events.nskAlgo.algoSignalQuality.IAlgoSignalQualityEventListener;
