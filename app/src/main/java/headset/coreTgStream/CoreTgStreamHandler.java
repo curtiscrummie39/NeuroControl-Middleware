@@ -32,7 +32,7 @@ public class CoreTgStreamHandler implements TgStreamHandler {
   private final CoreStreamEventsController eventsHandler;
   private final HeadsetStateChangeEventHandler headsetStateEventHandler;
   private final short[] raw_data = new short[512];
-  private final CoreNskAlgoSdk coreNskAlgoSdk;
+  private CoreNskAlgoSdk coreNskAlgoSdk;
   private int raw_data_index = 0;
   private TgStreamReader tgStreamReader;
 
@@ -110,7 +110,7 @@ public class CoreTgStreamHandler implements TgStreamHandler {
           tgStreamReader.setGetDataTimeOutTime(20);
           tgStreamReader.start();
           //FIXME: This is will be enabled when we have the real headset connected
-//          this.coreNskAlgoSdk = new CoreNskAlgoSdk();
+          this.coreNskAlgoSdk = new CoreNskAlgoSdk();
           Log.w("CoreTgStreamHandler", "tgStreamReader started");
         } else {
           Log.w("CoreTgStreamHandler", "tgStreamReader is null");

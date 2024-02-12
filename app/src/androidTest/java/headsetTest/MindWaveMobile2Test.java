@@ -21,8 +21,10 @@ import headset.events.nskAlgo.algoSignalQuality.AlgoSignalQualityEvent;
 import headset.events.nskAlgo.algoStateChange.AlgoStateChangeEvent;
 import headset.events.nskAlgo.algoStateChange.AlgoStateChangeReasons;
 import headset.events.nskAlgo.algoStateChange.AlgoStateTypes;
+import headset.events.stream.streamAttention.StreamAttentionEvent;
 import headset.events.stream.streamEEG.StreamEEGData;
 import headset.events.stream.streamEEG.StreamEEGDataEvent;
+import headset.events.stream.streamMeditation.StreamMeditationEvent;
 import headset.events.stream.streamRaw.StreamRawData;
 import headset.events.stream.streamRaw.StreamRawDataEvent;
 import headsetTest.eventsTest.OtherEventMockListener;
@@ -34,6 +36,7 @@ import headsetTest.eventsTest.nskAlgo.AlgoBlinkMockEventListener;
 import headsetTest.eventsTest.nskAlgo.AlgoMeditationMockEventListener;
 import headsetTest.eventsTest.nskAlgo.AlgoSignalQualityMockEventListener;
 import headsetTest.eventsTest.nskAlgo.AlgoStateMockEventListener;
+import headsetTest.eventsTest.stream.StreamAttentionMockEventListener;
 import headsetTest.eventsTest.stream.StreamEEGDataMockEventListener;
 import headsetTest.eventsTest.stream.StreamMeditationMockEventListener;
 import headsetTest.eventsTest.stream.StreamRawMockEventListener;
@@ -297,40 +300,40 @@ public class MindWaveMobile2Test {
   //TODO:StreamAttentionMockEventListener test
   @Test
   public void test28() {
-    StreamRawMockEventListener streamRawEventMockListener = new StreamRawMockEventListener();
-    this.mindWaveMobile2.addEventListener(streamRawEventMockListener);
-    assertThat(this.mindWaveMobile2.containsListener(streamRawEventMockListener)).as(
+    StreamAttentionMockEventListener streamAttentionMockEventListener = new StreamAttentionMockEventListener();
+    this.mindWaveMobile2.addEventListener(streamAttentionMockEventListener);
+    assertThat(this.mindWaveMobile2.containsListener(streamAttentionMockEventListener)).as(
         "Raw Event handler should have this raw event listener").isTrue();
-    this.mindWaveMobile2.removeEventListener(streamRawEventMockListener);
+    this.mindWaveMobile2.removeEventListener(streamAttentionMockEventListener);
   }
 
   @Test
   public void test29() {
-    StreamRawMockEventListener streamRawEventMockListener = new StreamRawMockEventListener();
-    this.mindWaveMobile2.addEventListener(streamRawEventMockListener);
-    this.mindWaveMobile2.removeEventListener(streamRawEventMockListener);
-    assertThat(this.mindWaveMobile2.containsListener(streamRawEventMockListener)).as(
+    StreamAttentionMockEventListener streamAttentionMockEventListener = new StreamAttentionMockEventListener();
+    this.mindWaveMobile2.addEventListener(streamAttentionMockEventListener);
+    this.mindWaveMobile2.removeEventListener(streamAttentionMockEventListener);
+    assertThat(this.mindWaveMobile2.containsListener(streamAttentionMockEventListener)).as(
         "Raw event handler should not have this raw event listener").isFalse();
   }
 
   @Test
   public void test30() {
-    StreamRawMockEventListener streamRawEventMockListener = new StreamRawMockEventListener();
-    this.mindWaveMobile2.addEventListener(streamRawEventMockListener);
+    StreamAttentionMockEventListener streamAttentionMockEventListener = new StreamAttentionMockEventListener();
+    this.mindWaveMobile2.addEventListener(streamAttentionMockEventListener);
 
     this.mindWaveMobile2.fireEvent(
-        new StreamRawDataEvent(this, new StreamRawData(new short[]{20})));
-    assertThat(streamRawEventMockListener.getRawCount()).as(
+        new StreamAttentionEvent(this, new AttentionData(20)));
+    assertThat(streamAttentionMockEventListener.getAttentionCount()).as(
         "Raw event listener should have raw count equal to 1").isEqualTo(1);
-    assertThat(streamRawEventMockListener.getLastRawValue()).as(
-        "Raw event listener should have last raw value equal to 20").isEqualTo(new short[]{20});
+    assertThat(streamAttentionMockEventListener.getLastAttentionValue()).as(
+        "Raw event listener should have last raw value equal to 20").isEqualTo(20);
 
     this.mindWaveMobile2.fireEvent(
-        new StreamRawDataEvent(this, new StreamRawData(new short[]{30})));
-    assertThat(streamRawEventMockListener.getRawCount()).as(
+        new StreamAttentionEvent(this, new AttentionData(30)));
+    assertThat(streamAttentionMockEventListener.getAttentionCount()).as(
         "Raw event listener should have the raw count equal to 2").isEqualTo(2);
-    assertThat(streamRawEventMockListener.getLastRawValue()).as(
-        "Raw event listener should have last raw value equal to 30").isEqualTo(new short[]{30});
+    assertThat(streamAttentionMockEventListener.getLastAttentionValue()).as(
+        "Raw event listener should have last raw value equal to 30").isEqualTo(30);
   }
 
   //TODO:StreamMeditationMockEventListener test
@@ -358,14 +361,14 @@ public class MindWaveMobile2Test {
     this.mindWaveMobile2.addEventListener(streamMeditationMockEventListener);
 
     this.mindWaveMobile2.fireEvent(
-        new AlgoMeditationEvent(this, new MeditationData(20)));
+        new StreamMeditationEvent(this, new MeditationData(20)));
     assertThat(streamMeditationMockEventListener.getMeditationCount()).as(
         "Meditation event listener should have meditation count equal to 1").isEqualTo(1);
     assertThat(streamMeditationMockEventListener.getLastMeditationValue()).as(
         "Meditation event listener should have last meditation value equal to 20").isEqualTo(20);
 
     this.mindWaveMobile2.fireEvent(
-        new AlgoMeditationEvent(this, new MeditationData(30)));
+        new StreamMeditationEvent(this, new MeditationData(30)));
     assertThat(streamMeditationMockEventListener.getMeditationCount()).as(
         "Meditation event listener should have the meditation count equal to 2").isEqualTo(2);
     assertThat(streamMeditationMockEventListener.getLastMeditationValue()).as(
@@ -452,7 +455,7 @@ public class MindWaveMobile2Test {
     assertThat(streamRawEventMockListener.getLastRawValue()).as(
         "Raw event listener should have last raw value equal to 30").isEqualTo(new short[]{30});
   }
-  
+
 
   //TODO:HeadsetStateEventMockListener test
   @Test
@@ -510,7 +513,7 @@ public class MindWaveMobile2Test {
     assertThatExceptionOfType(IllegalArgumentException.class).describedAs(
         "Addition Unknown listener type should throw IllegalArgumentException").isThrownBy(() -> {
       this.mindWaveMobile2.addEventListener(otherEventMockListener);
-    }).withMessage("Unknown listener type: headsetTest.eventsTest.OtherEventMockListener");
+    }).withMessage("Invalid listener type");
   }
 
   @Test
@@ -519,7 +522,7 @@ public class MindWaveMobile2Test {
     assertThatExceptionOfType(IllegalArgumentException.class).describedAs(
         "Removal of Unknown listener type should throw IllegalArgumentException").isThrownBy(() -> {
       this.mindWaveMobile2.removeEventListener(otherEventMockListener);
-    }).withMessage("Unknown listener type: headsetTest.eventsTest.OtherEventMockListener");
+    }).withMessage("Invalid listener type");
   }
 
   @Test
@@ -528,7 +531,7 @@ public class MindWaveMobile2Test {
     assertThatExceptionOfType(IllegalArgumentException.class).describedAs(
         "Firing Unknown listener type should throw IllegalArgumentException").isThrownBy(() -> {
       this.mindWaveMobile2.fireEvent(new TestEvent(this));
-    }).withMessage("Unknown event type: UNKNOWN");
+    }).withMessage("Invalid event type");
   }
 
 }

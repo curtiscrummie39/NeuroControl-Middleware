@@ -1,15 +1,15 @@
 package headsetTest.eventsTest.nskAlgo;
 
-import headset.events.stream.streamAttention.IStreamAttentionEventListener;
-import headset.events.stream.streamAttention.StreamAttentionEvent;
+import headset.events.nskAlgo.algoAttention.AlgoAttentionEvent;
+import headset.events.nskAlgo.algoAttention.IAlgoAttentionEventListener;
 
-public class AlgoAttentionMockEventListener implements IStreamAttentionEventListener {
+public class AlgoAttentionMockEventListener implements IAlgoAttentionEventListener {
 
   private int attentionCount = 0;
   private int lastAttentionValue = 0;
 
   @Override
-  public void onAttentionUpdate(StreamAttentionEvent event) {
+  public void onAttentionUpdate(AlgoAttentionEvent event) {
     this.attentionCount++;
     this.lastAttentionValue = event.getAttentionData().attention();
   }

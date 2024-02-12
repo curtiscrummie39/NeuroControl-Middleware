@@ -1,15 +1,15 @@
 package headsetTest.eventsTest.nskAlgo;
 
-import headset.events.stream.streamMeditation.IStreamMeditationEventListener;
-import headset.events.stream.streamMeditation.StreamMeditationEvent;
+import headset.events.nskAlgo.algoMeditation.AlgoMeditationEvent;
+import headset.events.nskAlgo.algoMeditation.IAlgoMeditationEventListener;
 
-public class AlgoMeditationMockEventListener implements IStreamMeditationEventListener {
+public class AlgoMeditationMockEventListener implements IAlgoMeditationEventListener {
 
   private int meditationCount = 0;
   private int lastMeditationValue = 0;
 
   @Override
-  public void onMeditationUpdate(StreamMeditationEvent event) {
+  public void onMeditationUpdate(AlgoMeditationEvent event) {
     this.meditationCount++;
     this.lastMeditationValue = event.getMeditationData().meditation();
   }
