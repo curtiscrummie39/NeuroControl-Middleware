@@ -1,87 +1,51 @@
 package headset;
 
-import headset.events.stateChange.IHeadsetStateChangeEventListener;
-import java.util.EventListener;
-import java.util.Objects;
-
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
-
-import com.neurosky.connection.TgStreamReader;
+import headset.coreTgStream.CoreTgStreamController;
+import java.util.EventListener;
 
 
 public class MindWaveMobile2 {
 
-  private BluetoothDevice bluetoothDevice;
-  private TgStreamReader tgStreamReader;
-  private final CoreTgStreamHandler coreTgStreamHandler;
+  private final CoreTgStreamController coreTgStreamController;
 
+  //FIXME: This constructor is for testing purposes only
   public MindWaveMobile2() {
-    this.coreTgStreamHandler = new CoreTgStreamHandler();
+    this.coreTgStreamController = new CoreTgStreamController();
   }
 
-  MindWaveMobile2(BluetoothManager bluetoothManager, String deviceName) {
-    BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
-    this.bluetoothDevice = bluetoothAdapter.getRemoteDevice(deviceName);
-    this.coreTgStreamHandler = new CoreTgStreamHandler();
+  public MindWaveMobile2(BluetoothManager bluetoothManager, String deviceName) {
+    this.coreTgStreamController = new CoreTgStreamController(bluetoothManager, deviceName);
   }
 
   public void connect() {
-    if (Objects.isNull(this.tgStreamReader)) {
-      this.tgStreamReader = new TgStreamReader(this.bluetoothDevice, this.coreTgStreamHandler);
-      tgStreamReader.connectAndStart();
-    }
+    this.coreTgStreamController.connect();
   }
 
   public void disconnect() {
-    if (Objects.nonNull(this.tgStreamReader)) {
-      this.tgStreamReader.stop();
-      this.tgStreamReader.close();
-      this.tgStreamReader = null;
-    }
+    this.coreTgStreamController.disconnect();
   }
 
   public void changeBluetoothDevice(BluetoothManager bluetoothManager, String deviceName) {
-    if (Objects.nonNull(this.tgStreamReader)) {
-      this.disconnect();
-      BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
-      this.bluetoothDevice = bluetoothAdapter.getRemoteDevice(deviceName);
-      this.connect();
-    }
+    this.coreTgStreamController.changeBluetoothDevice(bluetoothManager, deviceName);
   }
 
+
   public void addEventListener(EventListener listener) {
-    if (listener instanceof IHeadsetStateChangeEventListener) {
-      this.coreTgStreamHandler.addHeadsetStateChangeEventListener(
-          (IHeadsetStateChangeEventListener) listener);
-    } else {
-      this.coreTgStreamHandler.getCoreNskAlgoSdk().getEventsHandler().addEventListener(listener);
-    }
+    this.coreTgStreamController.addEventListener(listener);
   }
 
   public void removeEventListener(EventListener listener) {
-    if (listener instanceof IHeadsetStateChangeEventListener) {
-      this.coreTgStreamHandler.removeHeadsetStateChangeEventListener(
-          (IHeadsetStateChangeEventListener) listener);
-    } else {
-      this.coreTgStreamHandler.getCoreNskAlgoSdk().getEventsHandler().removeEventListener(listener);
-    }
+    this.coreTgStreamController.removeEventListener(listener);
   }
 
+  //FIXME: This method is for testing purposes only
   public boolean containsListener(EventListener listener) {
-    if (listener instanceof IHeadsetStateChangeEventListener) {
-      return this.coreTgStreamHandler.containsHeadsetStateChangeEventListener(
-          (IHeadsetStateChangeEventListener) listener);
-    } else {
-      return this.coreTgStreamHandler.getCoreNskAlgoSdk().getEventsHandler()
-          .containsListener(listener);
-    }
+    return this.coreTgStreamController.containsListener(listener);
   }
 
-  //FIXME: This method is not used anywhere in the code just for testing purpose
-  public CoreTgStreamHandler getCoreTgStreamHandler() {
-    return this.coreTgStreamHandler;
+  public void fireEvent(Object event) {
+    this.coreTgStreamController.fireEvent(event);
   }
 
 }
