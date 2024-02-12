@@ -9,7 +9,7 @@ public class AttentionEventMockListener implements IStreamAttentionEventListener
   private int lastAttentionValue = 0;
 
   @Override
-  public void onAttentionDataUpdate(StreamAttentionEvent event) {
+  public void onAttentionUpdate(StreamAttentionEvent event) {
     this.attentionCount++;
     this.lastAttentionValue = event.getAttentionData().attention();
   }
