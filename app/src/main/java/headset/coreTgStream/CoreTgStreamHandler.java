@@ -35,8 +35,7 @@ public class CoreTgStreamHandler implements TgStreamHandler {
   private CoreNskAlgoSdk coreNskAlgoSdk;
   private int raw_data_index = 0;
   private TgStreamReader tgStreamReader;
-
-
+  
   public CoreTgStreamHandler() {
     this.coreNskAlgoSdk = new CoreNskAlgoSdk();
     this.eventsHandler = new CoreStreamEventsController();
@@ -145,11 +144,17 @@ public class CoreTgStreamHandler implements TgStreamHandler {
             new HeadsetStateChangeEvent(this, HeadsetStateTypes.DISCONNECTED));
       }
 
-      case ConnectionStates.STATE_FAILED -> headsetStateEventHandler.fireEvent(
-          new HeadsetStateChangeEvent(this, HeadsetStateTypes.CONNECTION_FAILED));
+      case ConnectionStates.STATE_FAILED -> {
+        Log.w("CoreTgStreamHandler", "tgStreamReader failed");
+        headsetStateEventHandler.fireEvent(
+            new HeadsetStateChangeEvent(this, HeadsetStateTypes.CONNECTION_FAILED));
+      }
 
-      case ConnectionStates.STATE_ERROR -> headsetStateEventHandler.fireEvent(
-          new HeadsetStateChangeEvent(this, HeadsetStateTypes.ERROR));
+      case ConnectionStates.STATE_ERROR -> {
+        Log.w("CoreTgStreamHandler", "tgStreamReader error");
+        headsetStateEventHandler.fireEvent(
+            new HeadsetStateChangeEvent(this, HeadsetStateTypes.ERROR));
+      }
     }
   }
 
@@ -165,7 +170,7 @@ public class CoreTgStreamHandler implements TgStreamHandler {
     } else if (listener instanceof IAlgoEventListener) {
       this.getNskAlgoSdkEventsHandler().addEventListener(listener);
     } else {
-      throw new IllegalArgumentException("Invalid listener type");
+      throw new IllegalArgumentException("Listener not supported");
     }
 
   }
@@ -179,7 +184,7 @@ public class CoreTgStreamHandler implements TgStreamHandler {
     } else if (listener instanceof IAlgoEventListener) {
       this.getNskAlgoSdkEventsHandler().removeEventListener(listener);
     } else {
-      throw new IllegalArgumentException("Invalid listener type");
+      throw new IllegalArgumentException("Listener not supported");
     }
   }
 
@@ -193,7 +198,7 @@ public class CoreTgStreamHandler implements TgStreamHandler {
     } else if (listener instanceof IAlgoEventListener) {
       return this.getNskAlgoSdkEventsHandler().containsListener(listener);
     } else {
-      throw new IllegalArgumentException("Invalid listener type");
+      throw new IllegalArgumentException("Listener not supported");
     }
   }
 
@@ -206,7 +211,7 @@ public class CoreTgStreamHandler implements TgStreamHandler {
     } else if (event instanceof NskAlgoEvent) {
       this.getNskAlgoSdkEventsHandler().fireEvent((NskAlgoEvent) event);
     } else {
-      throw new IllegalArgumentException("Invalid event type");
+      throw new IllegalArgumentException("Event not supported");
     }
   }
 
@@ -221,6 +226,5 @@ public class CoreTgStreamHandler implements TgStreamHandler {
   private HeadsetStateChangeEventHandler getHeadsetStateEventHandler() {
     return this.headsetStateEventHandler;
   }
-
 
 }
