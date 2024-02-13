@@ -1,4 +1,4 @@
-package com.example.wrappercore.controlMode.events.controlSwitch;
+package com.example.wrappercore.control.mode.events.controlSwitch;
 
 public enum ControlModeTypes {
   APP_CONTROL,
