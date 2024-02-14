@@ -2,6 +2,7 @@ package com.example.wrappercore.control.action;
 
 import ai.events.aiDetectedMovement.AiDetectedMovementEvent;
 import ai.events.aiDetectedMovement.IAiDetectedMovementEventListener;
+import android.util.Log;
 import com.example.wrappercore.control.action.events.ActionEvent;
 import com.example.wrappercore.control.action.events.IActionEventListener;
 import com.example.wrappercore.control.action.events.movement.MovementEvent;
@@ -25,22 +26,26 @@ public class ActionManager implements
   public ActionManager(BlinkManager modeManager, int changeToStopInMillis) {
     this.modeManager = modeManager;
     this.changeToStopInMillis = changeToStopInMillis;
-    checkMovement();
+    initiateEventScheduler();
   }
 
-  private void checkMovement() {
+  private void initiateEventScheduler() {
     new Timer().scheduleAtFixedRate(new TimerTask() {
       @Override
       public void run() {
-        if (lastMovementEvent != null
-            && Timestamp.valueOf(lastMovementEvent.getTimestamp().toString()).getTime()
-            + changeToStopInMillis
-            <= System.currentTimeMillis()
-            && lastMovementEvent.getMovementType() != MovementTypes.STOP) {
-          fireEvent(new ActionEvent(this, MovementTypes.STOP.ordinal()));
+        if (lastMovementEvent != null) {
+          if (Timestamp.valueOf(lastMovementEvent.getTimestamp().toString()).getTime() + changeToStopInMillis
+              <= System.currentTimeMillis()
+              && lastMovementEvent.getMovementType() != MovementTypes.STOP) {
+            fireEvent(new ActionEvent(this, MovementTypes.STOP.ordinal()));
+          } else {
+            fireEvent(new ActionEvent(this, lastMovementEvent.getFlag()));
+          }
+        } else {
+          Log.w("Control component - Action", "LastMovement is Null");
         }
       }
-    }, 0, changeToStopInMillis);
+    }, 0, 1000);
   }
 
   public void addListener(IActionEventListener listener) {

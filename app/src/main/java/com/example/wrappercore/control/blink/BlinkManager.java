@@ -28,7 +28,7 @@ public class BlinkManager implements IAlgoBlinkEventListener {
     this.blinkDetectionThreshold = blinkSensitivityThreshold;
     this.blinksToSwitch = blinksToSwitch;
     this.blinksToClick = blinksToClick;
-    fireEvents();
+    initiateEventScheduler();
   }
 
   public void addListener(IBlinkEventListener listener) {
@@ -59,7 +59,7 @@ public class BlinkManager implements IAlgoBlinkEventListener {
     }
   }
 
-  private void fireEvents() {
+  private void initiateEventScheduler() {
     new Timer().scheduleAtFixedRate(new TimerTask() {
       @Override
       public void run() {
