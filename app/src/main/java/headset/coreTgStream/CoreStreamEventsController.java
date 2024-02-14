@@ -69,7 +69,7 @@ public class CoreStreamEventsController {
       this.streamRawDataEventHandler.addListener(
           (IStreamRawDataEventListener) listener);
     } else {
-      throw new IllegalArgumentException("Unknown listener type: " + listener.getClass().getName());
+      throw new IllegalArgumentException("Invalid Listener Type: " + listener.getClass().getName());
     }
   }
 
@@ -90,7 +90,7 @@ public class CoreStreamEventsController {
           (IStreamRawDataEventListener) listener);
 
     } else {
-      throw new IllegalArgumentException("Unknown listener type: " + listener.getClass().getName());
+      throw new IllegalArgumentException("Invalid Listener Type: " + listener.getClass().getName());
     }
   }
 
@@ -112,7 +112,7 @@ public class CoreStreamEventsController {
           (IStreamRawDataEventListener) listener);
 
     } else {
-      throw new IllegalArgumentException("Unknown listener type: " + listener.getClass().getName());
+      throw new IllegalArgumentException("Invalid Listener Type: " + listener.getClass().getName());
     }
   }
 }
