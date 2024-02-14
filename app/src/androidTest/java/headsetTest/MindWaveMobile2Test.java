@@ -511,7 +511,7 @@ public class MindWaveMobile2Test {
   public void test19() {
     OtherEventMockListener otherEventMockListener = new OtherEventMockListener();
     assertThatExceptionOfType(IllegalArgumentException.class).describedAs(
-        "Addition Unknown listener type should throw IllegalArgumentException").isThrownBy(() -> {
+        "Addition Invalid Listener Type should throw IllegalArgumentException").isThrownBy(() -> {
       this.mindWaveMobile2.addEventListener(otherEventMockListener);
     }).withMessage("Invalid listener type");
   }
@@ -520,7 +520,7 @@ public class MindWaveMobile2Test {
   public void test20() {
     OtherEventMockListener otherEventMockListener = new OtherEventMockListener();
     assertThatExceptionOfType(IllegalArgumentException.class).describedAs(
-        "Removal of Unknown listener type should throw IllegalArgumentException").isThrownBy(() -> {
+        "Removal of Invalid Listener Type should throw IllegalArgumentException").isThrownBy(() -> {
       this.mindWaveMobile2.removeEventListener(otherEventMockListener);
     }).withMessage("Invalid listener type");
   }
@@ -529,7 +529,7 @@ public class MindWaveMobile2Test {
   public void test21() {
     OtherEventMockListener otherEventMockListener = new OtherEventMockListener();
     assertThatExceptionOfType(IllegalArgumentException.class).describedAs(
-        "Firing Unknown listener type should throw IllegalArgumentException").isThrownBy(() -> {
+        "Firing Invalid Listener Type should throw IllegalArgumentException").isThrownBy(() -> {
       this.mindWaveMobile2.fireEvent(new TestEvent(this));
     }).withMessage("Invalid event type");
   }
