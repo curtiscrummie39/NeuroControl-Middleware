@@ -1,6 +1,8 @@
 package com.example.wrappercore.control.action.events.movement;
 
-public interface IWheelchairMovementListener extends IMovementEventListener {
+import com.example.wrappercore.control.action.events.IActionEventListener;
+
+public interface IWheelchairMovementListener extends IActionEventListener {
 
   void onMovementEvent(MovementEvent movementEvent);
 }

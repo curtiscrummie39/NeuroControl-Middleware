@@ -91,7 +91,7 @@ public class CoreNskAlgoSdkEventsController {
           (IAlgoStateChangeEventListener) listener);
 
     } else {
-      throw new IllegalArgumentException("Unknown listener type: " + listener.getClass().getName());
+      throw new IllegalArgumentException("Invalid Listener Type: " + listener.getClass().getName());
     }
   }
 
@@ -120,7 +120,7 @@ public class CoreNskAlgoSdkEventsController {
           (IAlgoStateChangeEventListener) listener);
 
     } else {
-      throw new IllegalArgumentException("Unknown listener type: " + listener.getClass().getName());
+      throw new IllegalArgumentException("Invalid Listener Type: " + listener.getClass().getName());
     }
   }
 
@@ -149,7 +149,7 @@ public class CoreNskAlgoSdkEventsController {
           (IAlgoStateChangeEventListener) listener);
 
     } else {
-      throw new IllegalArgumentException("Unknown listener type: " + listener.getClass().getName());
+      throw new IllegalArgumentException("Invalid Listener Type: " + listener.getClass().getName());
     }
   }
 }

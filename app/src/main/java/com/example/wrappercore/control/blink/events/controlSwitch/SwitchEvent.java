@@ -1,4 +1,4 @@
-package com.example.wrappercore.control.mode.events.controlSwitch;
+package com.example.wrappercore.control.blink.events.controlSwitch;
 
 import java.time.LocalDateTime;
 import java.util.EventObject;

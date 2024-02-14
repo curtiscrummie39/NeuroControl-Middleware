@@ -1,4 +1,4 @@
-package com.example.wrappercore.control.mode.events.controlSwitch;
+package com.example.wrappercore.control.blink.events.controlSwitch;
 
 import android.util.Log;
 import java.util.ArrayList;

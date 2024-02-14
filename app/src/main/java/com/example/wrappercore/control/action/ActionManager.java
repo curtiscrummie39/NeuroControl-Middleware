@@ -3,12 +3,12 @@ package com.example.wrappercore.control.action;
 import ai.events.aiDetectedMovement.AiDetectedMovementEvent;
 import ai.events.aiDetectedMovement.IAiDetectedMovementEventListener;
 import com.example.wrappercore.control.action.events.ActionEvent;
-import com.example.wrappercore.control.action.events.movement.IMovementEventListener;
+import com.example.wrappercore.control.action.events.IActionEventListener;
 import com.example.wrappercore.control.action.events.movement.MovementEvent;
 import com.example.wrappercore.control.action.events.movement.MovementEventHandler;
 import com.example.wrappercore.control.action.events.movement.MovementTypes;
-import com.example.wrappercore.control.mode.ModeManager;
-import com.example.wrappercore.control.mode.events.controlSwitch.ControlModeTypes;
+import com.example.wrappercore.control.blink.BlinkManager;
+import com.example.wrappercore.control.blink.events.controlSwitch.ControlModeTypes;
 import java.sql.Timestamp;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -18,11 +18,11 @@ public class ActionManager implements
     IAiDetectedMovementEventListener {
 
   private final MovementEventHandler movementEventHandler = new MovementEventHandler();
-  private final ModeManager modeManager;
+  private final BlinkManager modeManager;
   private MovementEvent lastMovementEvent;
   private int changeToStopInMillis = 0;
 
-  public ActionManager(ModeManager modeManager, int changeToStopInMillis) {
+  public ActionManager(BlinkManager modeManager, int changeToStopInMillis) {
     this.modeManager = modeManager;
     this.changeToStopInMillis = changeToStopInMillis;
     checkMovement();
@@ -43,11 +43,11 @@ public class ActionManager implements
     }, 0, changeToStopInMillis);
   }
 
-  public void addListener(IMovementEventListener listener) {
+  public void addListener(IActionEventListener listener) {
     movementEventHandler.addListener(listener);
   }
 
-  public void removeListener(IMovementEventListener listener) {
+  public void removeListener(IActionEventListener listener) {
     movementEventHandler.removeListener(listener);
   }
 

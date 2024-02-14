@@ -33,5 +33,4 @@ public class WrapperCore {
     controlManager.removeListener(listener);
   }
 
-
 }
