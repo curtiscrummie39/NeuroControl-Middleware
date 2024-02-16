@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
   private void modelTest() {
     Model modelHandler = new Model("https://learny-v1.onrender.com/api/v1/downloadModel");
 
-    float[][] inputData = new float[][]{{2, 9}};
+    float[][] inputData = new float[][]{{1, 2}};
 
     result = modelHandler.runInference(inputData);
 //    result = new float[]{3};

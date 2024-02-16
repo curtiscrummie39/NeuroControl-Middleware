@@ -18,6 +18,7 @@ public class WrapperCore {
     this.mindWaveMobile2 = new MindWaveMobile2();
     this.modelController = new ModelController("https://learny-v1.onrender.com/api/v1/downloadModel");
     this.mindWaveMobile2.addEventListener(controlManager.getModeManager());
+    this.mindWaveMobile2.addEventListener(this.modelController);
   }
 
   //FIXME: This constructor is missing the serial usb connection initialization
@@ -27,6 +28,8 @@ public class WrapperCore {
     this.modelController = new ModelController("https://learny-v1.onrender.com/api/v1/downloadModel");
     this.mindWaveMobile2.connect();
     this.mindWaveMobile2.addEventListener(controlManager.getModeManager());
+    this.mindWaveMobile2.addEventListener(this.modelController);
+
   }
 
   public void addListener(EventListener listener) {
@@ -35,6 +38,21 @@ public class WrapperCore {
 
   public void removeListener(EventListener listener) {
     controlManager.removeListener(listener);
+  }
+
+  //FIXME: This method is for testing purposes only
+  public MindWaveMobile2 getMindWaveMobile2() {
+    return mindWaveMobile2;
+  }
+
+  //FIXME: This method is for testing purposes only
+  public ControlManager getControlManager() {
+    return controlManager;
+  }
+  
+  //FIXME: This method is for testing purposes only
+  public ModelController getModelController() {
+    return modelController;
   }
 
 }

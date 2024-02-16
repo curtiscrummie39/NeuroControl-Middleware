@@ -35,7 +35,7 @@ public class CoreTgStreamHandler implements TgStreamHandler {
   private CoreNskAlgoSdk coreNskAlgoSdk;
   private int raw_data_index = 0;
   private TgStreamReader tgStreamReader;
-  
+
   public CoreTgStreamHandler() {
     this.coreNskAlgoSdk = new CoreNskAlgoSdk();
     this.eventsHandler = new CoreStreamEventsController();
@@ -170,7 +170,7 @@ public class CoreTgStreamHandler implements TgStreamHandler {
     } else if (listener instanceof IAlgoEventListener) {
       this.getNskAlgoSdkEventsHandler().addEventListener(listener);
     } else {
-      throw new IllegalArgumentException("Listener not supported");
+      throw new IllegalArgumentException("Invalid Listener Type");
     }
 
   }
@@ -184,7 +184,7 @@ public class CoreTgStreamHandler implements TgStreamHandler {
     } else if (listener instanceof IAlgoEventListener) {
       this.getNskAlgoSdkEventsHandler().removeEventListener(listener);
     } else {
-      throw new IllegalArgumentException("Listener not supported");
+      throw new IllegalArgumentException("Invalid Listener Type");
     }
   }
 
@@ -198,7 +198,7 @@ public class CoreTgStreamHandler implements TgStreamHandler {
     } else if (listener instanceof IAlgoEventListener) {
       return this.getNskAlgoSdkEventsHandler().containsListener(listener);
     } else {
-      throw new IllegalArgumentException("Listener not supported");
+      throw new IllegalArgumentException("Invalid Listener Type");
     }
   }
 
@@ -211,7 +211,7 @@ public class CoreTgStreamHandler implements TgStreamHandler {
     } else if (event instanceof NskAlgoEvent) {
       this.getNskAlgoSdkEventsHandler().fireEvent((NskAlgoEvent) event);
     } else {
-      throw new IllegalArgumentException("Event not supported");
+      throw new IllegalArgumentException("Invalid Event Type");
     }
   }
 
