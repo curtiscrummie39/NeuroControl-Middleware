@@ -1,26 +1,43 @@
 package com.example.wrappercore;
 
+import ai.Model;
 import android.os.Bundle;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.appcompat.app.AppCompatActivity;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import com.example.wrappercore.databinding.ActivityMainBinding;
-
-import android.view.Menu;
-import android.view.MenuItem;
+import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
 
   private AppBarConfiguration appBarConfiguration;
   private ActivityMainBinding binding;
 
+  private float[] result = new float[]{4};
+
+  private void modelTest() {
+    Model modelHandler = new Model("https://learny-v1.onrender.com/api/v1/downloadModel");
+
+    float[][] inputData = new float[][]{{2, 9}};
+
+    result = modelHandler.runInference(inputData);
+//    result = new float[]{3};
+
+  }
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    modelTest();
+
+    Log.e("Test Android FS", getApplicationContext().getFilesDir().getAbsolutePath());
 
     binding = ActivityMainBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
@@ -34,8 +51,8 @@ public class MainActivity extends AppCompatActivity {
     binding.fab.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+        Snackbar.make(view, "Replace with your own action " + String.valueOf(result[0]), Snackbar.LENGTH_LONG)
+            .setAction("Action", null).show();
       }
     });
   }
@@ -55,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     int id = item.getItemId();
 
     //noinspection SimplifiableIfStatement
-    if (id==R.id.action_settings) {
+    if (id == R.id.action_settings) {
       return true;
     }
 
@@ -66,6 +83,6 @@ public class MainActivity extends AppCompatActivity {
   public boolean onSupportNavigateUp() {
     NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
     return NavigationUI.navigateUp(navController, appBarConfiguration)
-            || super.onSupportNavigateUp();
+        || super.onSupportNavigateUp();
   }
 }

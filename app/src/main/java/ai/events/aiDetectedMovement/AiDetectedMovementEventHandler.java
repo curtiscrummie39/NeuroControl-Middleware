@@ -18,7 +18,7 @@ public class AiDetectedMovementEventHandler {
 
   public void fireEvent(AiDetectedMovementEvent event) {
     for (IAiDetectedMovementEventListener listener : listeners) {
-      listener.onDetectedMovementEvent(event);
+      listener.onAiDetectedMovementEvent(event);
     }
   }
 
