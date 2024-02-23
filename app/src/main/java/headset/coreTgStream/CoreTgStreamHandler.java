@@ -15,7 +15,7 @@ import headset.events.MeditationData;
 import headset.events.SignalQualityData;
 import headset.events.headsetStateChange.HeadsetStateChangeEvent;
 import headset.events.headsetStateChange.HeadsetStateChangeEventHandler;
-import headset.events.headsetStateChange.HeadsetStateTypes;
+import headset.events.headsetStateChange.HeadsetState;
 import headset.events.headsetStateChange.IHeadsetStateChangeEventListener;
 import headset.events.nskAlgo.IAlgoEventListener;
 import headset.events.nskAlgo.NskAlgoEvent;
@@ -91,14 +91,16 @@ public class CoreTgStreamHandler implements TgStreamHandler {
 
   @Override
   public void onChecksumFail(byte[] payload, int length, int checksum) {
+    Log.w("CoreTgStreamHandler", "CHECK_SUM_FAIL");
     headsetStateEventHandler.fireEvent(
-        new HeadsetStateChangeEvent(this, HeadsetStateTypes.CHECK_SUM_FAIL));
+        new HeadsetStateChangeEvent(this, HeadsetState.CHECK_SUM_FAIL));
   }
 
   @Override
   public void onRecordFail(int flag) {
+    Log.w("CoreTgStreamHandler", "RECORD_FAIL");
     headsetStateEventHandler.fireEvent(
-        new HeadsetStateChangeEvent(this, HeadsetStateTypes.RECORD_FAIL));
+        new HeadsetStateChangeEvent(this, HeadsetState.RECORD_FAIL));
   }
 
   @Override
@@ -114,40 +116,40 @@ public class CoreTgStreamHandler implements TgStreamHandler {
           this.coreNskAlgoSdk = new CoreNskAlgoSdk();
         }
         headsetStateEventHandler.fireEvent(
-            new HeadsetStateChangeEvent(this, HeadsetStateTypes.CONNECTED));
+            new HeadsetStateChangeEvent(this, HeadsetState.CONNECTED));
       }
 
       case ConnectionStates.STATE_WORKING -> {
         tgStreamReader.startRecordRawData();
         headsetStateEventHandler.fireEvent(
-            new HeadsetStateChangeEvent(this, HeadsetStateTypes.WORKING));
+            new HeadsetStateChangeEvent(this, HeadsetState.WORKING));
       }
 
       case ConnectionStates.STATE_GET_DATA_TIME_OUT -> {
         tgStreamReader.stop();
         tgStreamReader.close();
         headsetStateEventHandler.fireEvent(
-            new HeadsetStateChangeEvent(this, HeadsetStateTypes.GET_DATA_TIME_OUT));
+            new HeadsetStateChangeEvent(this, HeadsetState.GET_DATA_TIME_OUT));
       }
 
       case ConnectionStates.STATE_STOPPED -> {
         headsetStateEventHandler.fireEvent(
-            new HeadsetStateChangeEvent(this, HeadsetStateTypes.STOPPED));
+            new HeadsetStateChangeEvent(this, HeadsetState.STOPPED));
       }
 
       case ConnectionStates.STATE_DISCONNECTED -> {
         headsetStateEventHandler.fireEvent(
-            new HeadsetStateChangeEvent(this, HeadsetStateTypes.DISCONNECTED));
+            new HeadsetStateChangeEvent(this, HeadsetState.DISCONNECTED));
       }
 
       case ConnectionStates.STATE_FAILED -> {
         headsetStateEventHandler.fireEvent(
-            new HeadsetStateChangeEvent(this, HeadsetStateTypes.CONNECTION_FAILED));
+            new HeadsetStateChangeEvent(this, HeadsetState.CONNECTION_FAILED));
       }
 
       case ConnectionStates.STATE_ERROR -> {
         headsetStateEventHandler.fireEvent(
-            new HeadsetStateChangeEvent(this, HeadsetStateTypes.ERROR));
+            new HeadsetStateChangeEvent(this, HeadsetState.ERROR));
       }
     }
   }
