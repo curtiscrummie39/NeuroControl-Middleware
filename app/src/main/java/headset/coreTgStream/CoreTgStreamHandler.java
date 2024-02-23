@@ -79,7 +79,6 @@ public class CoreTgStreamHandler implements TgStreamHandler {
 
       case MindDataType.CODE_EEGPOWER -> {
         int[] dataArr = ((int[]) obj);
-        Log.w("CoreTgStreamHandler", "EEG delta: " + dataArr[0]);
         eventsHandler.fireEvent(new StreamEEGDataEvent(this,
             new StreamEEGData(dataArr[0], dataArr[1], dataArr[2], dataArr[3], dataArr[4],
                 dataArr[5], dataArr[6], dataArr[7])));
@@ -110,9 +109,6 @@ public class CoreTgStreamHandler implements TgStreamHandler {
           tgStreamReader.start();
           //FIXME: This is will be enabled when we have the real headset connected
           this.coreNskAlgoSdk = new CoreNskAlgoSdk();
-          Log.w("CoreTgStreamHandler", "tgStreamReader started");
-        } else {
-          Log.w("CoreTgStreamHandler", "tgStreamReader is null");
         }
         headsetStateEventHandler.fireEvent(
             new HeadsetStateChangeEvent(this, HeadsetStateTypes.CONNECTED));
@@ -125,7 +121,6 @@ public class CoreTgStreamHandler implements TgStreamHandler {
       }
 
       case ConnectionStates.STATE_GET_DATA_TIME_OUT -> {
-        Log.w("CoreTgStreamHandler", "tgStreamReader get data time out");
         tgStreamReader.stop();
         tgStreamReader.close();
         headsetStateEventHandler.fireEvent(
@@ -133,25 +128,21 @@ public class CoreTgStreamHandler implements TgStreamHandler {
       }
 
       case ConnectionStates.STATE_STOPPED -> {
-        Log.w("CoreTgStreamHandler", "tgStreamReader stopped");
         headsetStateEventHandler.fireEvent(
             new HeadsetStateChangeEvent(this, HeadsetStateTypes.STOPPED));
       }
 
       case ConnectionStates.STATE_DISCONNECTED -> {
-        Log.w("CoreTgStreamHandler", "tgStreamReader disconnected");
         headsetStateEventHandler.fireEvent(
             new HeadsetStateChangeEvent(this, HeadsetStateTypes.DISCONNECTED));
       }
 
       case ConnectionStates.STATE_FAILED -> {
-        Log.w("CoreTgStreamHandler", "tgStreamReader failed");
         headsetStateEventHandler.fireEvent(
             new HeadsetStateChangeEvent(this, HeadsetStateTypes.CONNECTION_FAILED));
       }
 
       case ConnectionStates.STATE_ERROR -> {
-        Log.w("CoreTgStreamHandler", "tgStreamReader error");
         headsetStateEventHandler.fireEvent(
             new HeadsetStateChangeEvent(this, HeadsetStateTypes.ERROR));
       }
