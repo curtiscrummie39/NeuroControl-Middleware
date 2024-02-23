@@ -24,6 +24,15 @@ public enum HeadsetState {
     this.setValue(value);
   }
 
+  public static HeadsetState stateFromValue(int value) {
+    for (HeadsetState e : values()) {
+      if (e.value == value) {
+        return e;
+      }
+    }
+    return null;
+  }
+
   public int getValue() {
     return value;
   }

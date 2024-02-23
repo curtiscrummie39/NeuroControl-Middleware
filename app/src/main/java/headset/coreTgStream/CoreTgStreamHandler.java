@@ -105,51 +105,19 @@ public class CoreTgStreamHandler implements TgStreamHandler {
 
   @Override
   public void onStatesChanged(int connectionStates) {
+    headsetStateEventHandler.fireEvent(
+        new HeadsetStateChangeEvent(this, HeadsetState.stateFromValue(connectionStates)));
     switch (connectionStates) {
-      case ConnectionStates.STATE_CONNECTING -> Log.w("CoreTgStreamHandler", "Connecting...");
-
       case ConnectionStates.STATE_CONNECTED -> {
         if (Objects.nonNull(tgStreamReader)) {
-          tgStreamReader.setGetDataTimeOutTime(20);
           tgStreamReader.start();
           //FIXME: This is will be enabled when we have the real headset connected
           this.coreNskAlgoSdk = new CoreNskAlgoSdk();
         }
-        headsetStateEventHandler.fireEvent(
-            new HeadsetStateChangeEvent(this, HeadsetState.CONNECTED));
       }
-
-      case ConnectionStates.STATE_WORKING -> {
-        tgStreamReader.startRecordRawData();
-        headsetStateEventHandler.fireEvent(
-            new HeadsetStateChangeEvent(this, HeadsetState.WORKING));
-      }
-
-      case ConnectionStates.STATE_GET_DATA_TIME_OUT -> {
+      case ConnectionStates.STATE_GET_DATA_TIME_OUT, ConnectionStates.STATE_FAILED, ConnectionStates.STATE_ERROR -> {
         tgStreamReader.stop();
         tgStreamReader.close();
-        headsetStateEventHandler.fireEvent(
-            new HeadsetStateChangeEvent(this, HeadsetState.GET_DATA_TIME_OUT));
-      }
-
-      case ConnectionStates.STATE_STOPPED -> {
-        headsetStateEventHandler.fireEvent(
-            new HeadsetStateChangeEvent(this, HeadsetState.STOPPED));
-      }
-
-      case ConnectionStates.STATE_DISCONNECTED -> {
-        headsetStateEventHandler.fireEvent(
-            new HeadsetStateChangeEvent(this, HeadsetState.DISCONNECTED));
-      }
-
-      case ConnectionStates.STATE_FAILED -> {
-        headsetStateEventHandler.fireEvent(
-            new HeadsetStateChangeEvent(this, HeadsetState.CONNECTION_FAILED));
-      }
-
-      case ConnectionStates.STATE_ERROR -> {
-        headsetStateEventHandler.fireEvent(
-            new HeadsetStateChangeEvent(this, HeadsetState.ERROR));
       }
     }
   }
