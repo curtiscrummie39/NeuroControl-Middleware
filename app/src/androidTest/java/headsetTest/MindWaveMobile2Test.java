@@ -8,6 +8,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import headset.MindWaveMobile2;
 import headset.events.AttentionData;
 import headset.events.MeditationData;
+import headset.events.SignalQualityData;
 import headset.events.headsetStateChange.HeadsetStateChangeEvent;
 import headset.events.headsetStateChange.HeadsetStateTypes;
 import headset.events.nskAlgo.algoAttention.AlgoAttentionEvent;
@@ -16,14 +17,13 @@ import headset.events.nskAlgo.algoBandPower.AlgoBandPowerEvent;
 import headset.events.nskAlgo.algoBlink.AlgoBlinkData;
 import headset.events.nskAlgo.algoBlink.AlgoBlinkEvent;
 import headset.events.nskAlgo.algoMeditation.AlgoMeditationEvent;
-import headset.events.nskAlgo.algoSignalQuality.AlgoSignalQualityData;
 import headset.events.nskAlgo.algoSignalQuality.AlgoSignalQualityEvent;
 import headset.events.nskAlgo.algoStateChange.AlgoStateChangeEvent;
 import headset.events.nskAlgo.algoStateChange.AlgoStateChangeReasons;
 import headset.events.nskAlgo.algoStateChange.AlgoStateTypes;
 import headset.events.stream.streamAttention.StreamAttentionEvent;
-import headset.events.stream.streamEEG.StreamEEGData;
-import headset.events.stream.streamEEG.StreamEEGDataEvent;
+import headset.events.stream.streamBandPower.StreamBandPower;
+import headset.events.stream.streamBandPower.StreamBandPowerEvent;
 import headset.events.stream.streamMeditation.StreamMeditationEvent;
 import headset.events.stream.streamRaw.StreamRawData;
 import headset.events.stream.streamRaw.StreamRawDataEvent;
@@ -37,7 +37,7 @@ import headsetTest.eventsTest.nskAlgo.AlgoMeditationMockEventListener;
 import headsetTest.eventsTest.nskAlgo.AlgoSignalQualityMockEventListener;
 import headsetTest.eventsTest.nskAlgo.AlgoStateMockEventListener;
 import headsetTest.eventsTest.stream.StreamAttentionMockEventListener;
-import headsetTest.eventsTest.stream.StreamEEGDataMockEventListener;
+import headsetTest.eventsTest.stream.StreamBandPowerMockEventListener;
 import headsetTest.eventsTest.stream.StreamMeditationMockEventListener;
 import headsetTest.eventsTest.stream.StreamRawMockEventListener;
 import org.junit.Test;
@@ -203,14 +203,14 @@ public class MindWaveMobile2Test {
     AlgoSignalQualityMockEventListener algoSignalEventMockListener = new AlgoSignalQualityMockEventListener();
     this.mindWaveMobile2.addEventListener(algoSignalEventMockListener);
 
-    this.mindWaveMobile2.fireEvent(new AlgoSignalQualityEvent(this, new AlgoSignalQualityData(20)));
+    this.mindWaveMobile2.fireEvent(new AlgoSignalQualityEvent(this, new SignalQualityData(20)));
     assertThat(algoSignalEventMockListener.getSignalQualityCount()).as(
         "SignalQuality event listener should have signal quality count equal to 1").isEqualTo(1);
     assertThat(algoSignalEventMockListener.getLastSignalQuality()).as(
             "SignalQuality event listener should have last signal quality value equal to 20")
         .isEqualTo(20);
 
-    this.mindWaveMobile2.fireEvent(new AlgoSignalQualityEvent(this, new AlgoSignalQualityData(30)));
+    this.mindWaveMobile2.fireEvent(new AlgoSignalQualityEvent(this, new SignalQualityData(30)));
     assertThat(algoSignalEventMockListener.getSignalQualityCount()).as(
             "SignalQuality event listener should have the signal quality count equal to 2")
         .isEqualTo(2);
@@ -378,7 +378,7 @@ public class MindWaveMobile2Test {
   //TODO:StreamEEGDataMockEventListener test
   @Test
   public void test34() {
-    StreamEEGDataMockEventListener streamEEGDataMockListener = new StreamEEGDataMockEventListener();
+    StreamBandPowerMockEventListener streamEEGDataMockListener = new StreamBandPowerMockEventListener();
     this.mindWaveMobile2.addEventListener(streamEEGDataMockListener);
     assertThat(this.mindWaveMobile2.containsListener(streamEEGDataMockListener)).as(
         "Raw Event handler should have this EEGData event listener").isTrue();
@@ -387,7 +387,7 @@ public class MindWaveMobile2Test {
 
   @Test
   public void test35() {
-    StreamEEGDataMockEventListener streamEEGDataMockListener = new StreamEEGDataMockEventListener();
+    StreamBandPowerMockEventListener streamEEGDataMockListener = new StreamBandPowerMockEventListener();
     this.mindWaveMobile2.addEventListener(streamEEGDataMockListener);
     this.mindWaveMobile2.removeEventListener(streamEEGDataMockListener);
     assertThat(this.mindWaveMobile2.containsListener(streamEEGDataMockListener)).as(
@@ -396,11 +396,11 @@ public class MindWaveMobile2Test {
 
   @Test
   public void test36() {
-    StreamEEGDataMockEventListener streamEEGDataMockListener = new StreamEEGDataMockEventListener();
+    StreamBandPowerMockEventListener streamEEGDataMockListener = new StreamBandPowerMockEventListener();
     this.mindWaveMobile2.addEventListener(streamEEGDataMockListener);
 
     this.mindWaveMobile2.fireEvent(
-        new StreamEEGDataEvent(this, new StreamEEGData(20, 30, 40, 50, 60, 70, 80, 90)));
+        new StreamBandPowerEvent(this, new StreamBandPower(20, 30, 40, 50, 60, 70, 80, 90)));
     assertThat(streamEEGDataMockListener.getEEGDataCount()).as(
         "EEGData event listener should have EEGData count equal to 1").isEqualTo(1);
     assertThat(streamEEGDataMockListener.getLastEEGDataValue()).as(
@@ -408,7 +408,7 @@ public class MindWaveMobile2Test {
         .isEqualTo(new int[]{20, 30, 40, 50, 60, 70, 80, 90});
 
     this.mindWaveMobile2.fireEvent(
-        new StreamEEGDataEvent(this, new StreamEEGData(30, 40, 50, 60, 70, 80, 90, 100)));
+        new StreamBandPowerEvent(this, new StreamBandPower(30, 40, 50, 60, 70, 80, 90, 100)));
     assertThat(streamEEGDataMockListener.getEEGDataCount()).as(
         "EEGData event listener should have the EEGData count equal to 2").isEqualTo(2);
     assertThat(streamEEGDataMockListener.getLastEEGDataValue()).as(
