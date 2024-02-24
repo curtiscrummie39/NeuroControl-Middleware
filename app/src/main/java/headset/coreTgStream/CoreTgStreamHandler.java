@@ -111,8 +111,6 @@ public class CoreTgStreamHandler implements TgStreamHandler {
       case ConnectionStates.STATE_CONNECTED -> {
         if (Objects.nonNull(tgStreamReader)) {
           tgStreamReader.start();
-          //FIXME: This is will be enabled when we have the real headset connected
-          this.coreNskAlgoSdk = new CoreNskAlgoSdk();
         }
       }
       case ConnectionStates.STATE_GET_DATA_TIME_OUT, ConnectionStates.STATE_FAILED, ConnectionStates.STATE_ERROR -> {
