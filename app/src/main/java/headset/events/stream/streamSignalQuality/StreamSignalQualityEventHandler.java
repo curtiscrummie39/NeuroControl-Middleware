@@ -3,7 +3,7 @@ package headset.events.stream.streamSignalQuality;
 import headset.events.IEventHandler;
 import java.util.ArrayList;
 
-public class StreamMeditationEventHandler implements
+public class StreamSignalQualityEventHandler implements
     IEventHandler<IStreamSignalQualityEventListener, StreamSignalQualityEvent> {
 
   private final ArrayList<IStreamSignalQualityEventListener> listeners = new ArrayList<IStreamSignalQualityEventListener>();
