@@ -1,16 +1,16 @@
 package headsetTest.eventsTest.nskAlgo;
 
 import headset.events.nskAlgo.algoStateChange.AlgoStateChangeEvent;
-import headset.events.nskAlgo.algoStateChange.AlgoStateChangeReasons;
-import headset.events.nskAlgo.algoStateChange.AlgoStateTypes;
+import headset.events.nskAlgo.algoStateChange.AlgoStateChangeReason;
+import headset.events.nskAlgo.algoStateChange.AlgoState;
 import headset.events.nskAlgo.algoStateChange.IAlgoStateChangeEventListener;
 
 public class AlgoStateMockEventListener implements IAlgoStateChangeEventListener {
 
   private int stateChangeCount = 0;
-  private AlgoStateTypes lastState;
+  private AlgoState lastState;
 
-  private AlgoStateChangeReasons lastReason;
+  private AlgoStateChangeReason lastReason;
 
   @Override
   public void onAlgoStateChange(AlgoStateChangeEvent event) {
@@ -23,11 +23,11 @@ public class AlgoStateMockEventListener implements IAlgoStateChangeEventListener
     return this.stateChangeCount;
   }
 
-  public AlgoStateTypes getLastState() {
+  public AlgoState getLastState() {
     return this.lastState;
   }
 
-  public AlgoStateChangeReasons getLastReason() {
+  public AlgoStateChangeReason getLastReason() {
     return this.lastReason;
   }
 

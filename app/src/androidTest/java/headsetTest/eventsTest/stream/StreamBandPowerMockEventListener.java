@@ -1,15 +1,15 @@
 package headsetTest.eventsTest.stream;
 
-import headset.events.stream.streamEEG.IStreamEEGDataEventListener;
-import headset.events.stream.streamEEG.StreamEEGDataEvent;
+import headset.events.stream.streamBandPower.IStreamBandPowerEventListener;
+import headset.events.stream.streamBandPower.StreamBandPowerEvent;
 
-public class StreamEEGDataMockEventListener implements IStreamEEGDataEventListener {
+public class StreamBandPowerMockEventListener implements IStreamBandPowerEventListener {
 
   private int eegDataCount = 0;
   private int[] lastEegDataValue = new int[7];
 
   @Override
-  public void onEEGDataUpdate(StreamEEGDataEvent event) {
+  public void onEEGDataUpdate(StreamBandPowerEvent event) {
     this.eegDataCount++;
     this.lastEegDataValue = new int[]{
         event.getEEGData().delta(),
