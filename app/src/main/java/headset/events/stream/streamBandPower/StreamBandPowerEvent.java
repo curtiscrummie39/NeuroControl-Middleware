@@ -11,7 +11,7 @@ public class StreamBandPowerEvent extends StreamEvent {
     this.bandPower = data;
   }
 
-  public StreamBandPower getEEGData() {
+  public StreamBandPower getBandPower() {
     return this.bandPower;
   }
 

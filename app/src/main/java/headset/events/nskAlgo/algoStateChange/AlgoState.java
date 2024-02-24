@@ -1,5 +1,7 @@
 package headset.events.nskAlgo.algoStateChange;
 
+import headset.events.headsetStateChange.HeadsetState;
+
 public enum AlgoState {
   //TODO: REMOVE TEST
   TEST(-1),
@@ -23,5 +25,14 @@ public enum AlgoState {
 
   public void setValue(int value) {
     this.value = value;
+  }
+
+  public static AlgoState fromValue(int value) {
+    for (AlgoState e : values()) {
+      if (e.value == value) {
+        return e;
+      }
+    }
+    return null;
   }
 }

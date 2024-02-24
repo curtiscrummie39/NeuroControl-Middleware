@@ -106,7 +106,7 @@ public class CoreTgStreamHandler implements TgStreamHandler {
   @Override
   public void onStatesChanged(int connectionStates) {
     headsetStateEventHandler.fireEvent(
-        new HeadsetStateChangeEvent(this, HeadsetState.stateFromValue(connectionStates)));
+        new HeadsetStateChangeEvent(this, HeadsetState.fromValue(connectionStates)));
     switch (connectionStates) {
       case ConnectionStates.STATE_CONNECTED -> {
         if (Objects.nonNull(tgStreamReader)) {

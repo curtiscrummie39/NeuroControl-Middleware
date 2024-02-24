@@ -23,21 +23,21 @@ public enum HeadsetState {
   HeadsetState(int value) {
     this.setValue(value);
   }
-
-  public static HeadsetState stateFromValue(int value) {
-    for (HeadsetState e : values()) {
-      if (e.value == value) {
-        return e;
-      }
-    }
-    return null;
-  }
-
+  
   public int getValue() {
     return value;
   }
 
   public void setValue(int value) {
     this.value = value;
+  }
+
+  public static HeadsetState fromValue(int value) {
+    for (HeadsetState e : values()) {
+      if (e.value == value) {
+        return e;
+      }
+    }
+    return null;
   }
 }
