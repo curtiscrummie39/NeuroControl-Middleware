@@ -5,16 +5,16 @@ import headset.coreTgStream.CoreTgStreamController;
 import java.util.EventListener;
 
 
-public class MindWaveMobile2 {
+public class HeadsetController {
 
   private final CoreTgStreamController coreTgStreamController;
 
   //FIXME: This constructor is for testing purposes only
-  public MindWaveMobile2() {
+  public HeadsetController() {
     this.coreTgStreamController = new CoreTgStreamController();
   }
 
-  public MindWaveMobile2(BluetoothManager bluetoothManager, String deviceName) {
+  public HeadsetController(BluetoothManager bluetoothManager, String deviceName) {
     this.coreTgStreamController = new CoreTgStreamController(bluetoothManager, deviceName);
   }
 

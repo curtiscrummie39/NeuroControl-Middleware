@@ -122,7 +122,7 @@ public class CoreTgStreamHandler implements TgStreamHandler {
   private void restartAlgoSdk(int signalQuality) {
     if (signalQuality < 50 && this.coreNskAlgoSdk.getAlgoState() == AlgoState.STOP) {
       //TODO: remove the log
-//      Log.e("CoreTgStreamHandler", "Restarting Algo v1");
+      Log.e("CoreTgStreamHandler", "Restarting Algo v1");
       this.coreNskAlgoSdk.restartAlgo();
     }
   }

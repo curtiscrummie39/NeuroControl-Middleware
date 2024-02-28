@@ -3,12 +3,12 @@ package com.example.wrappercore;
 import ai.ModelController;
 import android.bluetooth.BluetoothManager;
 import com.example.wrappercore.control.ControlManager;
-import headset.MindWaveMobile2;
+import headset.HeadsetController;
 import java.util.EventListener;
 
 public class WrapperCore {
 
-  private final MindWaveMobile2 mindWaveMobile2;
+  private final HeadsetController headsetController;
   private final ControlManager controlManager;
   private final ModelController modelController;
 
@@ -18,20 +18,20 @@ public class WrapperCore {
   //FIXME: This constructor is not the production one it is for testing purposes only
   public WrapperCore() {
     this.controlManager = new ControlManager();
-    this.mindWaveMobile2 = new MindWaveMobile2();
+    this.headsetController = new HeadsetController();
     this.modelController = new ModelController(modelUrl);
-    this.mindWaveMobile2.addEventListener(controlManager.getModeManager());
-    this.mindWaveMobile2.addEventListener(this.modelController);
+    this.headsetController.addEventListener(controlManager.getModeManager());
+    this.headsetController.addEventListener(this.modelController);
   }
 
   //FIXME: This constructor is missing the serial usb connection initialization
   public WrapperCore(BluetoothManager bluetoothManager, String macAddress) {
     this.controlManager = new ControlManager();
-    this.mindWaveMobile2 = new MindWaveMobile2(bluetoothManager, macAddress);
+    this.headsetController = new HeadsetController(bluetoothManager, macAddress);
     this.modelController = new ModelController(modelUrl);
-    this.mindWaveMobile2.connect();
-    this.mindWaveMobile2.addEventListener(controlManager.getModeManager());
-    this.mindWaveMobile2.addEventListener(this.modelController);
+    this.headsetController.connect();
+    this.headsetController.addEventListener(controlManager.getModeManager());
+    this.headsetController.addEventListener(this.modelController);
   }
 
   public void addListener(EventListener listener) {
@@ -43,8 +43,8 @@ public class WrapperCore {
   }
 
   //FIXME: This method is for testing purposes only
-  public MindWaveMobile2 getMindWaveMobile2() {
-    return mindWaveMobile2;
+  public HeadsetController getMindWaveMobile2() {
+    return headsetController;
   }
 
   //FIXME: This method is for testing purposes only
