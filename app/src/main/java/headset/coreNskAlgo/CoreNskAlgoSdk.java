@@ -73,6 +73,10 @@ public class CoreNskAlgoSdk extends NskAlgoSdk {
     NskAlgoSdk.NskAlgoDataStream(dataType, data, length);
   }
 
+  public void restartAlgo() {
+    NskAlgoStart(false);
+  }
+
   public void startAlgo() {
     NskAlgoInit(NskAlgoType.NSK_ALGO_TYPE_ATT.value +
         NskAlgoType.NSK_ALGO_TYPE_MED.value +
@@ -81,12 +85,12 @@ public class CoreNskAlgoSdk extends NskAlgoSdk {
     NskAlgoStart(false);
   }
 
-  public AlgoState getAlgoState() {
-    return this.eventsHandler.getAlgoState();
-  }
-
   public void stopAlgo() {
     NskAlgoUninit();
+  }
+
+  public AlgoState getAlgoState() {
+    return this.eventsHandler.getAlgoState();
   }
 
   public CoreNskAlgoSdkEventsController getEventsHandler() {
