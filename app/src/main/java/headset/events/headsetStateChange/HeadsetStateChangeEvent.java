@@ -11,6 +11,10 @@ public class HeadsetStateChangeEvent extends EventObject {
     this.state = state;
   }
 
+  public String toString() {
+    return super.toString() + "HeadsetStateChangeEvent { state: " + getState() + "}";
+  }
+
   public HeadsetState getState() {
     return state;
   }
