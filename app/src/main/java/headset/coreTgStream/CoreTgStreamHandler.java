@@ -35,8 +35,9 @@ public class CoreTgStreamHandler implements TgStreamHandler {
 
   private final CoreStreamEventsController eventsHandler;
   private final HeadsetStateChangeEventHandler headsetStateEventHandler;
+  private final HeadsetState headsetState = HeadsetState.TEST;
   private final short[] raw_data = new short[512];
-  private CoreNskAlgoSdk coreNskAlgoSdk;
+  private final CoreNskAlgoSdk coreNskAlgoSdk;
   private int raw_data_index = 0;
   private TgStreamReader tgStreamReader;
 
@@ -124,9 +125,13 @@ public class CoreTgStreamHandler implements TgStreamHandler {
   private void restartAlgoSdk(int signalQuality) {
     if (signalQuality < 50 && this.coreNskAlgoSdk.getAlgoState() == AlgoState.STOP) {
       //TODO: remove the log
-      Log.e("CoreTgStreamHandler", "Restarting Algo v1");
+//      Log.e("CoreTgStreamHandler", "Restarting Algo v1");
       this.coreNskAlgoSdk.restartAlgo();
     }
+  }
+
+  private void setHeadsetState(HeadsetState headsetState) {
+    this.headsetStateEventHandler.fireEvent(new HeadsetStateChangeEvent(this, headsetState));
   }
 
   public void setTgStreamReader(TgStreamReader tgStreamReader) {

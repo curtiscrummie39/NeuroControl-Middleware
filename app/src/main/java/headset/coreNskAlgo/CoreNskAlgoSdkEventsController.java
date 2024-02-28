@@ -1,6 +1,5 @@
 package headset.coreNskAlgo;
 
-import android.util.Log;
 import headset.events.nskAlgo.NskAlgoEvent;
 import headset.events.nskAlgo.algoAttention.AlgoAttentionEvent;
 import headset.events.nskAlgo.algoAttention.AlgoAttentionEventHandler;
@@ -47,6 +46,10 @@ public class CoreNskAlgoSdkEventsController {
     return this.algoState;
   }
 
+  private void setAlgoState(AlgoState algoState) {
+    this.algoState = algoState;
+  }
+
   public void fireEvent(NskAlgoEvent event) {
     if (event instanceof AlgoBlinkEvent) {
       this.algoBlinkEventHandler.fireEvent((AlgoBlinkEvent) event);
@@ -61,8 +64,9 @@ public class CoreNskAlgoSdkEventsController {
       this.algoAttentionEventHandler.fireEvent((AlgoAttentionEvent) event);
 
     } else if (event instanceof AlgoStateChangeEvent) {
-      Log.e("CoreNskAlgoSdkEvents", "Firing AlgoStateChangeEvent" + event);
-      this.algoState = ((AlgoStateChangeEvent) event).getState();
+      //TODO: remove this log
+//      Log.e("CoreNskAlgoSdkEvents", "Firing AlgoStateChangeEvent" + event);
+      this.setAlgoState(((AlgoStateChangeEvent) event).getState());
       this.algoStateChangeEventHandler.fireEvent((AlgoStateChangeEvent) event);
 
     } else if (event instanceof AlgoSignalQualityEvent) {
