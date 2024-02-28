@@ -61,7 +61,7 @@ public class CoreNskAlgoSdkEventsController {
       this.algoAttentionEventHandler.fireEvent((AlgoAttentionEvent) event);
 
     } else if (event instanceof AlgoStateChangeEvent) {
-      Log.e("TEST", "Firing AlgoStateChangeEvent" + event);
+      Log.e("CoreNskAlgoSdkEvents", "Firing AlgoStateChangeEvent" + event);
       this.algoState = ((AlgoStateChangeEvent) event).getState();
       this.algoStateChangeEventHandler.fireEvent((AlgoStateChangeEvent) event);
 

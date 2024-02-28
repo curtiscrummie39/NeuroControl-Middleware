@@ -1,5 +1,6 @@
 package headset.coreNskAlgo;
 
+import android.util.Log;
 import com.neurosky.AlgoSdk.NskAlgoSdk;
 import com.neurosky.AlgoSdk.NskAlgoType;
 import headset.events.AttentionData;
@@ -25,6 +26,8 @@ public class CoreNskAlgoSdk extends NskAlgoSdk {
     this.setOnStateChangeListener(new OnStateChangeListener() {
       @Override
       public void onStateChange(int state, int reason) {
+        //TODO: remove this log
+        Log.e("CoreNskAlgoSdk", "onStateChange: " + state + " " + reason);
         eventsHandler.fireEvent(new AlgoStateChangeEvent(this, state, reason));
       }
     });
