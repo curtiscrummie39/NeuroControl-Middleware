@@ -12,6 +12,7 @@ import headset.events.nskAlgo.algoBlink.AlgoBlinkData;
 import headset.events.nskAlgo.algoBlink.AlgoBlinkEvent;
 import headset.events.nskAlgo.algoMeditation.AlgoMeditationEvent;
 import headset.events.nskAlgo.algoSignalQuality.AlgoSignalQualityEvent;
+import headset.events.nskAlgo.algoStateChange.AlgoState;
 import headset.events.nskAlgo.algoStateChange.AlgoStateChangeEvent;
 
 public class CoreNskAlgoSdk extends NskAlgoSdk {
@@ -68,6 +69,10 @@ public class CoreNskAlgoSdk extends NskAlgoSdk {
     startAlgo();
   }
 
+  public static void UpdateAlgoData(int dataType, short[] data, int length) {
+    NskAlgoSdk.NskAlgoDataStream(dataType, data, length);
+  }
+
   public void startAlgo() {
     NskAlgoInit(NskAlgoType.NSK_ALGO_TYPE_ATT.value +
         NskAlgoType.NSK_ALGO_TYPE_MED.value +
@@ -76,10 +81,13 @@ public class CoreNskAlgoSdk extends NskAlgoSdk {
     NskAlgoStart(false);
   }
 
+  public AlgoState getAlgoState() {
+    return this.eventsHandler.getAlgoState();
+  }
+
   public void stopAlgo() {
     NskAlgoUninit();
   }
-
 
   public CoreNskAlgoSdkEventsController getEventsHandler() {
     return this.eventsHandler;

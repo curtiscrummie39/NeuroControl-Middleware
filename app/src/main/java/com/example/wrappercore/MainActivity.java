@@ -1,6 +1,11 @@
 package com.example.wrappercore;
 
 import ai.Model;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.hardware.usb.UsbDevice;
+import android.hardware.usb.UsbManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -13,6 +18,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import com.example.wrappercore.databinding.ActivityMainBinding;
 import com.google.android.material.snackbar.Snackbar;
+import java.util.HashMap;
+import java.util.Iterator;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,11 +38,47 @@ public class MainActivity extends AppCompatActivity {
 
   }
 
+  public void getDetail() {
+    UsbManager manager = (UsbManager) getSystemService(Context.USB_SERVICE);
+
+    HashMap<String, UsbDevice> deviceList = manager.getDeviceList();
+
+    Log.i("Test Android USB", "Device List: " + deviceList.size());
+
+    Iterator<UsbDevice> deviceIterator = deviceList.values().iterator();
+    while (deviceIterator.hasNext()) {
+
+      UsbDevice device = deviceIterator.next();
+
+      String actionString = this.getPackageName() + ".action.USB_PERMISSION";
+
+      PendingIntent mPermissionIntent = PendingIntent.getBroadcast(this, 0, new
+          Intent(actionString), -1);
+      manager.requestPermission(device, mPermissionIntent);
+
+      manager.requestPermission(device, mPermissionIntent);
+      String Model = device.getDeviceName();
+
+      int DeviceID = device.getDeviceId();
+      int Vendor = device.getVendorId();
+      int Product = device.getProductId();
+      int Class = device.getDeviceClass();
+      int Subclass = device.getDeviceSubclass();
+
+      Log.i("Test Android USB",
+          "Device Name: " + Model + " Device ID: " + DeviceID + " Vendor: " + Vendor + " Product: " + Product
+              + " Class: " + Class + " Subclass: " + Subclass);
+
+    }
+  }
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    modelTest();
+//    modelTest();
+    
+    getDetail();
 
     Log.e("Test Android FS", getApplicationContext().getFilesDir().getAbsolutePath());
 

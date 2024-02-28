@@ -1,6 +1,5 @@
 package headset.coreNskAlgo;
 
-import android.util.Log;
 import headset.events.nskAlgo.NskAlgoEvent;
 import headset.events.nskAlgo.algoAttention.AlgoAttentionEvent;
 import headset.events.nskAlgo.algoAttention.AlgoAttentionEventHandler;
@@ -17,6 +16,7 @@ import headset.events.nskAlgo.algoMeditation.IAlgoMeditationEventListener;
 import headset.events.nskAlgo.algoSignalQuality.AlgoSignalQualityEvent;
 import headset.events.nskAlgo.algoSignalQuality.AlgoSignalQualityEventHandler;
 import headset.events.nskAlgo.algoSignalQuality.IAlgoSignalQualityEventListener;
+import headset.events.nskAlgo.algoStateChange.AlgoState;
 import headset.events.nskAlgo.algoStateChange.AlgoStateChangeEvent;
 import headset.events.nskAlgo.algoStateChange.AlgoStateChangeEventHandler;
 import headset.events.nskAlgo.algoStateChange.IAlgoStateChangeEventListener;
@@ -31,6 +31,7 @@ public class CoreNskAlgoSdkEventsController {
   private final AlgoAttentionEventHandler algoAttentionEventHandler;
   private final AlgoStateChangeEventHandler algoStateChangeEventHandler;
   private final AlgoSignalQualityEventHandler algoSignalQualityEventHandler;
+  private AlgoState algoState = AlgoState.TEST;
 
   CoreNskAlgoSdkEventsController() {
     this.algoBlinkEventHandler = new AlgoBlinkEventHandler();
@@ -39,6 +40,10 @@ public class CoreNskAlgoSdkEventsController {
     this.algoAttentionEventHandler = new AlgoAttentionEventHandler();
     this.algoStateChangeEventHandler = new AlgoStateChangeEventHandler();
     this.algoSignalQualityEventHandler = new AlgoSignalQualityEventHandler();
+  }
+
+  public AlgoState getAlgoState() {
+    return this.algoState;
   }
 
   public void fireEvent(NskAlgoEvent event) {
@@ -55,6 +60,7 @@ public class CoreNskAlgoSdkEventsController {
       this.algoAttentionEventHandler.fireEvent((AlgoAttentionEvent) event);
 
     } else if (event instanceof AlgoStateChangeEvent) {
+      this.algoState = ((AlgoStateChangeEvent) event).getState();
       this.algoStateChangeEventHandler.fireEvent((AlgoStateChangeEvent) event);
 
     } else if (event instanceof AlgoSignalQualityEvent) {
