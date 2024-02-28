@@ -35,9 +35,9 @@ public class CoreTgStreamHandler implements TgStreamHandler {
 
   private final CoreStreamEventsController eventsHandler;
   private final HeadsetStateChangeEventHandler headsetStateEventHandler;
-  private final HeadsetState headsetState = HeadsetState.TEST;
   private final short[] raw_data = new short[512];
   private final CoreNskAlgoSdk coreNskAlgoSdk;
+  private HeadsetState headsetState = HeadsetState.TEST;
   private int raw_data_index = 0;
   private TgStreamReader tgStreamReader;
 
@@ -94,21 +94,18 @@ public class CoreTgStreamHandler implements TgStreamHandler {
   @Override
   public void onChecksumFail(byte[] payload, int length, int checksum) {
     Log.w("CoreTgStreamHandler", "CHECK_SUM_FAIL");
-    headsetStateEventHandler.fireEvent(
-        new HeadsetStateChangeEvent(this, HeadsetState.CHECK_SUM_FAIL));
+    this.setHeadsetState(HeadsetState.CHECK_SUM_FAIL);
   }
 
   @Override
   public void onRecordFail(int flag) {
     Log.w("CoreTgStreamHandler", "RECORD_FAIL");
-    headsetStateEventHandler.fireEvent(
-        new HeadsetStateChangeEvent(this, HeadsetState.RECORD_FAIL));
+    this.setHeadsetState(HeadsetState.RECORD_FAIL);
   }
 
   @Override
   public void onStatesChanged(int connectionStates) {
-    headsetStateEventHandler.fireEvent(
-        new HeadsetStateChangeEvent(this, HeadsetState.fromValue(connectionStates)));
+    this.setHeadsetState(HeadsetState.fromValue(connectionStates));
     switch (connectionStates) {
       case ConnectionStates.STATE_CONNECTED -> {
         if (Objects.nonNull(tgStreamReader)) {
@@ -130,7 +127,12 @@ public class CoreTgStreamHandler implements TgStreamHandler {
     }
   }
 
+  public HeadsetState getHeadsetState() {
+    return this.headsetState;
+  }
+
   private void setHeadsetState(HeadsetState headsetState) {
+    this.headsetState = headsetState;
     this.headsetStateEventHandler.fireEvent(new HeadsetStateChangeEvent(this, headsetState));
   }
 
