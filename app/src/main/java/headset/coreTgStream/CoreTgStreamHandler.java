@@ -2,7 +2,6 @@ package headset.coreTgStream;
 
 import android.util.Log;
 import com.neurosky.AlgoSdk.NskAlgoDataType;
-import com.neurosky.AlgoSdk.NskAlgoSdk;
 import com.neurosky.connection.ConnectionStates;
 import com.neurosky.connection.DataType.MindDataType;
 import com.neurosky.connection.EEGPower;
@@ -13,12 +12,13 @@ import headset.coreNskAlgo.CoreNskAlgoSdkEventsController;
 import headset.events.AttentionData;
 import headset.events.MeditationData;
 import headset.events.SignalQualityData;
+import headset.events.headsetStateChange.HeadsetState;
 import headset.events.headsetStateChange.HeadsetStateChangeEvent;
 import headset.events.headsetStateChange.HeadsetStateChangeEventHandler;
-import headset.events.headsetStateChange.HeadsetState;
 import headset.events.headsetStateChange.IHeadsetStateChangeEventListener;
 import headset.events.nskAlgo.IAlgoEventListener;
 import headset.events.nskAlgo.NskAlgoEvent;
+import headset.events.nskAlgo.algoStateChange.AlgoState;
 import headset.events.stream.IStreamEventListener;
 import headset.events.stream.StreamEvent;
 import headset.events.stream.streamAttention.StreamAttentionEvent;
@@ -36,7 +36,8 @@ public class CoreTgStreamHandler implements TgStreamHandler {
   private final CoreStreamEventsController eventsHandler;
   private final HeadsetStateChangeEventHandler headsetStateEventHandler;
   private final short[] raw_data = new short[512];
-  private CoreNskAlgoSdk coreNskAlgoSdk;
+  private final CoreNskAlgoSdk coreNskAlgoSdk;
+  private HeadsetState headsetState = HeadsetState.TEST;
   private int raw_data_index = 0;
   private TgStreamReader tgStreamReader;
 
@@ -59,23 +60,24 @@ public class CoreTgStreamHandler implements TgStreamHandler {
       case MindDataType.CODE_ATTENTION -> {
         short[] attValue = {(short) data};
         eventsHandler.fireEvent(new StreamAttentionEvent(this, new AttentionData(data)));
-        NskAlgoSdk.NskAlgoDataStream(NskAlgoDataType.NSK_ALGO_DATA_TYPE_ATT.value, attValue, 1);
+        CoreNskAlgoSdk.UpdateAlgoData(NskAlgoDataType.NSK_ALGO_DATA_TYPE_ATT.value, attValue, 1);
       }
       case MindDataType.CODE_MEDITATION -> {
         short[] medValue = {(short) data};
         eventsHandler.fireEvent(new StreamMeditationEvent(this, new MeditationData(data)));
-        NskAlgoSdk.NskAlgoDataStream(NskAlgoDataType.NSK_ALGO_DATA_TYPE_MED.value, medValue, 1);
+        CoreNskAlgoSdk.UpdateAlgoData(NskAlgoDataType.NSK_ALGO_DATA_TYPE_MED.value, medValue, 1);
       }
       case MindDataType.CODE_POOR_SIGNAL -> {
         short[] psValue = {(short) data};
+        restartAlgoSdk(data);
         eventsHandler.fireEvent(new StreamSignalQualityEvent(this, new SignalQualityData(data)));
-        NskAlgoSdk.NskAlgoDataStream(NskAlgoDataType.NSK_ALGO_DATA_TYPE_PQ.value, psValue, 1);
+        CoreNskAlgoSdk.UpdateAlgoData(NskAlgoDataType.NSK_ALGO_DATA_TYPE_PQ.value, psValue, 1);
       }
       case MindDataType.CODE_RAW -> {
         raw_data[raw_data_index++] = (short) data;
         if (raw_data_index >= 512) {
           eventsHandler.fireEvent(new StreamRawDataEvent(this, new StreamRawData(raw_data)));
-          NskAlgoSdk.NskAlgoDataStream(NskAlgoDataType.NSK_ALGO_DATA_TYPE_EEG.value, raw_data, 512);
+          CoreNskAlgoSdk.UpdateAlgoData(NskAlgoDataType.NSK_ALGO_DATA_TYPE_EEG.value, raw_data, 512);
           raw_data_index = 0;
         }
       }
@@ -92,21 +94,18 @@ public class CoreTgStreamHandler implements TgStreamHandler {
   @Override
   public void onChecksumFail(byte[] payload, int length, int checksum) {
     Log.w("CoreTgStreamHandler", "CHECK_SUM_FAIL");
-    headsetStateEventHandler.fireEvent(
-        new HeadsetStateChangeEvent(this, HeadsetState.CHECK_SUM_FAIL));
+    this.setHeadsetState(HeadsetState.CHECK_SUM_FAIL);
   }
 
   @Override
   public void onRecordFail(int flag) {
     Log.w("CoreTgStreamHandler", "RECORD_FAIL");
-    headsetStateEventHandler.fireEvent(
-        new HeadsetStateChangeEvent(this, HeadsetState.RECORD_FAIL));
+    this.setHeadsetState(HeadsetState.RECORD_FAIL);
   }
 
   @Override
   public void onStatesChanged(int connectionStates) {
-    headsetStateEventHandler.fireEvent(
-        new HeadsetStateChangeEvent(this, HeadsetState.fromValue(connectionStates)));
+    this.setHeadsetState(HeadsetState.fromValue(connectionStates));
     switch (connectionStates) {
       case ConnectionStates.STATE_CONNECTED -> {
         if (Objects.nonNull(tgStreamReader)) {
@@ -118,6 +117,23 @@ public class CoreTgStreamHandler implements TgStreamHandler {
         tgStreamReader.close();
       }
     }
+  }
+
+  private void restartAlgoSdk(int signalQuality) {
+    if (signalQuality < 50 && this.coreNskAlgoSdk.getAlgoState() == AlgoState.STOP) {
+      //TODO: remove the log
+      Log.e("CoreTgStreamHandler", "Restarting Algo v1");
+      this.coreNskAlgoSdk.restartAlgo();
+    }
+  }
+
+  public HeadsetState getHeadsetState() {
+    return this.headsetState;
+  }
+
+  private void setHeadsetState(HeadsetState headsetState) {
+    this.headsetState = headsetState;
+    this.headsetStateEventHandler.fireEvent(new HeadsetStateChangeEvent(this, headsetState));
   }
 
   public void setTgStreamReader(TgStreamReader tgStreamReader) {

@@ -1,5 +1,6 @@
 package headset.coreNskAlgo;
 
+import android.util.Log;
 import com.neurosky.AlgoSdk.NskAlgoSdk;
 import com.neurosky.AlgoSdk.NskAlgoType;
 import headset.events.AttentionData;
@@ -12,6 +13,7 @@ import headset.events.nskAlgo.algoBlink.AlgoBlinkData;
 import headset.events.nskAlgo.algoBlink.AlgoBlinkEvent;
 import headset.events.nskAlgo.algoMeditation.AlgoMeditationEvent;
 import headset.events.nskAlgo.algoSignalQuality.AlgoSignalQualityEvent;
+import headset.events.nskAlgo.algoStateChange.AlgoState;
 import headset.events.nskAlgo.algoStateChange.AlgoStateChangeEvent;
 
 public class CoreNskAlgoSdk extends NskAlgoSdk {
@@ -24,6 +26,8 @@ public class CoreNskAlgoSdk extends NskAlgoSdk {
     this.setOnStateChangeListener(new OnStateChangeListener() {
       @Override
       public void onStateChange(int state, int reason) {
+        //TODO: remove this log
+        Log.e("CoreNskAlgoSdk", "onStateChange: " + state + " " + reason);
         eventsHandler.fireEvent(new AlgoStateChangeEvent(this, state, reason));
       }
     });
@@ -68,6 +72,14 @@ public class CoreNskAlgoSdk extends NskAlgoSdk {
     startAlgo();
   }
 
+  public static void UpdateAlgoData(int dataType, short[] data, int length) {
+    NskAlgoSdk.NskAlgoDataStream(dataType, data, length);
+  }
+
+  public void restartAlgo() {
+    NskAlgoStart(false);
+  }
+
   public void startAlgo() {
     NskAlgoInit(NskAlgoType.NSK_ALGO_TYPE_ATT.value +
         NskAlgoType.NSK_ALGO_TYPE_MED.value +
@@ -80,6 +92,9 @@ public class CoreNskAlgoSdk extends NskAlgoSdk {
     NskAlgoUninit();
   }
 
+  public AlgoState getAlgoState() {
+    return this.eventsHandler.getAlgoState();
+  }
 
   public CoreNskAlgoSdkEventsController getEventsHandler() {
     return this.eventsHandler;
