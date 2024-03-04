@@ -1,9 +1,7 @@
 package com.example.wrappercore;
 
 import ai.Model;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.os.Bundle;
@@ -19,7 +17,6 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.wrappercore.databinding.ActivityMainBinding;
 import com.google.android.material.snackbar.Snackbar;
 import java.util.HashMap;
-import java.util.Iterator;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,36 +37,66 @@ public class MainActivity extends AppCompatActivity {
 
   public void getDetail() {
     UsbManager manager = (UsbManager) getSystemService(Context.USB_SERVICE);
-
     HashMap<String, UsbDevice> deviceList = manager.getDeviceList();
-
-    Log.i("Test Android USB", "Device List: " + deviceList.size());
-
-    Iterator<UsbDevice> deviceIterator = deviceList.values().iterator();
-    while (deviceIterator.hasNext()) {
-
-      UsbDevice device = deviceIterator.next();
-
-      String actionString = this.getPackageName() + ".action.USB_PERMISSION";
-
-      PendingIntent mPermissionIntent = PendingIntent.getBroadcast(this, 0, new
-          Intent(actionString), -1);
-      manager.requestPermission(device, mPermissionIntent);
-
-      manager.requestPermission(device, mPermissionIntent);
-      String Model = device.getDeviceName();
-
-      int DeviceID = device.getDeviceId();
-      int Vendor = device.getVendorId();
-      int Product = device.getProductId();
-      int Class = device.getDeviceClass();
-      int Subclass = device.getDeviceSubclass();
-
-      Log.i("Test Android USB",
-          "Device Name: " + Model + " Device ID: " + DeviceID + " Vendor: " + Vendor + " Product: " + Product
-              + " Class: " + Class + " Subclass: " + Subclass);
+    UsbDevice mDevice = null;
+    for (UsbDevice device : deviceList.values()) {
+      if (device.getDeviceId() == 1002) {
+        mDevice = device;
+      }
+      assert mDevice != null;
+      Log.i("Test_Android_USB", "test dev" + mDevice.getDeviceId());
+      Log.i("Test_Android_USB",
+          "Device Name: " + device.getDeviceName() + " Device ID: " + device.getDeviceId() + " Vendor: "
+              + device.getVendorId() + " Product: " + device.getProductId());
 
     }
+    if (mDevice != null) {
+      Log.i("Test_Android_USB_1", "Device: " + mDevice.getVendorId());
+//      UsbInterface usbInterface = mDevice.getInterface(0);
+//      UsbEndpoint endpoint = usbInterface.getEndpoint(0);
+//      UsbDeviceConnection connection = manager.openDevice(mDevice);
+//      byte[] DATA = "1".getBytes();
+//      boolean forceClaim = true;
+//
+//      connection.claimInterface(mDevice.getInterface(0), true);
+//      connection.bulkTransfer(endpoint, DATA, DATA.length, 0);
+
+// Initialize UsbRequest
+//      UsbRequest usbRequest = new UsbRequest();
+//      usbRequest.initialize(connection, endpoint);
+
+// Prepare the data to send asynchronously
+//
+//// Wrap the data in a ByteBuffer
+//      ByteBuffer buffer = ByteBuffer.allocate(dataToSend.length);
+//      buffer.put(dataToSend);
+//      buffer.flip(); // Prepare the buffer for reading
+//
+//// Queue the asynchronous request
+//      new Thread(new Runnable() {
+//        @Override
+//        public void run() {
+//          if (usbRequest.queue(buffer, buffer.limit())) {
+//            // Wait for the result
+//            UsbRequest response = connection.requestWait();
+//            if (response == usbRequest) {
+//              // Request completed successfully
+//              // You can handle the response if needed
+//              Log.i("Test_Android_USB", "Request completed successfully");
+//              Log.i("Test_Android_USB", "Response: " + Arrays.toString(buffer.array()));
+//            } else {
+//              Log.e("Test_Android_USB", "Error sending request");
+//            }
+//          } else {
+//            Log.e("Test_Android_USB", "Error queueing request");
+//          }
+//
+//// Release the USB interface when done
+//          connection.releaseInterface(usbInterface);
+//        }
+//      }).start();
+    }
+
   }
 
   @Override
@@ -77,10 +104,8 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
 
 //    modelTest();
-    
-    getDetail();
 
-    Log.e("Test Android FS", getApplicationContext().getFilesDir().getAbsolutePath());
+    getDetail();
 
     binding = ActivityMainBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
@@ -94,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
     binding.fab.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        Snackbar.make(view, "Replace with your own action " + String.valueOf(result[0]), Snackbar.LENGTH_LONG)
+        Snackbar.make(view, "Replace with your own action ", Snackbar.LENGTH_LONG)
             .setAction("Action", null).show();
       }
     });

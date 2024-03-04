@@ -109,7 +109,12 @@ public class CoreTgStreamHandler implements TgStreamHandler {
     switch (connectionStates) {
       case ConnectionStates.STATE_CONNECTED -> {
         if (Objects.nonNull(tgStreamReader)) {
-          tgStreamReader.start();
+          tgStreamReader.startLog();
+          try {
+            tgStreamReader.start();
+          } catch (Exception e) {
+            Log.e("CoreTgStreamHandler", "Error in starting the tgStreamReader" + e.getLocalizedMessage());
+          }
         }
       }
       case ConnectionStates.STATE_GET_DATA_TIME_OUT, ConnectionStates.STATE_FAILED, ConnectionStates.STATE_ERROR -> {
