@@ -18,13 +18,20 @@
       android:theme="@style/Theme.WrapperCore.NoActionBar">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
-        <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
-
 
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
+      <intent-filter>
+        <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+      </intent-filter>
     </activity>
   </application>
+
+  <uses-feature android:name="android.hardware.usb.accessory" />
+
+  <uses-feature android:name="android.hardware.usb.host" />
+
+  <uses-permission android:name="android.permission.USB_PERMISSION" />
 
   <uses-permission android:name="android.permission.INTERNET" />
 
