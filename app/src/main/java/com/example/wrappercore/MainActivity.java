@@ -64,93 +64,93 @@ public class MainActivity extends AppCompatActivity {
 
   }
 
-  private void asyncSendUsbPackets(UsbDevice mDevice, UsbManager manager) {
-    Log.i(TAG, "Device: " + mDevice.getVendorId());
-    UsbInterface usbInterface = mDevice.getInterface(0);
-    UsbEndpoint endpoint = usbInterface.getEndpoint(0);
-    UsbDeviceConnection connection = manager.openDevice(mDevice);
-    byte[] DATA = "1".getBytes();
-    boolean forceClaim = true;
-//
-    connection.claimInterface(mDevice.getInterface(0), true);
-//    connection.bulkTransfer(endpoint, DATA, DATA.length, 0);
+//   private void asyncSendUsbPackets(UsbDevice mDevice, UsbManager manager) {
+//     Log.i(TAG, "Device: " + mDevice.getVendorId());
+//     UsbInterface usbInterface = mDevice.getInterface(0);
+//     UsbEndpoint endpoint = usbInterface.getEndpoint(0);
+//     UsbDeviceConnection connection = manager.openDevice(mDevice);
+//     byte[] DATA = "1".getBytes();
+//     boolean forceClaim = true;
+// //
+//     connection.claimInterface(mDevice.getInterface(0), true);
+// //    connection.bulkTransfer(endpoint, DATA, DATA.length, 0);
 
-// Initialize UsbRequest
-    UsbRequest usbRequest = new UsbRequest();
-    usbRequest.initialize(connection, endpoint);
+// // Initialize UsbRequest
+//     UsbRequest usbRequest = new UsbRequest();
+//     usbRequest.initialize(connection, endpoint);
 
-// Prepare the data to send asynchronously
+// // Prepare the data to send asynchronously
 
-// Wrap the data in a ByteBuffer
-    ByteBuffer buffer = ByteBuffer.allocate(DATA.length);
-    buffer.put(DATA);
-    buffer.flip(); // Prepare the buffer for reading
+// // Wrap the data in a ByteBuffer
+//     ByteBuffer buffer = ByteBuffer.allocate(DATA.length);
+//     buffer.put(DATA);
+//     buffer.flip(); // Prepare the buffer for reading
 
-// Queue the asynchronous request
-    new Thread(() -> {
-      if (usbRequest.queue(buffer, buffer.limit())) {
-        // Wait for the result
-        UsbRequest response = connection.requestWait();
-        if (response == usbRequest) {
-          // Request completed successfully
-          // You can handle the response if needed
-          Log.i("Test_Android_USB", "Request completed successfully");
-          Log.i("Test_Android_USB", "Response: " + buffer);
-        } else {
-          Log.e("Test_Android_USB", "Error sending request");
-        }
-      } else {
-        Log.e("Test_Android_USB", "Error queueing request");
-      }
+// // Queue the asynchronous request
+//     new Thread(() -> {
+//       if (usbRequest.queue(buffer, buffer.limit())) {
+//         // Wait for the result
+//         UsbRequest response = connection.requestWait();
+//         if (response == usbRequest) {
+//           // Request completed successfully
+//           // You can handle the response if needed
+//           Log.i("Test_Android_USB", "Request completed successfully");
+//           Log.i("Test_Android_USB", "Response: " + buffer);
+//         } else {
+//           Log.e("Test_Android_USB", "Error sending request");
+//         }
+//       } else {
+//         Log.e("Test_Android_USB", "Error queueing request");
+//       }
 
-// Release the USB interface when done
-      connection.releaseInterface(usbInterface);
-    }).start();
+// // Release the USB interface when done
+//       connection.releaseInterface(usbInterface);
+//     }).start();
 
-  }
+//   }
 
-  private void sendUsbPackets(UsbDevice mDevice, UsbManager manager) {
-    Log.i(TAG, "Device: " + mDevice.getVendorId());
-    UsbInterface usbInterface = mDevice.getInterface(0);
-    UsbDeviceConnection connection = manager.openDevice(mDevice);
-    byte[] DATA = "1".getBytes();
-    boolean forceClaim = true;
-    int TIMEOUT = 1000;
+//   private void sendUsbPackets(UsbDevice mDevice, UsbManager manager) {
+//     Log.i(TAG, "Device: " + mDevice.getVendorId());
+//     UsbInterface usbInterface = mDevice.getInterface(0);
+//     UsbDeviceConnection connection = manager.openDevice(mDevice);
+//     byte[] DATA = "1".getBytes();
+//     boolean forceClaim = true;
+//     int TIMEOUT = 1000;
 
-    UsbEndpoint endpointOut = usbInterface.getEndpoint(0); // Output endpoint
-    UsbEndpoint endpointIn = usbInterface.getEndpoint(1); // Input endpoint
+//     UsbEndpoint endpointOut = usbInterface.getEndpoint(0); // Output endpoint
+//     UsbEndpoint endpointIn = usbInterface.getEndpoint(1); // Input endpoint
 
-    if (connection != null) {
-      connection.claimInterface(usbInterface, true);
+//     if (connection != null) {
+//       connection.claimInterface(usbInterface, true);
 
-      // Send data to the device
-      int bytesSent = connection.bulkTransfer(endpointOut, DATA, DATA.length, TIMEOUT);
+//       // Send data to the device
+//       int bytesSent = connection.bulkTransfer(endpointOut, DATA, DATA.length, TIMEOUT);
 
-      if (bytesSent >= 0) {
-        // Receive response from the device
-        byte[] buffer = new byte[1];
-        int bytesRead = connection.bulkTransfer(endpointIn, buffer, buffer.length, TIMEOUT);
+//       if (bytesSent >= 0) {
+//         // Receive response from the device
+//         byte[] buffer = new byte[1];
+//         int bytesRead = connection.bulkTransfer(endpointIn, buffer, buffer.length, TIMEOUT);
 
-        if (bytesRead >= 0) {
-          // Process the received data (buffer)
-          Log.i(TAG, "Received data: " + new String(buffer));
-        } else {
-          // Error: Failed to receive data from the device
-          Log.e(TAG, "Failed to receive data from the device");
-        }
-      } else {
-        // Error: Failed to send data to the device
-        Log.e(TAG, "Failed to send data to the device");
-      }
+//         if (bytesRead >= 0) {
+//           // Process the received data (buffer)
+//           Log.i(TAG, "Received data: " + new String(buffer));
+//         } else {
+//           // Error: Failed to receive data from the device
+//           Log.e(TAG, "Failed to receive data from the device");
+//         }
+//       } else {
+//         // Error: Failed to send data to the device
+//         Log.e(TAG, "Failed to send data to the device");
+//       }
 
-      // Release the USB interface when done
-      connection.releaseInterface(usbInterface);
-      connection.close();
-    } else {
-      // Error: Failed to open a connection to the USB device
-      Log.e(TAG, "Failed to open a connection to the USB device");
-    }
-  }
+//       // Release the USB interface when done
+//       connection.releaseInterface(usbInterface);
+//       connection.close();
+//     } else {
+//       // Error: Failed to open a connection to the USB device
+//       Log.e(TAG, "Failed to open a connection to the USB device");
+//     }
+//   }
 
   private void getUsbAccess(UsbDevice device, UsbManager manager) {
     // Create a PendingIntent for USB permission request
@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
     filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY); // Set priority to high
     registerReceiver(usbReceiver, filter); // Add permission flag
 //    if (VERSION.SDK_INT >= VERSION_CODES.O) {
-//    }
+ 
     // Request USB permission for the device
     manager.requestPermission(device, permissionIntent);
   }
@@ -240,7 +240,9 @@ public class MainActivity extends AppCompatActivity {
     UsbSerialDriver driver = availableDrivers.get(0);
     UsbDeviceConnection connection = manager.openDevice(driver.getDevice());
     if (connection == null) {
-      // add UsbManager.requestPermission(driver.getDevice(), ..) handling here
+      //! to test that line with the correct mocking comment if needed
+      //! this component must be tested in the env of flutter asap
+      UsbManager.requestPermission(driver.getDevice())
       return;
     }
 
