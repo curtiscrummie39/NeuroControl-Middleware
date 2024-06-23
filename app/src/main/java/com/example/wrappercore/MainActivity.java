@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
   private AppBarConfiguration appBarConfiguration;
   private float[] result = new float[]{4};
 
-  private void sendSdkBtPacket() throws IOException {
+  private void sendSdkUsbPacket() throws IOException {
 
     int TIMEOUT = 1000;
     byte[] request = switchState ? "1".getBytes() : "0".getBytes();
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
   }
 
-  private void asyncSendBtPackets(UsbDevice mDevice, UsbManager manager) {
+  private void asyncSendUsbPackets(UsbDevice mDevice, UsbManager manager) {
     Log.i(TAG, "Device: " + mDevice.getVendorId());
     UsbInterface usbInterface = mDevice.getInterface(0);
     UsbEndpoint endpoint = usbInterface.getEndpoint(0);
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
   }
 
-  private void sendBtPackets(UsbDevice mDevice, UsbManager manager) {
+  private void sendUsbPackets(UsbDevice mDevice, UsbManager manager) {
     Log.i(TAG, "Device: " + mDevice.getVendorId());
     UsbInterface usbInterface = mDevice.getInterface(0);
     UsbDeviceConnection connection = manager.openDevice(mDevice);
@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
     }
   }
 
-  private void getBtAccess(UsbDevice device, UsbManager manager) {
+  private void getUsbAccess(UsbDevice device, UsbManager manager) {
     // Create a PendingIntent for USB permission request
     PendingIntent permissionIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_USB_PERMISSION), 0);
 
@@ -172,8 +172,8 @@ public class MainActivity extends AppCompatActivity {
                   // Device opened successfully, perform further operations
                   Log.i(TAG, "Device opened successfully");
                   // Here you can perform USB communication or other tasks
-//                  asyncSendBtPackets(device, manager);
-//                  sendBtPackets(device, manager);
+                  //asyncSendUsbPackets(device, manager);
+                  //sendUsbPackets(device, manager);
                 }
               }
             } else {
@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
     manager.requestPermission(device, permissionIntent);
   }
 
-  public void initBtManager() {
+  public void initUsbManager() {
 
     UsbManager manager = (UsbManager) getSystemService(Context.USB_SERVICE);
     HashMap<String, UsbDevice> deviceList = manager.getDeviceList();
@@ -212,13 +212,13 @@ public class MainActivity extends AppCompatActivity {
     }
     if (mDevice != null) {
       Log.i(TAG, "sdk dev: " + VERSION.SDK_INT);
-      getBtAccess(mDevice, manager);
+      getUsbAccess(mDevice, manager);
 //      if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
 //      }
     }
   }
 
-  public void initBtManagerSerialSdk() throws IOException {
+  public void initUsbManagerSerialSdk() throws IOException {
     // Find all available drivers from attached devices.
     UsbManager manager = (UsbManager) getSystemService(Context.USB_SERVICE);
     List<UsbSerialDriver> availableDrivers = UsbSerialProber.getDefaultProber().findAllDrivers(manager);
@@ -230,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
     UsbDevice mDevice;
     for (UsbDevice device : diverList.values()) {
       mDevice = device;
-      getBtAccess(mDevice, manager);
+      getUsbAccess(mDevice, manager);
       Log.i(TAG,
           "Device Name: " + device.getDeviceName() + " Device ID: " + device.getDeviceId() + " Vendor: "
               + device.getVendorId() + " Product: " + device.getProductId());
@@ -256,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
 
 //    modelTest();
     try {
-      initBtManagerSerialSdk();
+      initUsbManagerSerialSdk();
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -273,9 +273,9 @@ public class MainActivity extends AppCompatActivity {
     binding.fab.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-//        initBtManager();
+//        initUsbManager();
         try {
-          sendSdkBtPacket();
+          sendSdkUsbPacket();
           switchState = !switchState;
         } catch (IOException e) {
           throw new RuntimeException(e);
