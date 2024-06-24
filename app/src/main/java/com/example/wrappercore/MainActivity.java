@@ -14,10 +14,11 @@ import android.hardware.usb.UsbManager;
 import android.hardware.usb.UsbRequest;
 import android.os.Build.VERSION;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -33,6 +34,8 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,18 +43,34 @@ public class MainActivity extends AppCompatActivity {
   private static final String TAG = "Test_Android_USB";
   private Boolean switchState = false;
   private UsbSerialPort port;
+  private int counter = 0;
   private AppBarConfiguration appBarConfiguration;
   private float[] result = new float[]{4};
+  private String res;
+  private TextView textViewHello;
+  private Handler handler;
 
-  private void sendSdkUsbPacket() throws IOException {
+  private void sendSdkBtPacket() throws IOException {
 
     int TIMEOUT = 1000;
-    byte[] request = switchState ? "1".getBytes() : "0".getBytes();
+    byte[] request = switchState ? "2".getBytes() : "3".getBytes();
     byte[] response = new byte[1024];
 
     port.write(request, TIMEOUT);
     int len = port.read(response, TIMEOUT);
-    Log.i(TAG, "Received data: " + new String(response, 0, len));
+    Log.i(TAG, "Received data: " + len);
+    String msgByte = "";
+    for (byte i : response) {
+      msgByte += i;
+    }
+//    Log.i(TAG, "data: " + msgByte);
+    StringBuilder msg = new StringBuilder();
+    for (byte i : response) {
+      msg.append((char) i);
+    }
+//    res = "Arduino says: " + response[0];
+    res = "Arduino says: " + msgByte;
+//    res = "Arduino says: " + (char) response[0];
   }
 
   private void modelTest() {
@@ -64,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
   }
 
-  private void asyncSendUsbPackets(UsbDevice mDevice, UsbManager manager) {
+  private void asyncSendBtPackets(UsbDevice mDevice, UsbManager manager) {
     Log.i(TAG, "Device: " + mDevice.getVendorId());
     UsbInterface usbInterface = mDevice.getInterface(0);
     UsbEndpoint endpoint = usbInterface.getEndpoint(0);
@@ -109,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
   }
 
-  private void sendUsbPackets(UsbDevice mDevice, UsbManager manager) {
+  private void sendBtPackets(UsbDevice mDevice, UsbManager manager) {
     Log.i(TAG, "Device: " + mDevice.getVendorId());
     UsbInterface usbInterface = mDevice.getInterface(0);
     UsbDeviceConnection connection = manager.openDevice(mDevice);
@@ -152,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
     }
   }
 
-  private void getUsbAccess(UsbDevice device, UsbManager manager) {
+  private void getBtAccess(UsbDevice device, UsbManager manager) {
     // Create a PendingIntent for USB permission request
     PendingIntent permissionIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_USB_PERMISSION), 0);
 
@@ -172,8 +191,8 @@ public class MainActivity extends AppCompatActivity {
                   // Device opened successfully, perform further operations
                   Log.i(TAG, "Device opened successfully");
                   // Here you can perform USB communication or other tasks
-                  //asyncSendUsbPackets(device, manager);
-                  //sendUsbPackets(device, manager);
+//                  asyncSendBtPackets(device, manager);
+//                  sendBtPackets(device, manager);
                 }
               }
             } else {
@@ -196,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
     manager.requestPermission(device, permissionIntent);
   }
 
-  public void initUsbManager() {
+  public void initBtManager() {
 
     UsbManager manager = (UsbManager) getSystemService(Context.USB_SERVICE);
     HashMap<String, UsbDevice> deviceList = manager.getDeviceList();
@@ -212,13 +231,13 @@ public class MainActivity extends AppCompatActivity {
     }
     if (mDevice != null) {
       Log.i(TAG, "sdk dev: " + VERSION.SDK_INT);
-      getUsbAccess(mDevice, manager);
+      getBtAccess(mDevice, manager);
 //      if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
 //      }
     }
   }
 
-  public void initUsbManagerSerialSdk() throws IOException {
+  public void initBtManagerSerialSdk() throws IOException {
     // Find all available drivers from attached devices.
     UsbManager manager = (UsbManager) getSystemService(Context.USB_SERVICE);
     List<UsbSerialDriver> availableDrivers = UsbSerialProber.getDefaultProber().findAllDrivers(manager);
@@ -230,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
     UsbDevice mDevice;
     for (UsbDevice device : diverList.values()) {
       mDevice = device;
-      getUsbAccess(mDevice, manager);
+      getBtAccess(mDevice, manager);
       Log.i(TAG,
           "Device Name: " + device.getDeviceName() + " Device ID: " + device.getDeviceId() + " Vendor: "
               + device.getVendorId() + " Product: " + device.getProductId());
@@ -256,10 +275,23 @@ public class MainActivity extends AppCompatActivity {
 
 //    modelTest();
     try {
-      initUsbManagerSerialSdk();
+      initBtManagerSerialSdk();
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+
+//    new Thread(() -> {
+//      new Timer().scheduleAtFixedRate(new TimerTask() {
+//        @Override
+//        public void run() {
+//          try {
+//            sendSdkBtPacket();
+//          } catch (IOException e) {
+//            throw new RuntimeException(e);
+//          }
+//        }
+//      }, 0, 100);
+//    });
 
     com.example.wrappercore.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
@@ -270,20 +302,56 @@ public class MainActivity extends AppCompatActivity {
     appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
     NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
-    binding.fab.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-//        initUsbManager();
-        try {
-          sendSdkUsbPacket();
-          switchState = !switchState;
-        } catch (IOException e) {
-          throw new RuntimeException(e);
-        }
-        Snackbar.make(view, "Replace with your own action " + result[0], Snackbar.LENGTH_LONG)
-            .setAction("Action", null).show();
+    binding.fab.setOnClickListener(view -> {
+//        initBtManager();
+      try {
+        sendSdkBtPacket();
+        switchLed();
+      } catch (IOException e) {
+        throw new RuntimeException(e);
       }
+      Snackbar.make(view, "Replace with your own action " + res, Snackbar.LENGTH_LONG)
+          .setAction("Action", null).show();
     });
+
+    textViewHello = binding.getRoot().findViewById(R.id.textview_first);
+
+    // Initialize the handler
+    handler = new Handler();
+
+    // Set up the timer to update the text periodically
+    new Timer().scheduleAtFixedRate(new TimerTask() {
+      @Override
+      public void run() {
+        // Update the text on the UI thread
+        handler.post(() -> {
+          try {
+            counter++;
+            sendSdkBtPacket();
+          } catch (IOException e) {
+            throw new RuntimeException(e);
+          }
+          // Call a method to update the text
+          updateText();
+          switchLed();
+        });
+      }
+    }, 0, 1000); // Change the interval (in milliseconds) as needed
+  }
+
+  private void switchLed() {
+    switchState = !switchState;
+  }
+
+
+  // Method to update the text
+  private void updateText() {
+    // Get the current time or any other dynamic text
+    String newText = "current message count: " + counter + "\n" + res;
+
+    // Set the new text to the TextView
+    textViewHello.setText(newText);
+
   }
 
   @Override

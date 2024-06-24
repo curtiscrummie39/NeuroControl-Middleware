@@ -11,8 +11,7 @@ import com.example.wrappercore.control.blink.events.controlSwitch.SwitchEvent;
 import com.example.wrappercore.control.blink.events.controlSwitch.SwitchEventHandler;
 import headset.events.nskAlgo.algoBlink.AlgoBlinkEvent;
 import headset.events.nskAlgo.algoBlink.IAlgoBlinkEventListener;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.ArrayList;
 
 public class BlinkManager implements IAlgoBlinkEventListener {
 
@@ -22,13 +21,15 @@ public class BlinkManager implements IAlgoBlinkEventListener {
   private final int blinkDetectionThreshold;
   private final int blinksToSwitch;
   private final int blinksToClick;
+
+  private ArrayList<AlgoBlinkEvent> blinksList;
   private int blinksCounter = 0;
 
   public BlinkManager(int blinkSensitivityThreshold, int blinksToSwitch, int blinksToClick) {
     this.blinkDetectionThreshold = blinkSensitivityThreshold;
     this.blinksToSwitch = blinksToSwitch;
     this.blinksToClick = blinksToClick;
-    initiateEventScheduler();
+//    initiateEventScheduler();
   }
 
   public void addListener(IBlinkEventListener listener) {
@@ -56,23 +57,33 @@ public class BlinkManager implements IAlgoBlinkEventListener {
     //TODO: Discuss this logic
     if (event.getBlinkData().strength() > blinkDetectionThreshold) {
       countBlink();
+      addBlinkToClickList(event);
     }
   }
 
-  private void initiateEventScheduler() {
-    new Timer().scheduleAtFixedRate(new TimerTask() {
-      @Override
-      public void run() {
-        //FIXME: replace all conditions with equality but after process testing
-        if (blinksCounter == blinksToClick) {
-          fireClickEvent();
-        } else if (blinksCounter == blinksToSwitch) {
-          fireSwitchModeEvent();
-        } else {
-          blinksCounter = 0;
-        }
-      }
-    }, 0, 3000);
+//  private void initiateEventScheduler() {
+//    new Timer().scheduleAtFixedRate(new TimerTask() {
+//      @Override
+//      public void run() {
+//        //FIXME: replace all conditions with equality but after process testing
+//        if (blinksCounter == blinksToClick) {
+//          fireClickEvent();
+//        } else if (blinksCounter == blinksToSwitch) {
+//          fireSwitchModeEvent();
+//        } else {
+//          blinksCounter = 0;
+//        }
+//      }
+//    }, 0, 3000);
+//  }
+
+  private void addBlinkToClickList(AlgoBlinkEvent event) {
+    blinksList.add(event);
+    if (blinksList.size() == blinksToClick) {
+      fireClickEvent();
+      blinksList.clear();
+      blinksCounter = 0;
+    }
   }
 
 
@@ -82,7 +93,6 @@ public class BlinkManager implements IAlgoBlinkEventListener {
 
   private void fireClickEvent() {
     clickEventHandler.fireEvent(new ClickEvent(this));
-    blinksCounter = 0;
   }
 
   private void fireSwitchModeEvent() {
@@ -90,7 +100,6 @@ public class BlinkManager implements IAlgoBlinkEventListener {
         lastControlModeType == ControlModeTypes.APP_CONTROL ? ControlModeTypes.WHEELCHAIR_CONTROL
             : ControlModeTypes.APP_CONTROL;
     switchEventHandler.fireEvent(new SwitchEvent(this, controlModeType));
-    blinksCounter = 0;
   }
 
   private void countBlink() {
