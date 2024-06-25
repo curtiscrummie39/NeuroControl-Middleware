@@ -2,17 +2,10 @@ package com.example.wrappercore.control.action;
 
 import ai.events.aiDetectedMovement.AiDetectedMovementEvent;
 import ai.events.aiDetectedMovement.IAiDetectedMovementEventListener;
-import android.util.Log;
-import com.example.wrappercore.control.action.events.ActionEvent;
 import com.example.wrappercore.control.action.events.IActionEventListener;
 import com.example.wrappercore.control.action.events.movement.MovementEvent;
 import com.example.wrappercore.control.action.events.movement.MovementEventHandler;
-import com.example.wrappercore.control.action.events.movement.MovementTypes;
 import com.example.wrappercore.control.blink.BlinkManager;
-import com.example.wrappercore.control.blink.events.controlSwitch.ControlModeTypes;
-import java.sql.Timestamp;
-import java.util.Timer;
-import java.util.TimerTask;
 
 //TODO: ask more about how the ai will interact with this class
 public class ActionManager implements
@@ -26,27 +19,27 @@ public class ActionManager implements
   public ActionManager(BlinkManager modeManager, int changeToStopInMillis) {
     this.modeManager = modeManager;
     this.changeToStopInMillis = changeToStopInMillis;
-    initiateEventScheduler();
+//    initiateEventScheduler();
   }
 
-  private void initiateEventScheduler() {
-    new Timer().scheduleAtFixedRate(new TimerTask() {
-      @Override
-      public void run() {
-        if (lastMovementEvent != null) {
-          if (Timestamp.valueOf(lastMovementEvent.getTimestamp().toString()).getTime() + changeToStopInMillis
-              <= System.currentTimeMillis()
-              && lastMovementEvent.getMovementType() != MovementTypes.STOP) {
-            fireEvent(new ActionEvent(this, MovementTypes.STOP.ordinal()));
-          } else {
-            fireEvent(new ActionEvent(this, lastMovementEvent.getFlag()));
-          }
-        } else {
-          Log.w("Control component - Action", "LastMovement is Null");
-        }
-      }
-    }, 0, 1000);
-  }
+//  private void initiateEventScheduler() {
+//    new Timer().scheduleAtFixedRate(new TimerTask() {
+//      @Override
+//      public void run() {
+//        if (lastMovementEvent != null) {
+//          if (Timestamp.valueOf(lastMovementEvent.getTimestamp().toString()).getTime() + changeToStopInMillis
+//              <= System.currentTimeMillis()
+//              && lastMovementEvent.getMovementType() != MovementTypes.STOP) {
+//            fireEvent(new ActionEvent(this, MovementTypes.STOP.ordinal()));
+//          } else {
+//            fireEvent(new ActionEvent(this, lastMovementEvent.getFlag()));
+//          }
+//        } else {
+//          Log.w("Control component - Action", "LastMovement is Null");
+//        }
+//      }
+//    }, 0, 1000);
+//  }
 
   public void addListener(IActionEventListener listener) {
     movementEventHandler.addListener(listener);
@@ -58,16 +51,16 @@ public class ActionManager implements
 
   @Override
   public void onAiDetectedMovementEvent(AiDetectedMovementEvent aiDetectedMovementEvent) {
-    fireEvent(aiDetectedMovementEvent);
+    this.movementEventHandler.fireAppMovementEvent(new MovementEvent(this, aiDetectedMovementEvent.getFlag()));
   }
 
-  private void fireEvent(ActionEvent event) {
-    lastMovementEvent = new MovementEvent(this, event.getFlag());
-    if (modeManager.getLastControlModeType() == ControlModeTypes.WHEELCHAIR_CONTROL) {
-      movementEventHandler.fireWheelchairMovementEvent(lastMovementEvent);
-    } else if (modeManager.getLastControlModeType() == ControlModeTypes.APP_CONTROL) {
-      movementEventHandler.fireAppMovementEvent(lastMovementEvent);
-    }
-  }
+//  private void fireEvent(ActionEvent event) {
+//    lastMovementEvent = new MovementEvent(this, event.getFlag());
+//    if (modeManager.getLastControlModeType() == ControlModeTypes.WHEELCHAIR_CONTROL) {
+//      movementEventHandler.fireWheelchairMovementEvent(lastMovementEvent);
+//    } else if (modeManager.getLastControlModeType() == ControlModeTypes.APP_CONTROL) {
+//      movementEventHandler.fireAppMovementEvent(lastMovementEvent);
+//    }
+//  }
 
 }

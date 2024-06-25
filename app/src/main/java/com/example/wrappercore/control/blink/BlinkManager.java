@@ -19,15 +19,15 @@ public class BlinkManager implements IAlgoBlinkEventListener {
   private final ClickEventHandler clickEventHandler = new ClickEventHandler();
   private final ControlModeTypes lastControlModeType = ControlModeTypes.APP_CONTROL;
   private final int blinkDetectionThreshold;
-  private final int blinksToSwitch;
+  //  private final int blinksToSwitch;
   private final int blinksToClick;
 
-  private ArrayList<AlgoBlinkEvent> blinksList;
+  private ArrayList<AlgoBlinkEvent> blinksList = new ArrayList<>();
   private int blinksCounter = 0;
 
-  public BlinkManager(int blinkSensitivityThreshold, int blinksToSwitch, int blinksToClick) {
+  public BlinkManager(int blinkSensitivityThreshold, int blinksToClick) {
     this.blinkDetectionThreshold = blinkSensitivityThreshold;
-    this.blinksToSwitch = blinksToSwitch;
+//    this.blinksToSwitch = blinksToSwitch;
     this.blinksToClick = blinksToClick;
 //    initiateEventScheduler();
   }
@@ -61,6 +61,7 @@ public class BlinkManager implements IAlgoBlinkEventListener {
     }
   }
 
+  //FIXME: This method is not used in the current implementation
 //  private void initiateEventScheduler() {
 //    new Timer().scheduleAtFixedRate(new TimerTask() {
 //      @Override
@@ -78,20 +79,29 @@ public class BlinkManager implements IAlgoBlinkEventListener {
 //  }
 
   private void addBlinkToClickList(AlgoBlinkEvent event) {
-    blinksList.add(event);
-    if (blinksList.size() == blinksToClick) {
+    this.blinksList.add(event);
+
+    for (AlgoBlinkEvent blink : this.blinksList) {
+      if (event.getBlinkTimeStamp() - blink.getBlinkTimeStamp() > blinksToClick * 1000) {
+        this.blinksList.remove(blink);
+      }
+    }
+
+    //FIXME: due to the current state of the app, we only need to check for click event
+    //FIXME: but we need to discuss this with the team
+    //if (this.blinksList.size() == blinksToClick) {
+    if (this.blinksList.size() >= blinksToClick) {
       fireClickEvent();
-      blinksList.clear();
-      blinksCounter = 0;
+      this.blinksList.clear();
     }
   }
-
 
   public ControlModeTypes getLastControlModeType() {
     return lastControlModeType;
   }
 
   private void fireClickEvent() {
+    Log.i("Control Component", "Click Event Fired");
     clickEventHandler.fireEvent(new ClickEvent(this));
   }
 
