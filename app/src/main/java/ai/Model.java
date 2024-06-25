@@ -65,6 +65,7 @@ public class Model {
         + ", Input Tensor Data Type:" + tflite.getInputTensor(0).dataType() + ", Output Tensor Data Type:"
         + tflite.getOutputTensor(0).dataType() + ", Input Data Length:"
         + inputData.length + ", first input data:" + inputData[0][0] + ", second input data:" + inputData[0][1]);
+    
     tflite.run(inputData, outputData);
     Log.e("AI model", "Output Data:" + outputData[0]);
     return outputData;

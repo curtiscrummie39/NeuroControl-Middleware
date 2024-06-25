@@ -1,15 +1,15 @@
 package ai.events.aiDetectedMovement;
 
 import com.example.wrappercore.control.action.events.ActionEvent;
-import java.time.LocalDateTime;
 
 public class AiDetectedMovementEvent extends ActionEvent {
 
 
-  private final LocalDateTime timestamp = LocalDateTime.now();
+  private final long timestamp;
 
   public AiDetectedMovementEvent(Object source, int flag) {
     super(source, flag);
+    this.timestamp = System.currentTimeMillis();
   }
 
   public String toString() {
