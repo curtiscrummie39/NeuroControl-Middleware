@@ -1,7 +1,7 @@
 package headset.events.stream;
 
-import java.util.EventListener;
+import headset.events.IHeadsetListener;
 
-public interface IStreamEventListener extends EventListener {
+public interface IStreamEventListener extends IHeadsetListener {
 
 }

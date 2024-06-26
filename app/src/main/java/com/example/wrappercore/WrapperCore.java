@@ -5,7 +5,9 @@ import ai.ModelController;
 import android.bluetooth.BluetoothManager;
 import android.hardware.usb.UsbManager;
 import com.example.wrappercore.control.ControlManager;
+import com.example.wrappercore.control.IControlManagerEventListener;
 import headset.HeadsetController;
+import headset.events.IHeadsetListener;
 import java.io.IOException;
 import java.util.EventListener;
 
@@ -46,11 +48,19 @@ public class WrapperCore {
   }
 
   public void addListener(EventListener listener) {
-    controlManager.addListener(listener);
+    if (listener instanceof IControlManagerEventListener) {
+      controlManager.addListener((IControlManagerEventListener) listener);
+    } else if (listener instanceof IHeadsetListener) {
+      headsetController.addEventListener(listener);
+    }
   }
 
   public void removeListener(EventListener listener) {
-    controlManager.removeListener(listener);
+    if (listener instanceof IControlManagerEventListener) {
+      controlManager.removeListener((IControlManagerEventListener) listener);
+    } else if (listener instanceof IHeadsetListener) {
+      headsetController.removeEventListener(listener);
+    }
   }
 
   public void makeWheelchairGoForward() {

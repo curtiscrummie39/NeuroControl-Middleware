@@ -35,21 +35,14 @@ public class Model {
   }
 
   public float[][] runInference(float[][][] inputData) {
-    for (int i = 0; i < inputData.length; i++) {
-      for (int j = 0; j < inputData[i].length; j++) {
-        for (int k = 0; k < inputData[i][j].length; k++) {
-          inputData[i][j][k] = 1.0f;
-        }
-      }
-    }
+    this.changeInputDataTo(inputData, 255);
     float[][] outputData = new float[1][1];
 
     Log.w(TAG, "Input Tensor Dimensions:" +
         Arrays.toString(tflite.getInputTensor(0).shape()) + ", Output Tensor Dimensions:" + Arrays.toString(
         tflite.getOutputTensor(0).shape())
         + ", Input Tensor Data Type:" + tflite.getInputTensor(0).dataType() + ", Output Tensor Data Type:"
-        + tflite.getOutputTensor(0).dataType() + ", Input Data Length:"
-        + Arrays.size(inputData));
+        + tflite.getOutputTensor(0).dataType());
 
     Log.i(TAG, "Running inference");
     tflite.run(inputData, outputData);
@@ -81,6 +74,15 @@ public class Model {
     return test;
   }
 
-
+  private float[][][] changeInputDataTo(float[][][] arr, float num) {
+    for (int i = 0; i < arr.length; i++) {
+      for (int j = 0; j < arr[i].length; j++) {
+        for (int k = 0; k < arr[i][j].length; k++) {
+          arr[i][j][k] = num;
+        }
+      }
+    }
+    return arr;
+  }
 
 }

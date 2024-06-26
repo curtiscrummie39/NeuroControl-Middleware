@@ -14,7 +14,6 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.wrappercore.databinding.ActivityMainBinding;
 import com.google.android.material.snackbar.Snackbar;
 import com.hoho.android.usbserial.driver.UsbSerialPort;
-import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -59,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
     result = modelHandler.runInference(inputData);
 //    result = new float[]{3};
-    res = Arrays.toString(result);
   }
 //
 //  private void asyncSendBtPackets(UsbDevice mDevice, UsbManager manager) {
@@ -290,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
 //      } catch (IOException e) {
 //        throw new RuntimeException(e);
 //      }
-      Snackbar.make(view, "Replace with your own action " + res, Snackbar.LENGTH_LONG)
+      Snackbar.make(view, "App Says:" + result[0][0], Snackbar.LENGTH_LONG)
           .setAction("Action", null).show();
     });
 

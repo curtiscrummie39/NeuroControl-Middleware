@@ -1,7 +1,7 @@
 package headset.events.nskAlgo;
 
-import java.util.EventListener;
+import headset.events.IHeadsetListener;
 
-public interface IAlgoEventListener extends EventListener {
+public interface IAlgoEventListener extends IHeadsetListener {
 
 }

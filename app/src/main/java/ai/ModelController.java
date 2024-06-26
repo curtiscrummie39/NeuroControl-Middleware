@@ -5,23 +5,36 @@ import ai.events.aiDetectedMovement.AiDetectedMovementEventHandler;
 import ai.events.aiDetectedMovement.IAiDetectedMovementEventListener;
 import headset.events.stream.streamRaw.IStreamRawDataEventListener;
 import headset.events.stream.streamRaw.StreamRawDataEvent;
+import headset.events.stream.streamSignalQuality.IStreamSignalQualityEventListener;
+import headset.events.stream.streamSignalQuality.StreamSignalQualityEvent;
 
-public class ModelController implements IStreamRawDataEventListener {
+public class ModelController implements IStreamRawDataEventListener, IStreamSignalQualityEventListener {
 
   private final Model model;
-
   private final AiDetectedMovementEventHandler aiDetectedMovementEventHandler = new AiDetectedMovementEventHandler();
+  private int lastSignalQuality = 200;
 
   public ModelController(String remoteModelUrl) {
     this.model = new Model(remoteModelUrl);
   }
 
   @Override
+  public void onSignalQualityUpdate(StreamSignalQualityEvent event) {
+    this.lastSignalQuality = event.getSignalQualityData().qualityLevel();
+  }
+
+  @Override
   public void onRawDataUpdate(StreamRawDataEvent event) {
-    float[][][] input = new float[1][event.getRawData().rawData().length][1];
-    for (int i = 0; i < event.getRawData().rawData().length; i++) {
-      input[0][i][0] = event.getRawData().rawData()[i];
+    if (lastSignalQuality == 0) {
+      float[][][] input = new float[1][event.getRawData().rawData().length][1];
+      for (int i = 0; i < event.getRawData().rawData().length; i++) {
+        input[0][i][0] = event.getRawData().rawData()[i];
+      }
+      detectMovement(input);
     }
+  }
+
+  private void detectMovement(float[][][] input) {
     float[][] result = model.runInference(input);
     //FIXME: this is a dummy implementation
     //       the real implementation require the model to take the headset raw data as input and return some sort of a
