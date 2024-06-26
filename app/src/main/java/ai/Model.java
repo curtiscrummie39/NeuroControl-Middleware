@@ -14,10 +14,12 @@ import org.tensorflow.lite.Interpreter;
 
 public class Model {
 
+  private final String TAG = "AIModel";
   public Interpreter tflite;
 
   public Model(String remoteModelUrl) {
     loadModel(remoteModelUrl);
+    Log.e(TAG, "Model loaded successfully");
   }
 
 
@@ -25,7 +27,7 @@ public class Model {
     try {
 //      MappedByteBuffer modelBuffer = loadModelFile(assetFileDescriptor);
       ByteBuffer modelBuffer = loadModelFileFromNetwork(remoteModelUrl);
-      Log.e("test", "modelBuffer: " + modelBuffer);
+      Log.e(TAG, "modelBuffer: " + modelBuffer);
       tflite = new Interpreter(modelBuffer);
     } catch (IOException e) {
       e.printStackTrace();
@@ -52,21 +54,31 @@ public class Model {
     long startOffset = assetFileDescriptor.getStartOffset();
     long declaredLength = assetFileDescriptor.getDeclaredLength();
     MappedByteBuffer test = fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
-    Log.e("test", String.valueOf(test));
+    Log.e(TAG, String.valueOf(test));
     return test;
   }
 
-  public float[] runInference(float[][] inputData) {
-    float[] outputData = new float[1];
+  public float[][] runInference(float[][][] inputData) {
+    for (int i = 0; i < inputData.length; i++) {
+      for (int j = 0; j < inputData[i].length; j++) {
+        for (int k = 0; k < inputData[i][j].length; k++) {
+          inputData[i][j][k] = 1.0f;
+        }
+      }
+    }
+    float[][] outputData = new float[1][1];
 
-    Log.w("AI model", "Input Tensor Dimensions:" +
+    Log.w(TAG, "Input Tensor Dimensions:" +
         Arrays.toString(tflite.getInputTensor(0).shape()) + ", Output Tensor Dimensions:" + Arrays.toString(
         tflite.getOutputTensor(0).shape())
         + ", Input Tensor Data Type:" + tflite.getInputTensor(0).dataType() + ", Output Tensor Data Type:"
         + tflite.getOutputTensor(0).dataType() + ", Input Data Length:"
         + inputData.length + ", first input data:" + inputData[0][0] + ", second input data:" + inputData[0][1]);
+
+    Log.i(TAG, "Running inference");
     tflite.run(inputData, outputData);
-    Log.e("AI model", "Output Data:" + outputData[0]);
+    Log.i(TAG, "Inference finished");
+    Log.e(TAG, "Output Data:" + outputData[0][0]);
     return outputData;
   }
 

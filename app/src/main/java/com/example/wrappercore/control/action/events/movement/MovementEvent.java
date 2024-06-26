@@ -1,7 +1,6 @@
 package com.example.wrappercore.control.action.events.movement;
 
 import com.example.wrappercore.control.action.events.ActionEvent;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,19 +17,19 @@ public class MovementEvent extends ActionEvent {
 
   private final MovementTypes movementType;
 
-  private final LocalDateTime timestamp;
+  private final long timestamp;
 
   public MovementEvent(Object source, int flag) {
     super(source, flag);
     this.movementType = INTEGER_MOVEMENT_TYPES_MAP.get(flag);
-    this.timestamp = LocalDateTime.now();
+    this.timestamp = System.currentTimeMillis();
   }
 
   public MovementTypes getMovementType() {
     return movementType;
   }
 
-  public LocalDateTime getTimestamp() {
+  public long getTimestamp() {
     return timestamp;
   }
 

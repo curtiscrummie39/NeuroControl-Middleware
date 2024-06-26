@@ -12,12 +12,12 @@ public class ActionManager implements
     IAiDetectedMovementEventListener {
 
   private final MovementEventHandler movementEventHandler = new MovementEventHandler();
-  private final BlinkManager modeManager;
+  private final BlinkManager blinkManager;
   private MovementEvent lastMovementEvent;
   private int changeToStopInMillis = 0;
 
-  public ActionManager(BlinkManager modeManager, int changeToStopInMillis) {
-    this.modeManager = modeManager;
+  public ActionManager(BlinkManager blinkManager, int changeToStopInMillis) {
+    this.blinkManager = blinkManager;
     this.changeToStopInMillis = changeToStopInMillis;
 //    initiateEventScheduler();
   }
@@ -51,14 +51,15 @@ public class ActionManager implements
 
   @Override
   public void onAiDetectedMovementEvent(AiDetectedMovementEvent aiDetectedMovementEvent) {
+    //TODO: Make @AhmedMohsen Implement a listener for this in his interface
     this.movementEventHandler.fireAppMovementEvent(new MovementEvent(this, aiDetectedMovementEvent.getFlag()));
   }
 
 //  private void fireEvent(ActionEvent event) {
 //    lastMovementEvent = new MovementEvent(this, event.getFlag());
-//    if (modeManager.getLastControlModeType() == ControlModeTypes.WHEELCHAIR_CONTROL) {
+//    if (blinkManager.getLastControlModeType() == ControlModeTypes.WHEELCHAIR_CONTROL) {
 //      movementEventHandler.fireWheelchairMovementEvent(lastMovementEvent);
-//    } else if (modeManager.getLastControlModeType() == ControlModeTypes.APP_CONTROL) {
+//    } else if (blinkManager.getLastControlModeType() == ControlModeTypes.APP_CONTROL) {
 //      movementEventHandler.fireAppMovementEvent(lastMovementEvent);
 //    }
 //  }
