@@ -2,6 +2,7 @@ package ai;
 
 import ai.events.aiDetectedMovement.AiDetectedMovementEvent;
 import ai.events.aiDetectedMovement.AiDetectedMovementEventHandler;
+import ai.events.aiDetectedMovement.IAiDetectedMovementEventListener;
 import headset.events.stream.streamRaw.IStreamRawDataEventListener;
 import headset.events.stream.streamRaw.StreamRawDataEvent;
 
@@ -22,4 +23,11 @@ public class ModelController implements IStreamRawDataEventListener {
     aiDetectedMovementEventHandler.fireEvent(new AiDetectedMovementEvent(this, (int) result[0]));
   }
 
+  public void addListener(IAiDetectedMovementEventListener listener) {
+    aiDetectedMovementEventHandler.addListener(listener);
+  }
+  
+  public void removeListener(IAiDetectedMovementEventListener listener) {
+    aiDetectedMovementEventHandler.removeListener(listener);
+  }
 }

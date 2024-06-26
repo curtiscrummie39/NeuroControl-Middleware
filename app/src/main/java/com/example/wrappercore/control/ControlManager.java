@@ -8,20 +8,20 @@ import java.util.EventListener;
 
 public class ControlManager {
 
-  private final BlinkManager modeManager;
+  private final BlinkManager blinkManager;
 
   private final ActionManager actionManager;
 
   public ControlManager() {
-    modeManager = new BlinkManager(0, 5, 3);
-    actionManager = new ActionManager(modeManager, 5000);
+    blinkManager = new BlinkManager(0, 3);
+    actionManager = new ActionManager(blinkManager, 5000);
   }
 
   public void addListener(EventListener listener) {
     if (listener instanceof IActionEventListener) {
       actionManager.addListener((IActionEventListener) listener);
     } else if (listener instanceof IBlinkEventListener) {
-      modeManager.addListener((IBlinkEventListener) listener);
+      blinkManager.addListener((IBlinkEventListener) listener);
     } else {
       throw new IllegalArgumentException("Invalid Listener Type");
     }
@@ -31,13 +31,17 @@ public class ControlManager {
     if (listener instanceof IActionEventListener) {
       actionManager.removeListener((IActionEventListener) listener);
     } else if (listener instanceof IBlinkEventListener) {
-      modeManager.removeListener((IBlinkEventListener) listener);
+      blinkManager.removeListener((IBlinkEventListener) listener);
     } else {
       throw new IllegalArgumentException("Invalid Listener Type");
     }
   }
 
-  public BlinkManager getModeManager() {
-    return modeManager;
+  public BlinkManager getBlinkManager() {
+    return blinkManager;
+  }
+
+  public ActionManager getActionManager() {
+    return actionManager;
   }
 }

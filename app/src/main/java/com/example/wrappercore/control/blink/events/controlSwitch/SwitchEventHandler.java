@@ -3,6 +3,7 @@ package com.example.wrappercore.control.blink.events.controlSwitch;
 import android.util.Log;
 import java.util.ArrayList;
 
+@Deprecated
 public class SwitchEventHandler {
 
   private final ArrayList<ISwitchEventListener> listeners = new ArrayList<ISwitchEventListener>();
