@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
     filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY); // Set priority to high
     registerReceiver(usbReceiver, filter); // Add permission flag
 //    if (VERSION.SDK_INT >= VERSION_CODES.O) {
-//    }
+ 
     // Request USB permission for the device
     manager.requestPermission(device, permissionIntent);
   }
@@ -259,7 +259,9 @@ public class MainActivity extends AppCompatActivity {
     UsbSerialDriver driver = availableDrivers.get(0);
     UsbDeviceConnection connection = manager.openDevice(driver.getDevice());
     if (connection == null) {
-      // add UsbManager.requestPermission(driver.getDevice(), ..) handling here
+      //! to test that line with the correct mocking comment if needed
+      //! this component must be tested in the env of flutter asap
+      UsbManager.requestPermission(driver.getDevice())
       return;
     }
 
