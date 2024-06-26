@@ -18,14 +18,19 @@ public class ModelController implements IStreamRawDataEventListener {
 
   @Override
   public void onRawDataUpdate(StreamRawDataEvent event) {
+    float[][][] input = new float[1][event.getRawData().rawData().length][1];
     //FIXME: this is a dummy implementation
     //       the real implementation require the model to take the headset raw data as input and return some sort of a
     //       agreed upon flag {o: for incorrect detection of action, 1: for correct detection of action } that will be
     //       used to trigger the appropriate action
-//    float[] result = model.runInference(new float[][]{{0, (float) event.getRawData().rawData()[0]}});
-    float[] result = model.runInference(new float[][]{{1, 2}});
-    if (result[0] > 0.5) {
-      aiDetectedMovementEventHandler.fireEvent(new AiDetectedMovementEvent(this, (int) result[0]));
+    for (int i = 0; i < event.getRawData().rawData().length; i++) {
+      input[0][i][0] = event.getRawData().rawData()[i];
+    }
+    float[][] result = model.runInference(input);
+//    float[][] result = model.runInference(new float[][][]{{{1, 2}}});
+    //TODO: Discuss this logic
+    if (result[0][0] > 0.3) {
+      aiDetectedMovementEventHandler.fireEvent(new AiDetectedMovementEvent(this, (int) Math.ceil(result[0][0])));
     }
   }
 
