@@ -88,7 +88,7 @@ public class BlinkManager implements IAlgoBlinkEventListener {
     }
 
     //FIXME: due to the current state of the app, we only need to check for click event
-    //FIXME: but we need to discuss this with the team
+    //       but we need to discuss this with the team
     //if (this.blinksList.size() == blinksToClick) {
     if (this.blinksList.size() >= blinksToClick) {
       fireClickEvent();
