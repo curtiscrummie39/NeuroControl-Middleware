@@ -32,7 +32,7 @@ public class WrapperCore {
   }
 
   //FIXME: This constructor is missing the serial usb connection initialization [DONE]
-  public WrapperCore(BluetoothManager bluetoothManager, String macAddress, UsbManager usbManager, String modelUrl)
+  public WrapperCore(BluetoothManager bluetoothManager, String macAddress, UsbManager usbManager)
       throws IOException {
     this.controlManager = new ControlManager();
     this.wheelchairController = new WheelchairController(usbManager);
