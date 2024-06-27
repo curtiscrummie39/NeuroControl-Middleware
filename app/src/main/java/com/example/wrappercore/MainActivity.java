@@ -148,103 +148,105 @@ public class MainActivity extends AppCompatActivity {
 //    }
 //  }
 
-// private void getBtAccess(UsbDevice device, UsbManager manager) {
-//   // Create a PendingIntent for USB permission request
-//   PendingIntent permissionIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_USB_PERMISSION), 0);
-//
-//   // Create a BroadcastReceiver to handle USB permission
-//   BroadcastReceiver usbReceiver = new BroadcastReceiver() {
-//     @Override
-//     public void onReceive(Context context, Intent intent) {
-//       String action = intent.getAction();
-//       if (ACTION_USB_PERMISSION.equals(action)) {
-//         synchronized (this) {
-//           UsbDevice usbDevice = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
-//           if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
-//             if (usbDevice != null && usbDevice.equals(device)) {
-//               // Permission granted, proceed with opening the USB device
-//               UsbDeviceConnection connection = manager.openDevice(device);
-//               if (connection != null) {
-//                 // Device opened successfully, perform further operations
-//                 Log.i(TAG, "Device opened successfully");
-//                 // Here you can perform USB communication or other tasks
-////                  asyncSendBtPackets(device, manager);
-////                  sendBtPackets(device, manager);
-//               }
-//             }
-//           } else {
-//             // Permission denied for the USB device
-//             Log.e(TAG, "Permission denied for USB device: " + device.getDeviceName());
-//             // Handle the permission denial if needed
-//           }
-//         }
-//       }
-//     }
-//   };
-//
-//   // Register the BroadcastReceiver to handle USB permission
-//   IntentFilter filter = new IntentFilter(ACTION_USB_PERMISSION);
-//   filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY); // Set priority to high
-//   registerReceiver(usbReceiver, filter); // Add permission flag
-////    if (VERSION.SDK_INT >= VERSION_CODES.O) {
-////    }
-//   // Request USB permission for the device
-//   manager.requestPermission(device, permissionIntent);
-// }
-//
-// public void initBtManager() {
-//
-//   UsbManager manager = (UsbManager) getSystemService(Context.USB_SERVICE);
-//   HashMap<String, UsbDevice> deviceList = manager.getDeviceList();
-//   UsbDevice mDevice = null;
-//   for (UsbDevice device : deviceList.values()) {
-//     if (device.getDeviceName().equals("/dev/bus/usb/001/003") ||device.getDeviceName().equals("/dev/bus/usb/001/004")) {
-//       mDevice = device;
-//     }
-//     Log.i(TAG,
-//         "Device Name: " + device.getDeviceName() + " Device ID: " + device.getDeviceId() + " Vendor: "
-//             + device.getVendorId() + " Product: " + device.getProductId());
-//
-//   }
-//   if (mDevice != null) {
-//     Log.i(TAG, "sdk dev: " + VERSION.SDK_INT);
-//     getBtAccess(mDevice, manager);
-////      if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
-////      }
-//   }
-// }
-////
-// public void initBtManagerSerialSdk() throws IOException {
-//   // Find all available drivers from attached devices.
-//   UsbManager manager = (UsbManager) getSystemService(Context.USB_SERVICE);
-//   List<UsbSerialDriver> availableDrivers = UsbSerialProber.getDefaultProber().findAllDrivers(manager);
-//   if (availableDrivers.isEmpty()) {
-//     return;
-//   }
-//
-//   Map<String, UsbDevice> diverList = manager.getDeviceList();
-//   UsbDevice mDevice;
-//   for (UsbDevice device : diverList.values()) {
-//     mDevice = device;
-//     getBtAccess(mDevice, manager);
-//     Log.i(TAG,
-//         "Device Name: " + device.getDeviceName() + " Device ID: " + device.getDeviceId() + " Vendor: "
-//             + device.getVendorId() + " Product: " + device.getProductId());
-//   }
-//
-//   // Open a connection to the first available driver.
-//   UsbSerialDriver driver = availableDrivers.get(0);
-//   UsbDeviceConnection connection = manager.openDevice(driver.getDevice());
-//   if (connection == null) {
-//     // add UsbManager.requestPermission(driver.getDevice(), ..) handling here
-//     return;
-//   }
-//
-//   Log.i(TAG, "Device: " + driver.getDevice().getVendorId() + " ports: " + driver.getPorts().size());
-//   port = driver.getPorts().get(0);
-//   port.open(connection);
-//   port.setParameters(9600, 8, UsbSerialPort.STOPBITS_1, UsbSerialPort.PARITY_NONE);
-// }
+  private void getBtAccess(UsbDevice device, UsbManager manager) {
+    // Create a PendingIntent for USB permission request
+    PendingIntent permissionIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_USB_PERMISSION), 0);
+
+    // Create a BroadcastReceiver to handle USB permission
+    BroadcastReceiver usbReceiver = new BroadcastReceiver() {
+      @Override
+      public void onReceive(Context context, Intent intent) {
+        String action = intent.getAction();
+        if (ACTION_USB_PERMISSION.equals(action)) {
+          synchronized (this) {
+            UsbDevice usbDevice = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+            if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
+              if (usbDevice != null && usbDevice.equals(device)) {
+                // Permission granted, proceed with opening the USB device
+                UsbDeviceConnection connection = manager.openDevice(device);
+                if (connection != null) {
+                  // Device opened successfully, perform further operations
+                  Log.i(TAG, "Device opened successfully");
+                  // Here you can perform USB communication or other tasks
+//                  asyncSendBtPackets(device, manager);
+//                  sendBtPackets(device, manager);
+                }
+              }
+            } else {
+              // Permission denied for the USB device
+              Log.e(TAG, "Permission denied for USB device: " + device.getDeviceName());
+              // Handle the permission denial if needed
+            }
+          }
+        }
+      }
+    };
+
+    // Register the BroadcastReceiver to handle USB permission
+    IntentFilter filter = new IntentFilter(ACTION_USB_PERMISSION);
+    filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY); // Set priority to high
+    registerReceiver(usbReceiver, filter); // Add permission flag
+//    if (VERSION.SDK_INT >= VERSION_CODES.O) {
+//    }
+    // Request USB permission for the device
+    manager.requestPermission(device, permissionIntent);
+  }
+
+  public void initBtManager() {
+
+    UsbManager manager = (UsbManager) getSystemService(Context.USB_SERVICE);
+    HashMap<String, UsbDevice> deviceList = manager.getDeviceList();
+    UsbDevice mDevice = null;
+    for (UsbDevice device : deviceList.values()) {
+      if (device.getDeviceName().equals("/dev/bus/usb/001/003") || device.getDeviceName()
+          .equals("/dev/bus/usb/001/004")) {
+        mDevice = device;
+      }
+      Log.i(TAG,
+          "Device Name: " + device.getDeviceName() + " Device ID: " + device.getDeviceId() + " Vendor: "
+              + device.getVendorId() + " Product: " + device.getProductId());
+
+    }
+    if (mDevice != null) {
+      Log.i(TAG, "sdk dev: " + VERSION.SDK_INT);
+      getBtAccess(mDevice, manager);
+//      if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
+//      }
+    }
+  }
+
+  //
+  public void initBtManagerSerialSdk() throws IOException {
+    // Find all available drivers from attached devices.
+    UsbManager manager = (UsbManager) getSystemService(Context.USB_SERVICE);
+    List<UsbSerialDriver> availableDrivers = UsbSerialProber.getDefaultProber().findAllDrivers(manager);
+    if (availableDrivers.isEmpty()) {
+      return;
+    }
+
+    Map<String, UsbDevice> diverList = manager.getDeviceList();
+    UsbDevice mDevice;
+    for (UsbDevice device : diverList.values()) {
+      mDevice = device;
+      getBtAccess(mDevice, manager);
+      Log.i(TAG,
+          "Device Name: " + device.getDeviceName() + " Device ID: " + device.getDeviceId() + " Vendor: "
+              + device.getVendorId() + " Product: " + device.getProductId());
+    }
+
+    // Open a connection to the first available driver.
+    UsbSerialDriver driver = availableDrivers.get(0);
+    UsbDeviceConnection connection = manager.openDevice(driver.getDevice());
+    if (connection == null) {
+      // add UsbManager.requestPermission(driver.getDevice(), ..) handling here
+      return;
+    }
+
+    Log.i(TAG, "Device: " + driver.getDevice().getVendorId() + " ports: " + driver.getPorts().size());
+    port = driver.getPorts().get(0);
+    port.open(connection);
+    port.setParameters(9600, 8, UsbSerialPort.STOPBITS_1, UsbSerialPort.PARITY_NONE);
+  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {

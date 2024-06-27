@@ -3,6 +3,7 @@ package com.example.wrappercore;
 import Wheelchair.WheelchairController;
 import ai.ModelController;
 import android.bluetooth.BluetoothManager;
+import android.content.Context;
 import android.hardware.usb.UsbManager;
 import com.example.wrappercore.control.ControlManager;
 import com.example.wrappercore.control.IControlManagerEventListener;
@@ -34,10 +35,10 @@ public class WrapperCore {
   }
 
   //FIXME: This constructor is missing the serial usb connection initialization [DONE]
-  public WrapperCore(BluetoothManager bluetoothManager, String macAddress, UsbManager usbManager)
+  public WrapperCore(BluetoothManager bluetoothManager, String macAddress, UsbManager usbManager, Context context)
       throws IOException {
     this.controlManager = new ControlManager();
-    this.wheelchairController = new WheelchairController(usbManager);
+    this.wheelchairController = new WheelchairController(usbManager, context);
     //FIXME: put the correct PROD url
     this.modelController = new ModelController(this.modelUrl);
     this.modelController.addListener(this.controlManager.getActionManager());
