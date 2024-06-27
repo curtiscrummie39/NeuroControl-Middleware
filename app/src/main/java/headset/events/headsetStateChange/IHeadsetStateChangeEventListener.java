@@ -1,9 +1,9 @@
 package headset.events.headsetStateChange;
 
 
-import java.util.EventListener;
+import headset.events.IHeadsetListener;
 
-public interface IHeadsetStateChangeEventListener extends EventListener {
+public interface IHeadsetStateChangeEventListener extends IHeadsetListener {
 
   void onHeadsetStateChange(HeadsetStateChangeEvent event);
 }

@@ -1,7 +1,7 @@
 package com.example.wrappercore.control.blink.events;
 
-import java.util.EventListener;
+import com.example.wrappercore.control.IControlManagerEventListener;
 
-public interface IBlinkEventListener extends EventListener {
+public interface IBlinkEventListener extends IControlManagerEventListener {
 
 }

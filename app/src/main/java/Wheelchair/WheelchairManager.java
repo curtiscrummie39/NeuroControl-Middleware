@@ -15,10 +15,10 @@ public class WheelchairManager implements IDirectionEventListener {
 
   public void onDirectionEvent(DirectionEvent event) {
     switch (event.getDirection()) {
-      case FORWARD -> this.wheelchairHardwareConnector.send((byte) 0x01);
-      case LEFT -> this.wheelchairHardwareConnector.send((byte) 0x03);
-      case RIGHT -> this.wheelchairHardwareConnector.send((byte) 0x04);
-      case STOP -> this.wheelchairHardwareConnector.send((byte) 0x05);
+      case FORWARD -> this.wheelchairHardwareConnector.send("forward".getBytes());
+      case LEFT -> this.wheelchairHardwareConnector.send("left".getBytes());
+      case RIGHT -> this.wheelchairHardwareConnector.send("right".getBytes());
+      case STOP -> this.wheelchairHardwareConnector.send("stop".getBytes());
     }
   }
 

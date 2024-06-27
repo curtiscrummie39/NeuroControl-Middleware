@@ -38,10 +38,10 @@ public class ControlManager {
   }
 
   public BlinkManager getBlinkManager() {
-    return blinkManager;
+    return this.blinkManager;
   }
 
   public ActionManager getActionManager() {
-    return actionManager;
+    return this.actionManager;
   }
 }
