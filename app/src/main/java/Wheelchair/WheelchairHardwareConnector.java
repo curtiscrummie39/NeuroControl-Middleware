@@ -19,6 +19,17 @@ public class WheelchairHardwareConnector {
       return;
     }
 
+    Map<String, UsbDevice> diverList = usbManager.getDeviceList();
+    UsbDevice mDevice;
+    for (UsbDevice device : diverList.values()) {
+      mDevice = device;
+      getBtAccess(mDevice, usbManager);
+      Log.i("HARDWARE",
+          "Device Name: " + device.getDeviceName() + " Device ID: " + device.getDeviceId() + " Vendor: "
+              + device.getVendorId() + " Product: " + device.getProductId());
+    }
+
+
     // Open a connection to the first available driver.
     UsbSerialDriver driver = availableDrivers.get(0);
     UsbDeviceConnection connection = usbManager.openDevice(driver.getDevice());
@@ -44,5 +55,50 @@ public class WheelchairHardwareConnector {
       throw new RuntimeException(e);
     }
   }
+
+  private void getBtAccess(UsbDevice device, UsbManager manager) {
+    // Create a PendingIntent for USB permission request
+    PendingIntent permissionIntent = PendingIntent.getBroadcast(this, 0, new Intent(ACTION_USB_PERMISSION), 0);
+
+    // Create a BroadcastReceiver to handle USB permission
+    BroadcastReceiver usbReceiver = new BroadcastReceiver() {
+      @Override
+      public void onReceive(Context context, Intent intent) {
+        String action = intent.getAction();
+        if (ACTION_USB_PERMISSION.equals(action)) {
+          synchronized (this) {
+            UsbDevice usbDevice = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+            if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
+              if (usbDevice != null && usbDevice.equals(device)) {
+                // Permission granted, proceed with opening the USB device
+                UsbDeviceConnection connection = manager.openDevice(device);
+                if (connection != null) {
+                  // Device opened successfully, perform further operations
+                  Log.i("HARDWARE", "Device opened successfully");
+                  // Here you can perform USB communication or other tasks
+  //                  asyncSendBtPackets(device, manager);
+  //                  sendBtPackets(device, manager);
+                }
+              }
+            } else {
+              // Permission denied for the USB device
+              Log.e("HARDWARE", "Permission denied for USB device: " + device.getDeviceName());
+              // Handle the permission denial if needed
+            }
+          }
+        }
+      }
+    };
+
+    // Register the BroadcastReceiver to handle USB permission
+    IntentFilter filter = new IntentFilter(ACTION_USB_PERMISSION);
+    filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY); // Set priority to high
+    registerReceiver(usbReceiver, filter); // Add permission flag
+  //    if (VERSION.SDK_INT >= VERSION_CODES.O) {
+  //    }
+    // Request USB permission for the device
+    manager.requestPermission(device, permissionIntent);
+  }
+
 
 }
