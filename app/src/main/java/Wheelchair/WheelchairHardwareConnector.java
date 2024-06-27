@@ -2,6 +2,7 @@ package Wheelchair;
 
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
+import android.util.Log;
 import com.hoho.android.usbserial.driver.UsbSerialDriver;
 import com.hoho.android.usbserial.driver.UsbSerialPort;
 import com.hoho.android.usbserial.driver.UsbSerialProber;
@@ -33,9 +34,12 @@ public class WheelchairHardwareConnector {
 
   }
 
-  public void send(byte direction) {
+  public void send(byte[] direction) {
     try {
-      this.port.write(new byte[]{direction}, 1000);
+      byte[] responseLen = new byte[]{};
+      this.port.write(direction, 1000);
+      this.port.read(responseLen, 1000);
+      Log.i("HARDWARE", "response:" + responseLen);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }

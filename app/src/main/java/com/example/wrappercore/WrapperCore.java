@@ -49,7 +49,7 @@ public class WrapperCore {
 
   public void addListener(EventListener listener) {
     if (listener instanceof IControlManagerEventListener) {
-      controlManager.addListener((IControlManagerEventListener) listener);
+      controlManager.addListener(listener);
     } else if (listener instanceof IHeadsetListener) {
       headsetController.addEventListener(listener);
     }
@@ -57,7 +57,7 @@ public class WrapperCore {
 
   public void removeListener(EventListener listener) {
     if (listener instanceof IControlManagerEventListener) {
-      controlManager.removeListener((IControlManagerEventListener) listener);
+      controlManager.removeListener(listener);
     } else if (listener instanceof IHeadsetListener) {
       headsetController.removeEventListener(listener);
     }
