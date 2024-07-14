@@ -20,9 +20,6 @@ public class WrapperCore {
   private final WheelchairController wheelchairController;
   private final String modelUrl = "https://learny-v1.onrender.com/api/v1/downloadModel";
 
-  //FIXME: This field is not initialized with null this just to mimic the real implementation []
-  //FIXME: This field should be made as final []
-  private WheelchairController wheelchairController = null;
 
   public WrapperCore(BluetoothManager bluetoothManager, String macAddress, UsbManager usbManager)
       throws IOException {
