@@ -1,3 +1,6 @@
+group = 'om.example.wrappercore' 
+version = '1.0.0'
+
 plugins {
     id 'com.android.application'
 }
@@ -43,6 +46,7 @@ android {
 
 
 dependencies {
+    implementation 'org.jetbrains:annotations:20.1.0'
     implementation 'com.github.mik3y:usb-serial-for-android:3.7.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.11.0'
@@ -57,4 +61,78 @@ dependencies {
     androidTestImplementation 'org.assertj:assertj-core:3.24.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'signing'
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            groupId = 'om.example.wrappercore'
+            artifactId = 'NeuroControl-Middleware'
+            version = '1.0.0'
+
+            pom {
+                name = 'NeuroControl Middleware'
+                description = 'Java-based middleware for connecting the Neurosky Mindwave2 headset with Android and AI models.'
+                url = 'https://github.com/Neuro-Sync/NeuroControl-Middleware'
+
+                licenses {
+                    license {
+                        name = 'The MIT License'
+                        url = 'https://opensource.org/licenses/MIT'
+                        distribution = 'repo'
+                    }
+                }
+                developers {
+                    developer {
+                        name = 'Mohammed Medhat'
+                        email = 'mohamed.medhat2121@gmail.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/Neuro-Sync/NeuroControl-Middleware.git'
+                    developerConnection = 'scm:git:ssh://github.com/Neuro-Sync/NeuroControl-Middleware.git'
+                    url = 'https://github.com/Neuro-Sync/NeuroControl-Middleware'
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = 'OSSRH'
+            url = uri('https://oss.sonatype.org/service/local/staging/deploy/maven2/')
+            credentials {
+                username = project.findProperty("ossrhUsername") ?: ""
+                password = project.findProperty("ossrhPassword") ?: ""
+            }
+        }
+    }
+}
+
+signing {
+    useGpgCmd()
+    sign publishing.publications.mavenJava
+}
+
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+    archiveClassifier = 'sources'
+}
+
+task javadocJar(type: Jar) {
+    from javadoc
+    archiveClassifier = 'javadoc'
 }
