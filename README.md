@@ -147,7 +147,7 @@ public class WrapperCore {
 - **makeWheelchairGoLeft():** Sends a command to the wheelchair controller to turn the wheelchair left.
 - **makeWheelchairGoRight():** Sends a command to the wheelchair controller to turn the wheelchair right.
 - **makeWheelchairStop():** Sends a command to the wheelchair controller to stop the wheelchair.
-
+- **To customize the serial message see the wheelchair component**
 ### Contributing
 
 Contributions are welcome! Please submit a pull request or open an issue to discuss what you would like to change.
