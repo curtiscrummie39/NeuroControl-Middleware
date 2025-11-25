@@ -19,7 +19,7 @@ public class ProductManagerTest {
   @Before
   public void setUp() {
     productManager = new ProductManager();
-    product1 = new Product("1", "Neurosky Mindwave2", "Brain-computer interface headset", "HEADSET");
+    product1 = new Product("1", "Neurosky Mindwave2", "Brain-computer interface headset", "HEADSET", 0, 32);
     product2 = new Product("2", "Wheelchair Model X", "Advanced electric wheelchair", "WHEELCHAIR");
   }
 
