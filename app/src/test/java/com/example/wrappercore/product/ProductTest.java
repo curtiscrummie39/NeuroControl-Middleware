@@ -86,4 +86,29 @@ public class ProductTest {
     assertEquals(32, mindwave.getChannelCount());
     assertEquals("HEADSET", mindwave.getType());
   }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testSetNegativeDeviceId() {
+    product.setDeviceId(-1);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testSetZeroChannelCount() {
+    product.setChannelCount(0);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testSetNegativeChannelCount() {
+    product.setChannelCount(-1);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testConstructorWithNegativeDeviceId() {
+    new Product("1", "Test", "Test", "TEST", -1, 1);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testConstructorWithZeroChannelCount() {
+    new Product("1", "Test", "Test", "TEST", 0, 0);
+  }
 }
