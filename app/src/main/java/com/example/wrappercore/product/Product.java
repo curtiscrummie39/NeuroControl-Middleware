@@ -12,12 +12,16 @@ public class Product {
   private String description;
   private String type;
   private boolean active;
+  private int deviceId;
+  private int channelCount;
 
   /**
    * Default constructor for Product.
    */
   public Product() {
     this.active = true;
+    this.deviceId = 0;
+    this.channelCount = 1;
   }
 
   /**
@@ -34,6 +38,35 @@ public class Product {
     this.description = description;
     this.type = type;
     this.active = true;
+    this.deviceId = 0;
+    this.channelCount = 1;
+  }
+
+  /**
+   * Constructor with all parameters including deviceId and channelCount.
+   *
+   * @param id           Unique identifier for the product
+   * @param name         Name of the product
+   * @param description  Description of the product
+   * @param type         Type of product (e.g., "WHEELCHAIR", "HEADSET")
+   * @param deviceId     Device identifier (must be non-negative, default is 0)
+   * @param channelCount Number of channels for the device (must be positive)
+   * @throws IllegalArgumentException if deviceId is negative or channelCount is not positive
+   */
+  public Product(String id, String name, String description, String type, int deviceId, int channelCount) {
+    if (deviceId < 0) {
+      throw new IllegalArgumentException("Device ID must be non-negative");
+    }
+    if (channelCount <= 0) {
+      throw new IllegalArgumentException("Channel count must be positive");
+    }
+    this.id = id;
+    this.name = name;
+    this.description = description;
+    this.type = type;
+    this.active = true;
+    this.deviceId = deviceId;
+    this.channelCount = channelCount;
   }
 
   /**
@@ -126,6 +159,50 @@ public class Product {
     this.active = active;
   }
 
+  /**
+   * Gets the device ID.
+   *
+   * @return Device ID
+   */
+  public int getDeviceId() {
+    return deviceId;
+  }
+
+  /**
+   * Sets the device ID.
+   *
+   * @param deviceId Device ID (must be non-negative)
+   * @throws IllegalArgumentException if deviceId is negative
+   */
+  public void setDeviceId(int deviceId) {
+    if (deviceId < 0) {
+      throw new IllegalArgumentException("Device ID must be non-negative");
+    }
+    this.deviceId = deviceId;
+  }
+
+  /**
+   * Gets the channel count.
+   *
+   * @return Channel count
+   */
+  public int getChannelCount() {
+    return channelCount;
+  }
+
+  /**
+   * Sets the channel count.
+   *
+   * @param channelCount Channel count (must be positive)
+   * @throws IllegalArgumentException if channelCount is not positive
+   */
+  public void setChannelCount(int channelCount) {
+    if (channelCount <= 0) {
+      throw new IllegalArgumentException("Channel count must be positive");
+    }
+    this.channelCount = channelCount;
+  }
+
   @Override
   public String toString() {
     return "Product{" +
@@ -134,6 +211,8 @@ public class Product {
         ", description='" + description + '\'' +
         ", type='" + type + '\'' +
         ", active=" + active +
+        ", deviceId=" + deviceId +
+        ", channelCount=" + channelCount +
         '}';
   }
 }

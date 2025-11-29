@@ -17,7 +17,9 @@ public class ProductUsageExample {
         "1",
         "Neurosky Mindwave2",
         "Brain-computer interface headset for reading brainwave signals",
-        "HEADSET"
+        "HEADSET",
+        0,
+        32
     );
 
     Product wheelchair = new Product(
