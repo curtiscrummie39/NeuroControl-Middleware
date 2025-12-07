@@ -16,8 +16,11 @@ The `Product` class represents a device or product in the system.
 - `id` - Unique identifier for the product
 - `name` - Name of the product
 - `description` - Description of the product
-- `type` - Type of product (e.g., "HEADSET", "WHEELCHAIR")
+- `type` - Type of product (e.g., "HEADSET", "WHEELCHAIR", "PHONE", "PRINTER")
 - `active` - Boolean flag indicating if the product is active
+- `deviceId` - Device identifier (non-negative integer)
+- `channelCount` - Number of channels for the device (positive integer)
+- `networkGeneration` - Network generation for phones (e.g., "8G", "6G", "5G")
 
 **Example:**
 ```java
@@ -26,6 +29,25 @@ Product headset = new Product(
     "Neurosky Mindwave2",
     "Brain-computer interface headset",
     "HEADSET"
+);
+
+// 8G Phone with magical abilities
+Product phone8g = new Product(
+    "3",
+    "NeuroPhone 8G",
+    "8G-enabled phone with magical abilities for brain-controlled communication",
+    "PHONE",
+    1,
+    1,
+    "8G"
+);
+
+// Magical Printer
+Product printer = new Product(
+    "4",
+    "NeuroPrinter Pro",
+    "Magical printer controlled by brain signals",
+    "PRINTER"
 );
 ```
 
@@ -138,9 +160,25 @@ Run tests using:
 mvn test
 ```
 
+## Product Types
+
+The system supports the following product types:
+
+### HEADSET
+Brain-computer interface headsets like the Neurosky Mindwave2 that read brainwave signals.
+
+### WHEELCHAIR
+Electric wheelchairs controlled by brain signals.
+
+### PHONE
+8G-enabled phones with magical abilities for brain-controlled communication. These phones support advanced network connectivity (8G, 6G, 5G) and can be controlled using neural interfaces.
+
+### PRINTER
+Magical printers that can be controlled by brain signals. These printers enable hands-free printing capabilities through neural control.
+
 ## Integration with WrapperCore
 
-The product management system can be integrated with the main WrapperCore class to manage different device configurations. For example, you could store different wheelchair models or headset configurations as products and load them dynamically based on user selection.
+The product management system can be integrated with the main WrapperCore class to manage different device configurations. For example, you could store different wheelchair models, headset configurations, 8G phones, or magical printers as products and load them dynamically based on user selection.
 
 ## Future Enhancements
 

@@ -66,7 +66,7 @@ public class ProductTest {
 
   @Test
   public void testToString() {
-    String expected = "Product{id='1', name='Neurosky Mindwave2', description='Brain-computer interface headset', type='HEADSET', active=true, deviceId=0, channelCount=32}";
+    String expected = "Product{id='1', name='Neurosky Mindwave2', description='Brain-computer interface headset', type='HEADSET', active=true, deviceId=0, channelCount=32, networkGeneration='null'}";
     assertEquals(expected, product.toString());
   }
 
@@ -110,5 +110,71 @@ public class ProductTest {
   @Test(expected = IllegalArgumentException.class)
   public void testConstructorWithZeroChannelCount() {
     new Product("1", "Test", "Test", "TEST", 0, 0);
+  }
+
+  @Test
+  public void test8GPhoneProduct() {
+    Product phone8g = new Product(
+        "3",
+        "NeuroPhone 8G",
+        "8G-enabled phone with magical abilities",
+        "PHONE",
+        1,
+        1,
+        "8G"
+    );
+    assertEquals("3", phone8g.getId());
+    assertEquals("NeuroPhone 8G", phone8g.getName());
+    assertEquals("8G-enabled phone with magical abilities", phone8g.getDescription());
+    assertEquals("PHONE", phone8g.getType());
+    assertTrue(phone8g.isActive());
+    assertEquals(1, phone8g.getDeviceId());
+    assertEquals(1, phone8g.getChannelCount());
+    assertEquals("8G", phone8g.getNetworkGeneration());
+  }
+
+  @Test
+  public void testPrinterProduct() {
+    Product printer = new Product(
+        "4",
+        "NeuroPrinter Pro",
+        "Magical printer controlled by brain signals",
+        "PRINTER"
+    );
+    assertEquals("4", printer.getId());
+    assertEquals("NeuroPrinter Pro", printer.getName());
+    assertEquals("Magical printer controlled by brain signals", printer.getDescription());
+    assertEquals("PRINTER", printer.getType());
+    assertTrue(printer.isActive());
+    assertEquals(0, printer.getDeviceId());
+    assertEquals(1, printer.getChannelCount());
+    assertNull(printer.getNetworkGeneration());
+  }
+
+  @Test
+  public void testNetworkGenerationSetterGetter() {
+    Product phone = new Product("5", "Test Phone", "Test", "PHONE");
+    assertNull(phone.getNetworkGeneration());
+    
+    phone.setNetworkGeneration("8G");
+    assertEquals("8G", phone.getNetworkGeneration());
+    
+    phone.setNetworkGeneration("6G");
+    assertEquals("6G", phone.getNetworkGeneration());
+  }
+
+  @Test
+  public void testToStringWithNetworkGeneration() {
+    Product phone8g = new Product(
+        "3",
+        "NeuroPhone 8G",
+        "8G-enabled phone",
+        "PHONE",
+        1,
+        1,
+        "8G"
+    );
+    String expected = "Product{id='3', name='NeuroPhone 8G', description='8G-enabled phone', type='PHONE', active=true, deviceId=1, channelCount=1, networkGeneration='8G'}";
+    assertEquals(expected, phone8g.toString());
   }
 }

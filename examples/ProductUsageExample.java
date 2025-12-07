@@ -29,12 +29,33 @@ public class ProductUsageExample {
         "WHEELCHAIR"
     );
 
+    Product phone8g = new Product(
+        "3",
+        "NeuroPhone 8G",
+        "8G-enabled phone with magical abilities for brain-controlled communication",
+        "PHONE",
+        1,
+        1,
+        "8G"
+    );
+
+    Product printer = new Product(
+        "4",
+        "NeuroPrinter Pro",
+        "Magical printer controlled by brain signals",
+        "PRINTER"
+    );
+
     // Add products to the manager
     boolean headsetCreated = productManager.createProduct(headset);
     boolean wheelchairCreated = productManager.createProduct(wheelchair);
+    boolean phoneCreated = productManager.createProduct(phone8g);
+    boolean printerCreated = productManager.createProduct(printer);
 
     System.out.println("Headset created: " + headsetCreated);
     System.out.println("Wheelchair created: " + wheelchairCreated);
+    System.out.println("8G Phone created: " + phoneCreated);
+    System.out.println("Printer created: " + printerCreated);
 
     // Get a specific product
     Product retrievedHeadset = productManager.getProduct("1");
