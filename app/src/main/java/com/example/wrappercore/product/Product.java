@@ -14,6 +14,7 @@ public class Product {
   private boolean active;
   private int deviceId;
   private int channelCount;
+  private String networkGeneration;
 
   /**
    * Default constructor for Product.
@@ -22,6 +23,7 @@ public class Product {
     this.active = true;
     this.deviceId = 0;
     this.channelCount = 1;
+    this.networkGeneration = null;
   }
 
   /**
@@ -30,7 +32,7 @@ public class Product {
    * @param id          Unique identifier for the product
    * @param name        Name of the product
    * @param description Description of the product
-   * @param type        Type of product (e.g., "WHEELCHAIR", "HEADSET")
+   * @param type        Type of product (e.g., "WHEELCHAIR", "HEADSET", "PHONE", "PRINTER")
    */
   public Product(String id, String name, String description, String type) {
     this.id = id;
@@ -40,6 +42,7 @@ public class Product {
     this.active = true;
     this.deviceId = 0;
     this.channelCount = 1;
+    this.networkGeneration = null;
   }
 
   /**
@@ -48,7 +51,7 @@ public class Product {
    * @param id           Unique identifier for the product
    * @param name         Name of the product
    * @param description  Description of the product
-   * @param type         Type of product (e.g., "WHEELCHAIR", "HEADSET")
+   * @param type         Type of product (e.g., "WHEELCHAIR", "HEADSET", "PHONE", "PRINTER")
    * @param deviceId     Device identifier (must be non-negative, default is 0)
    * @param channelCount Number of channels for the device (must be positive)
    * @throws IllegalArgumentException if deviceId is negative or channelCount is not positive
@@ -67,6 +70,36 @@ public class Product {
     this.active = true;
     this.deviceId = deviceId;
     this.channelCount = channelCount;
+    this.networkGeneration = null;
+  }
+
+  /**
+   * Constructor with all parameters including network generation support.
+   *
+   * @param id                Unique identifier for the product
+   * @param name              Name of the product
+   * @param description       Description of the product
+   * @param type              Type of product (e.g., "PHONE", "PRINTER")
+   * @param deviceId          Device identifier (must be non-negative, default is 0)
+   * @param channelCount      Number of channels for the device (must be positive)
+   * @param networkGeneration Network generation (e.g., "8G", "6G", "5G") for phones
+   * @throws IllegalArgumentException if deviceId is negative or channelCount is not positive
+   */
+  public Product(String id, String name, String description, String type, int deviceId, int channelCount, String networkGeneration) {
+    if (deviceId < 0) {
+      throw new IllegalArgumentException("Device ID must be non-negative");
+    }
+    if (channelCount <= 0) {
+      throw new IllegalArgumentException("Channel count must be positive");
+    }
+    this.id = id;
+    this.name = name;
+    this.description = description;
+    this.type = type;
+    this.active = true;
+    this.deviceId = deviceId;
+    this.channelCount = channelCount;
+    this.networkGeneration = networkGeneration;
   }
 
   /**
@@ -203,6 +236,24 @@ public class Product {
     this.channelCount = channelCount;
   }
 
+  /**
+   * Gets the network generation.
+   *
+   * @return Network generation (e.g., "8G", "6G", "5G")
+   */
+  public String getNetworkGeneration() {
+    return networkGeneration;
+  }
+
+  /**
+   * Sets the network generation.
+   *
+   * @param networkGeneration Network generation (e.g., "8G", "6G", "5G")
+   */
+  public void setNetworkGeneration(String networkGeneration) {
+    this.networkGeneration = networkGeneration;
+  }
+
   @Override
   public String toString() {
     return "Product{" +
@@ -213,6 +264,7 @@ public class Product {
         ", active=" + active +
         ", deviceId=" + deviceId +
         ", channelCount=" + channelCount +
+        ", networkGeneration='" + networkGeneration + '\'' +
         '}';
   }
 }
