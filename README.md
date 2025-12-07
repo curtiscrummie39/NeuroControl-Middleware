@@ -11,6 +11,7 @@
 - **Device Control:** Provides control over devices such as wheelchairs.
 - **Android Connectivity:** Connects and interacts with Android mobile applications.
 - **Dynamic Action Handling:** Offers a flexible and generic approach to harness the power of the Neurosky Mindwave2 headset.
+- **Nexus Edge 6G Integration (SEP-1):** Advanced 6G network connectivity with ultra-low latency (< 1 µs), deterministic communication, quantum-resistant security, and enhanced BCI capabilities.
 
 ## Technologies Used
 
@@ -167,7 +168,75 @@ public class WrapperCore {
 - **makeWheelchairGoLeft():** Sends a command to the wheelchair controller to turn the wheelchair left.
 - **makeWheelchairGoRight():** Sends a command to the wheelchair controller to turn the wheelchair right.
 - **makeWheelchairStop():** Sends a command to the wheelchair controller to stop the wheelchair.
+- **enableNexusEdge6G(deviceId, simCredentials):** Enables 6G connectivity with the SEP-1 porting protocol for ultra-low latency BCI operations.
+- **getNexusEdgeDevice():** Returns the Nexus Edge device status if 6G connectivity is enabled.
+- **getNexusEdgeProtocol():** Returns the Nexus Edge porting protocol instance for monitoring and control.
 - **To customize the serial message see the wheelchair component**
+
+## Nexus Edge 6G Integration
+
+The NeuroControl Middleware now supports next-generation 6G network connectivity through the **Nexus Edge Service Porting and Activation Protocol (SEP-1)**. This advanced integration provides:
+
+### Key Capabilities
+
+- **Ultra-Low Latency:** Sub-1 microsecond (< 1 µs) end-to-end latency for critical BCI commands
+- **Deterministic Communication:** Guaranteed packet delivery with Time-Sensitive Networking (TSN)
+- **Quantum-Resistant Security:** Post-quantum cryptographic algorithms for future-proof data protection
+- **Terahertz Spectrum:** Terabit-per-second (Tbps) throughput using THz bands
+- **Predictive Control:** AI-driven intent prediction with 1-2 second lead time
+- **Advanced Antenna Systems:** UM-MIMO, phased arrays, and Reconfigurable Intelligent Surfaces (RIS)
+
+### SEP-1 Protocol Phases
+
+The porting protocol consists of four phases:
+
+1. **Phase 1: Physical Handshake and Identity Verification**
+   - SIM/eSIM authentication with 6G gNB
+   - Quantum-resistant key exchange
+   - Edge AI co-processor activation
+
+2. **Phase 2: Microsecond Synchronization and Deterministic Link**
+   - Clock lock protocol (sub-nanosecond accuracy)
+   - TSN channel reservation
+   - ISAC (Integrated Sensing & Communication) calibration
+
+3. **Phase 3: Advanced Antenna System Configuration**
+   - UM-MIMO/Phased Array initialization
+   - Extreme beamforming lock
+   - RIS contingency setup
+
+4. **Phase 4: Bio-Digital Interface (BCI) Onboarding**
+   - Neural data pipeline (> 100 Gbps)
+   - Predictive model loading
+   - Haptic/VR pipeline readiness
+
+### Usage Example
+
+```java
+import com.example.wrappercore.WrapperCore;
+import android.bluetooth.BluetoothManager;
+
+// Initialize WrapperCore as usual
+WrapperCore core = new WrapperCore(bluetoothManager, macAddress);
+
+// Enable Nexus Edge 6G connectivity
+String deviceId = "NX-6G/B-1-001";
+String simCredentials = "YOUR-SIM-CREDENTIALS";
+boolean success = core.enableNexusEdge6G(deviceId, simCredentials);
+
+if (success) {
+    // Device is now fully operational on 6G network
+    NexusEdgeDevice device = core.getNexusEdgeDevice();
+    System.out.println("Connectivity: " + device.getConnectivityStatus());
+    System.out.println("Latency: " + device.getLatencyMicroseconds() + " µs");
+    System.out.println("Throughput: " + device.getThroughputTbps() + " Tbps");
+}
+```
+
+For a complete example, see `examples/NexusEdge6GExample.java`.
+
+For detailed technical specifications, refer to `conceptual_design.md`.
+
 ### Contributing
 
 Contributions are welcome! Please submit a pull request or open an issue to discuss what you would like to change.
