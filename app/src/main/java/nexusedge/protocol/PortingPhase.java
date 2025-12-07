@@ -1,7 +1,7 @@
 package nexusedge.protocol;
 
 /**
- * Represents the phases of the SEP-1 porting protocol.
+ * Represents the phases of the SEP-2.0 porting protocol.
  */
 public enum PortingPhase {
     /**
@@ -28,6 +28,21 @@ public enum PortingPhase {
      * Phase 4: Bio-Digital Interface (BCI) Onboarding.
      */
     PHASE_4,
+    
+    /**
+     * Phase 5: Molecular 3D Printer Integration.
+     */
+    PHASE_5,
+    
+    /**
+     * Phase 6: Direct Brain Upload System.
+     */
+    PHASE_6,
+    
+    /**
+     * Phase 7: Brain-to-Brain Interface (BBI) Activation.
+     */
+    PHASE_7,
     
     /**
      * All phases complete - device fully operational.

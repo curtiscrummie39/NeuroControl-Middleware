@@ -74,22 +74,30 @@ public class WrapperCore {
   }
 
   /**
-   * Enables Nexus Edge 6G connectivity with SEP-1 protocol.
-   * This provides ultra-low latency (< 1 µs), deterministic communication,
-   * and enhanced BCI integration over 6G networks.
+   * Enables Nexus Edge 8G connectivity with SEP-2.0 protocol.
+   * This provides ultra-low latency (< 0.1 ns), unlimited hotspot, deterministic communication,
+   * molecular 3D printing, direct brain uploads, and brain-to-brain interfaces over 8G networks.
    * 
    * @param deviceId Unique identifier for the Nexus Edge device
-   * @param simCredentials SIM/eSIM credentials for 6G authentication
+   * @param simCredentials SIM/eSIM credentials for 8G authentication
    * @return true if porting succeeds and device is fully operational
    */
-  public boolean enableNexusEdge6G(String deviceId, String simCredentials) {
+  public boolean enableNexusEdge8G(String deviceId, String simCredentials) {
     NexusEdgeDevice device = new NexusEdgeDevice(deviceId, deviceMacAddress);
     nexusEdgeProtocol = new NexusEdgePortingProtocol(device);
     return nexusEdgeProtocol.executePortingProtocol(simCredentials);
   }
 
   /**
-   * Gets the Nexus Edge device if 6G connectivity is enabled.
+   * @deprecated Use enableNexusEdge8G instead
+   */
+  @Deprecated
+  public boolean enableNexusEdge6G(String deviceId, String simCredentials) {
+    return enableNexusEdge8G(deviceId, simCredentials);
+  }
+
+  /**
+   * Gets the Nexus Edge device if 8G connectivity is enabled.
    * @return the NexusEdgeDevice, or null if not enabled
    */
   public NexusEdgeDevice getNexusEdgeDevice() {
@@ -97,7 +105,7 @@ public class WrapperCore {
   }
 
   /**
-   * Gets the Nexus Edge porting protocol if 6G connectivity is enabled.
+   * Gets the Nexus Edge porting protocol if 8G connectivity is enabled.
    * @return the NexusEdgePortingProtocol, or null if not enabled
    */
   public NexusEdgePortingProtocol getNexusEdgeProtocol() {
