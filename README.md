@@ -11,6 +11,7 @@
 - **Device Control:** Provides control over devices such as wheelchairs.
 - **Android Connectivity:** Connects and interacts with Android mobile applications.
 - **Dynamic Action Handling:** Offers a flexible and generic approach to harness the power of the Neurosky Mindwave2 headset.
+- **Nexus 6G Core Service:** Ultra-Reliable Low-Latency Communication (URLLC) with 6G network infrastructure support via SEP-1 protocol.
 
 ## Technologies Used
 
@@ -168,6 +169,52 @@ public class WrapperCore {
 - **makeWheelchairGoRight():** Sends a command to the wheelchair controller to turn the wheelchair right.
 - **makeWheelchairStop():** Sends a command to the wheelchair controller to stop the wheelchair.
 - **To customize the serial message see the wheelchair component**
+
+## Nexus 6G Core Service
+
+The middleware now includes support for Nexus 6G Core infrastructure, enabling Ultra-Reliable Low-Latency Communication (URLLC) for neural-controlled devices.
+
+### Key Capabilities
+
+- **SEP-1 Protocol**: Standard Edge Protocol for 6G connectivity
+- **URLLC Sessions**: Deterministic link control with sub-microsecond latency
+- **gNB Monitoring**: Real-time tracking of 6G base stations
+- **NXC Credits**: Service credit management system
+- **Network Metrics**: E2E latency, jitter, and predictive lead time
+
+### Quick Start
+
+```java
+import nexusedge.core.NexusServiceCore;
+import nexusedge.gnb.GnbNode;
+
+// Initialize with account key and credits
+NexusServiceCore service = new NexusServiceCore(
+    "bc1q4dpjsdcf8pwnduvqermyw5wrzyaqdpttjg3858",
+    2000000.0  // 2 million NXC
+);
+
+// Add 6G base stations
+service.addGnbNode(new GnbNode(
+    "ALPHA-001", 
+    "Industrial Zone 4",
+    GnbNode.GnbStatus.OPTIMAL, 
+    0.9, 
+    78
+));
+
+// Connect and start URLLC session
+service.connect();
+service.initiateUrllcSession();
+```
+
+For complete documentation, see [app/src/main/java/nexusedge/README.md](app/src/main/java/nexusedge/README.md).
+
+For a working example, run:
+```bash
+java -cp .:app/src/main/java examples.NexusServiceCoreExample
+```
+
 ### Contributing
 
 Contributions are welcome! Please submit a pull request or open an issue to discuss what you would like to change.
