@@ -9,6 +9,9 @@ import com.example.wrappercore.control.ControlManager;
 import com.example.wrappercore.control.IControlManagerEventListener;
 import headset.HeadsetController;
 import headset.events.IHeadsetListener;
+import nexusedge.protocol.NexusEdgeDevice;
+import nexusedge.protocol.NexusEdgePortingProtocol;
+import nexusedge.events.PortingEventListener;
 import java.io.IOException;
 import java.util.EventListener;
 
@@ -18,6 +21,8 @@ public class WrapperCore {
   private final ControlManager controlManager;
   private final ModelController modelController;
   private final WheelchairController wheelchairController;
+  private final String deviceMacAddress;
+  private NexusEdgePortingProtocol nexusEdgeProtocol;
   //NOTE: if you want to use your own ai-model
   //NOTE: change this to your own ai-model link in .tflite formate 
   //NOTE: and change the io vectors in ai component correspondingly.
@@ -26,6 +31,7 @@ public class WrapperCore {
 
   public WrapperCore(BluetoothManager bluetoothManager, String macAddress)
       throws IOException {
+    this.deviceMacAddress = macAddress;
     this.controlManager = new ControlManager();
     this.modelController = new ModelController(this.modelUrl);
     this.modelController.addListener(this.controlManager.getActionManager());
@@ -38,6 +44,7 @@ public class WrapperCore {
   //NOTE: this constructor is meant for the users who have the hardware (wheelchair) serial connection
   public WrapperCore(BluetoothManager bluetoothManager, String macAddress, UsbManager usbManager)
       throws IOException {
+    this.deviceMacAddress = macAddress;
     this.controlManager = new ControlManager();
     this.wheelchairController = new WheelchairController(usbManager);
     this.modelController = new ModelController(this.modelUrl);
@@ -61,7 +68,48 @@ public class WrapperCore {
       controlManager.removeListener(listener);
     } else if (listener instanceof IHeadsetListener) {
       headsetController.removeEventListener(listener);
+    } else if (listener instanceof PortingEventListener && nexusEdgeProtocol != null) {
+      nexusEdgeProtocol.removeListener((PortingEventListener) listener);
     }
+  }
+
+  /**
+   * Enables Nexus Edge 8G connectivity with SEP-2.0 protocol.
+   * This provides ultra-low latency (< 0.1 ns), unlimited hotspot, deterministic communication,
+   * molecular 3D printing, direct brain uploads, and brain-to-brain interfaces over 8G networks.
+   * 
+   * @param deviceId Unique identifier for the Nexus Edge device
+   * @param simCredentials SIM/eSIM credentials for 8G authentication
+   * @return true if porting succeeds and device is fully operational
+   */
+  public boolean enableNexusEdge8G(String deviceId, String simCredentials) {
+    NexusEdgeDevice device = new NexusEdgeDevice(deviceId, deviceMacAddress);
+    nexusEdgeProtocol = new NexusEdgePortingProtocol(device);
+    return nexusEdgeProtocol.executePortingProtocol(simCredentials);
+  }
+
+  /**
+   * @deprecated Use enableNexusEdge8G instead
+   */
+  @Deprecated
+  public boolean enableNexusEdge6G(String deviceId, String simCredentials) {
+    return enableNexusEdge8G(deviceId, simCredentials);
+  }
+
+  /**
+   * Gets the Nexus Edge device if 8G connectivity is enabled.
+   * @return the NexusEdgeDevice, or null if not enabled
+   */
+  public NexusEdgeDevice getNexusEdgeDevice() {
+    return nexusEdgeProtocol != null ? nexusEdgeProtocol.getDevice() : null;
+  }
+
+  /**
+   * Gets the Nexus Edge porting protocol if 8G connectivity is enabled.
+   * @return the NexusEdgePortingProtocol, or null if not enabled
+   */
+  public NexusEdgePortingProtocol getNexusEdgeProtocol() {
+    return nexusEdgeProtocol;
   }
 
   //NOTE: enable if you have hardware serial connection

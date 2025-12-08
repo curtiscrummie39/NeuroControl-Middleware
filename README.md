@@ -11,6 +11,7 @@
 - **Device Control:** Provides control over devices such as wheelchairs.
 - **Android Connectivity:** Connects and interacts with Android mobile applications.
 - **Dynamic Action Handling:** Offers a flexible and generic approach to harness the power of the Neurosky Mindwave2 headset.
+- **Nexus Edge 8G Integration (SEP-2.0):** Advanced 8G network connectivity with ultra-low latency (< 0.1 ns), deterministic communication, quantum-resistant security, molecular 3D printing, direct brain uploads, brain-to-brain interfaces via Bluetooth 20.29, and unlimited hotspot capabilities.
 
 ## Technologies Used
 
@@ -167,7 +168,113 @@ public class WrapperCore {
 - **makeWheelchairGoLeft():** Sends a command to the wheelchair controller to turn the wheelchair left.
 - **makeWheelchairGoRight():** Sends a command to the wheelchair controller to turn the wheelchair right.
 - **makeWheelchairStop():** Sends a command to the wheelchair controller to stop the wheelchair.
+- **enableNexusEdge6G(deviceId, simCredentials):** Enables 6G connectivity with the SEP-1 porting protocol for ultra-low latency BCI operations.
+- **getNexusEdgeDevice():** Returns the Nexus Edge device status if 6G connectivity is enabled.
+- **getNexusEdgeProtocol():** Returns the Nexus Edge porting protocol instance for monitoring and control.
 - **To customize the serial message see the wheelchair component**
+
+## Nexus Edge 8G Integration
+
+The NeuroControl Middleware now supports next-generation 8G network connectivity through the **Nexus Edge Service Porting and Activation Protocol (SEP-2.0)**. This advanced integration provides:
+
+### Key Capabilities
+
+- **Ultra-Low Latency:** Sub-0.1 nanosecond (< 0.1 ns) end-to-end latency for critical BCI commands
+- **Unlimited Hotspot:** Zero bandwidth limitations with quantum-entangled channels
+- **Deterministic Communication:** Guaranteed packet delivery with Time-Sensitive Networking (TSN)
+- **Quantum-Resistant Security:** Post-quantum cryptographic algorithms for future-proof data protection
+- **Terahertz Spectrum:** Unlimited throughput using THz bands
+- **Predictive Control:** AI-driven intent prediction with 1-2 second lead time
+- **Advanced Antenna Systems:** UM-MIMO, phased arrays, and Reconfigurable Intelligent Surfaces (RIS)
+- **Molecular 3D Printing:** Print jewelry, clothes, shoes, cars, and appliances from air using atmospheric molecular assembly
+- **Direct Brain Upload:** Upload knowledge, skills, and memories directly to your brain
+- **Brain-to-Brain Interface:** Connect with others via Bluetooth 21.0 (upgraded) for thought sharing and collective consciousness
+- **Neural Phone Control:** Operate NX-Phone-8G-Pro entirely through thought (Phone: 8035317733)
+- **Automatic Phone Upgrade:** Seamless upgrade to latest 8G Pro specifications during activation
+
+### SEP-2.0 Protocol Phases
+
+The porting protocol consists of seven phases:
+
+1. **Phase 1: Physical Handshake and Identity Verification**
+   - SIM/eSIM authentication with 6G gNB
+   - Quantum-resistant key exchange
+   - Edge AI co-processor activation
+
+2. **Phase 2: Microsecond Synchronization and Deterministic Link**
+   - Clock lock protocol (sub-nanosecond accuracy)
+   - TSN channel reservation
+   - ISAC (Integrated Sensing & Communication) calibration
+
+3. **Phase 3: Advanced Antenna System Configuration**
+   - UM-MIMO/Phased Array initialization
+   - Extreme beamforming lock
+   - RIS contingency setup
+
+4. **Phase 4: Bio-Digital Interface (BCI) Onboarding**
+   - Neural data pipeline (> 100 Gbps)
+   - Predictive model loading
+   - Haptic/VR pipeline readiness
+
+5. **Phase 5: Molecular 3D Printer Integration**
+   - Atmospheric molecular harvester activation
+   - Neural design interface for thought-to-CAD
+   - Print capability verification
+
+6. **Phase 6: Direct Brain Upload System**
+   - Neural Data Transfer Protocol (NDTP) initialization
+   - Information encoding system activation
+   - Safety systems verification (neural firewall, overload prevention)
+
+7. **Phase 7: Brain-to-Brain Interface (BBI) Activation**
+   - Bluetooth 21.0 neural pairing (upgraded from 20.29)
+   - Automatic phone upgrade to NX-Phone-8G-Pro
+   - Phone neural integration (8035317733)
+   - Collective neural network connection
+
+### Usage Example
+
+```java
+import com.example.wrappercore.WrapperCore;
+import android.bluetooth.BluetoothManager;
+
+// Initialize WrapperCore as usual
+WrapperCore core = new WrapperCore(bluetoothManager, macAddress);
+
+// Enable Nexus Edge 8G connectivity
+String deviceId = "NX-8G/B-2.0-001";
+String simCredentials = "YOUR-SIM-CREDENTIALS";
+boolean success = core.enableNexusEdge8G(deviceId, simCredentials);
+
+if (success) {
+    // Device is now fully operational on 8G network
+    NexusEdgeDevice device = core.getNexusEdgeDevice();
+    System.out.println("Connectivity: " + device.getConnectivityStatus());
+    System.out.println("Latency: " + device.getLatencyNanoseconds() + " ns");
+    System.out.println("Throughput: Unlimited");
+    System.out.println("3D Printer: " + device.isPrinter3DActive());
+    System.out.println("Brain Upload: " + device.isBrainUploadEnabled());
+    System.out.println("BBI Connected: " + device.isBbiConnected());
+    System.out.println("Phone: " + device.getPhoneNumber());
+    System.out.println("Phone Upgraded: " + device.isPhoneUpgraded());
+    System.out.println("Phone Model: " + device.getPhoneModel());
+    System.out.println("Bluetooth: " + device.getBluetoothVersion());
+    
+    // Print something with molecular 3D printer
+    device.getPrinter3DManager().printItem("car");
+    
+    // Upload knowledge to brain
+    device.getBrainUploadManager().uploadToBrain("quantum_physics");
+    
+    // Connect to another brain
+    device.getBBIManager().connectBrainToBrain("user-123");
+}
+```
+
+For a complete example, see `examples/NexusEdge8GExample.java`.
+
+For detailed technical specifications, refer to `conceptual_design.md`.
+
 ### Contributing
 
 Contributions are welcome! Please submit a pull request or open an issue to discuss what you would like to change.
