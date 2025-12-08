@@ -298,8 +298,13 @@ public class NexusEdgePortingProtocol {
     private boolean executePhase7() {
         currentPhase = PortingPhase.PHASE_7;
         
-        // Step 1: Bluetooth 20.29 Neural Pairing
+        // Step 1: Bluetooth 21.0 Neural Pairing (upgraded from 20.29)
         if (!bbiManager.pairBluetooth2029()) {
+            return false;
+        }
+        
+        // Step 1.5: Phone Upgrade to latest 8G Pro model
+        if (!bbiManager.upgradePhone()) {
             return false;
         }
         
@@ -315,6 +320,8 @@ public class NexusEdgePortingProtocol {
         
         device.setBbiConnected(true);
         device.setActiveBBIConnections(bbiManager.getActiveBBIConnections());
+        device.setPhoneUpgraded(bbiManager.isPhoneUpgraded());
+        device.setPhoneModel(bbiManager.getPhoneModel());
         return bbiManager.isPhaseComplete();
     }
     

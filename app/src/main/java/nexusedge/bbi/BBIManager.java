@@ -13,26 +13,46 @@ public class BBIManager {
     private String bluetoothVersion;
     private int activeBBIConnections;
     private String phoneNumber;
+    private boolean phoneUpgraded;
+    private String phoneModel;
     
     public BBIManager() {
         this.status = BBIStatus.OFFLINE;
         this.bluetooth2029Paired = false;
         this.phoneNeuralIntegrated = false;
         this.networkConnected = false;
-        this.bluetoothVersion = "20.29";
+        this.bluetoothVersion = "21.0";  // Upgraded from 20.29 to 21.0
         this.activeBBIConnections = 0;
         this.phoneNumber = "8035317733";
+        this.phoneUpgraded = false;
+        this.phoneModel = "NX-Phone-8G";
     }
     
     /**
-     * Performs Bluetooth 20.29 neural signature authentication and pairing.
+     * Performs Bluetooth 21.0 neural signature authentication and pairing (upgraded from 20.29).
      * @return true if neural pairing succeeds
      */
     public boolean pairBluetooth2029() {
         this.status = BBIStatus.PAIRING;
         
-        // Simulate neural signature authentication
+        // Simulate neural signature authentication with upgraded Bluetooth 21.0
         this.bluetooth2029Paired = true;
+        return true;
+    }
+    
+    /**
+     * Upgrades the phone to latest 8G specifications with enhanced capabilities.
+     * @return true if phone upgrade succeeds
+     */
+    public boolean upgradePhone() {
+        if (!bluetooth2029Paired) {
+            return false;
+        }
+        
+        // Simulate phone upgrade to NX-Phone-8G model
+        this.phoneUpgraded = true;
+        this.phoneModel = "NX-Phone-8G-Pro";
+        this.bluetoothVersion = "21.0";
         return true;
     }
     
@@ -136,6 +156,14 @@ public class BBIManager {
     
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+    
+    public boolean isPhoneUpgraded() {
+        return phoneUpgraded;
+    }
+    
+    public String getPhoneModel() {
+        return phoneModel;
     }
     
     /**

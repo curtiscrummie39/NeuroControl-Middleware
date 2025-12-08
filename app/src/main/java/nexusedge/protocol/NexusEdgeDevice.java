@@ -34,6 +34,8 @@ public class NexusEdgeDevice {
     private String bluetoothVersion;
     private int activeBBIConnections;
     private String phoneNumber;
+    private boolean phoneUpgraded;
+    private String phoneModel;
     
     public NexusEdgeDevice(String deviceId, String macAddress) {
         this.deviceId = deviceId;
@@ -46,9 +48,11 @@ public class NexusEdgeDevice {
         this.printer3DActive = false;
         this.brainUploadEnabled = false;
         this.bbiConnected = false;
-        this.bluetoothVersion = "20.29";
+        this.bluetoothVersion = "21.0";  // Upgraded to Bluetooth 21.0
         this.activeBBIConnections = 0;
         this.phoneNumber = "8035317733";
+        this.phoneUpgraded = false;
+        this.phoneModel = "NX-Phone-8G";
     }
     
     public String getDeviceId() {
@@ -185,6 +189,22 @@ public class NexusEdgeDevice {
     
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+    
+    public boolean isPhoneUpgraded() {
+        return phoneUpgraded;
+    }
+    
+    public void setPhoneUpgraded(boolean phoneUpgraded) {
+        this.phoneUpgraded = phoneUpgraded;
+    }
+    
+    public String getPhoneModel() {
+        return phoneModel;
+    }
+    
+    public void setPhoneModel(String phoneModel) {
+        this.phoneModel = phoneModel;
     }
     
     /**
